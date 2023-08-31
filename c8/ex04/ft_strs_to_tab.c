@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 14:24:54 by gschwart          #+#    #+#             */
-/*   Updated: 2023/08/30 19:05:21 by gschwart         ###   ########.fr       */
+/*   Updated: 2023/08/30 19:20:12 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ struct s_stock_str	*ft_strs_to_tab(int ac, char **av)
 	t_stock_str	*tab;
 	int			i;
 
-	*tab = malloc((ac + 1) * sizeof(t_stock_str));
+	tab = malloc((ac + 1) * sizeof(struct s_stock_str));
 	if (tab == NULL)
 		return (NULL);
 	i = 0;
