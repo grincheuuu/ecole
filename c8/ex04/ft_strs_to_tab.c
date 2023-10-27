@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/28 14:24:54 by gschwart          #+#    #+#             */
-/*   Updated: 2023/08/30 19:20:12 by gschwart         ###   ########.fr       */
+/*   Updated: 2023/08/31 11:32:37 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ struct s_stock_str	*ft_strs_to_tab(int ac, char **av)
 		tab[i].copy = ft_strdup(av[i]);
 		i++;
 	}
+	tab[i].str = 0;
 	return (tab);
 }
 
