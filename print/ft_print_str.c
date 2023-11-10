@@ -1,31 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_print_str.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 14:11:54 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/23 14:21:58 by gschwart         ###   ########.fr       */
+/*   Created: 2023/11/08 18:06:57 by gschwart          #+#    #+#             */
+/*   Updated: 2023/11/10 15:43:10 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_printf.h"
 
-void	ft_putstr_fd(char *s, int fd)
+int	ft_print_str(char *s)
 {
-	int	l;
+	int		i;
+	char	c;
 
-	l = ft_strlen(s);
-	write (fd, s, l);
+	i = 0;
+	c = 0;
+	while (s[i] != '\0')
+	{
+		write (1, &s[i], 1);
+		i++;
+	}
+	return (i);
 }
-/*
-int	main(void)
-{
-	int	fd;
-	char	s[] = "hello, World";
-
-	fd = 1;
-	ft_putstr_fd(s, fd);
-	return (0);
-}*/

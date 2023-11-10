@@ -1,38 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstiter.c                                       :+:      :+:    :+:   */
+/*   ft_print_char.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 14:43:51 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/30 15:00:26 by gschwart         ###   ########.fr       */
+/*   Created: 2023/11/08 11:29:18 by gschwart          #+#    #+#             */
+/*   Updated: 2023/11/08 14:03:22 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
-/*
-void	f(void *content)
-{
-	char *str = (char *)content;
-	printf("%s\n", str);
-}*/
+#include "ft_printf.h"
 
-void	ft_lstiter(t_list *lst, void (*f)(void *))
+int	ft_print_char(char c)
 {
-	if (lst == NULL || f == NULL)
-		return ;
-	while (lst != NULL)
-	{
-		f(lst->content);
-		lst = lst->next;
-	}
+	write (1, &c, 1);
+	return (1);
 }
-/*
-int	main(void)
-{
-	t_list	*myList = NULL;
-
-	ft_lstiter(myList, &print_string);
-	return (0);
-}*/

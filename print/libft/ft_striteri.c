@@ -1,55 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strmapi.c                                       :+:      :+:    :+:   */
+/*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/20 13:53:52 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/25 15:13:10 by gschwart         ###   ########.fr       */
+/*   Created: 2023/10/23 12:06:33 by gschwart          #+#    #+#             */
+/*   Updated: 2023/11/07 13:49:55 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-/*
-char	f(unsigned int index, char c)
-{
-	(void)index;
-	if (c >= 'a' && c <= 'z')
-		return (c - 32);
-	return (c);	
-}*/
-
-char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
 	unsigned int	l;
-	char			*dest;
 	unsigned int	i;
 
-	l = strlen(s);
+	l = ft_strlen(s);
 	i = 0;
 	if (s == NULL || f == NULL)
-		return (NULL);
-	dest = (char *)malloc((l + 1) * sizeof(char));
-	if (dest == NULL)
-		return (NULL);
+		return ;
 	while (i < l)
 	{
-		dest[i] = f(i, s[i]);
+		f(i, &s[i]);
 		i++;
 	}
-	dest[l] = '\0';
-	return (dest);
 }
 /*
+void	my_function(unsigned int index, char *c)
+{
+	printf("caractere a l indice %u %c\n", index, *c);
+}
+
 int	main(void)
 {
-	const char	*str = "hello";
-	char		*resultat;
+	char	s[] = "hello word";
 
-	resultat = ft_strmapi(str, f);
-	printf("%s\n", resultat);
-	free(resultat);
+	ft_striteri(s, my_function);
 	return (0);
 }*/

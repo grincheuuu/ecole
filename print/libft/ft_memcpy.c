@@ -1,31 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 14:11:54 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/23 14:21:58 by gschwart         ###   ########.fr       */
+/*   Created: 2023/10/17 14:18:23 by gschwart          #+#    #+#             */
+/*   Updated: 2023/11/10 16:28:07 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	int	l;
+	unsigned char		*d;
+	const unsigned char	*s;
+	size_t				i;
 
-	l = ft_strlen(s);
-	write (fd, s, l);
+	d = (unsigned char *)dest;
+	s = (const unsigned char *)src;
+	i = 0;
+	if ((dest == NULL) && (src == NULL))
+		return (0);
+	while (i < n)
+	{
+		d[i] = s[i];
+		i++;
+	}
+	return (dest);
 }
 /*
 int	main(void)
 {
-	int	fd;
-	char	s[] = "hello, World";
-
-	fd = 1;
-	ft_putstr_fd(s, fd);
+	char	dest[20];
+	const char	src[] = "bonjour";
+	size_t	n;
+	
+	n = sizeof(src);
+	ft_memcpy(dest, src, n);
+	printf("%s", dest);
 	return (0);
 }*/

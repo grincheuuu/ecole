@@ -34,7 +34,7 @@ static int	ft_putnb(int n)
 	return (len);
 }
 
-char	*ft_destgo(char *dest, int n, int len)
+static char	*ft_destgo(char *dest, int n, int len)
 {
 	if (n == 0)
 		dest[0] = '0';

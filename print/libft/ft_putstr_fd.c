@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelone.c                                     :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/30 13:29:42 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/30 17:31:13 by gschwart         ###   ########.fr       */
+/*   Created: 2023/10/23 14:11:54 by gschwart          #+#    #+#             */
+/*   Updated: 2023/10/23 14:21:58 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void *))
+void	ft_putstr_fd(char *s, int fd)
 {
-	if (lst == NULL || del == NULL)
-		return ;
-	if (lst->content != NULL)
-	{
-		del(lst->content);
-		free(lst);
-	}
+	int	l;
+
+	l = ft_strlen(s);
+	write (fd, s, l);
 }
 /*
 int	main(void)
 {
-	t_list	*node = ft_lstnew("heelo, World");
+	int	fd;
+	char	s[] = "hello, World";
 
-	ft_lstdelone(node, custom_del);
+	fd = 1;
+	ft_putstr_fd(s, fd);
 	return (0);
 }*/

@@ -6,11 +6,29 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 16:24:04 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/25 14:49:31 by gschwart         ###   ########.fr       */
+/*   Updated: 2023/11/07 13:49:35 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+static char	*ft_strncpy(char *dest, const char *s, size_t len)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] != '\0' && i < len)
+	{
+		dest[i] = s[i];
+		i++;
+	}
+	while (i < len)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
 
 static int	is_in_set(char c, char const *set)
 {
@@ -50,7 +68,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	int		l;
 
 	i = 0;
-	l = strlen(s1);
+	l = ft_strlen(s1);
 	tisspace = ft_iss(s1, set);
 	endisspace = 0;
 	while (s1[l - 1] != tisspace && is_in_set(s1[l - 1], set) != 0)
@@ -59,11 +77,11 @@ char	*ft_strtrim(char const *s1, char const *set)
 		l--;
 	}
 	if ((l - tisspace) <= 0)
-		return (strdup(""));
+		return (ft_strdup(""));
 	dest = malloc((l - tisspace + 1) * sizeof(char));
 	if (dest == NULL)
 		return (NULL);
-	strncpy(dest, &s1[tisspace], (l - tisspace));
+	ft_strncpy(dest, &s1[tisspace], (l - tisspace));
 	dest[l - tisspace] = '\0';
 	return (dest);
 }

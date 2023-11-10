@@ -1,44 +1,49 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_memset.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/17 14:18:23 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/24 18:10:31 by gschwart         ###   ########.fr       */
+/*   Created: 2023/10/17 10:31:04 by gschwart          #+#    #+#             */
+/*   Updated: 2023/10/19 18:26:38 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
+#include "libft.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+void	*ft_memset(void *str, int c, size_t n)
 {
-	unsigned char		*d;
-	const unsigned char	*s;
-	size_t				i;
+	unsigned char	*p;
+	unsigned char	v;
+	size_t			i;
 
-	d = (unsigned char *)dest;
-	s = (const unsigned char *)src;
+	p = str;
+	v = (unsigned char) c;
 	i = 0;
-	if ((dest == NULL) && (src == NULL))
-		return (0);
 	while (i < n)
 	{
-		d[i] = s[i];
+		p[i] = v;
 		i++;
 	}
-	return (dest);
+	return (str);
 }
 /*
 int	main(void)
 {
-	char	dest[20];
-	const char	src[] = "bonjour";
+	char	str[20] = {0};
+	int	c;
 	size_t	n;
-	
-	n = sizeof(src);
-	ft_memcpy(dest, src, n);
-	printf("%s", dest);
+	size_t	i;
+
+	c = '0';
+	n = sizeof(char) * 20;
+	i = 0;
+	ft_memset(str, c, n);
+	while (i < 10)
+	{
+		printf("%c ", str[i]);
+		i++;
+	}
 	return (0);
 }*/

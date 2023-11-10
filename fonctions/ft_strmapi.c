@@ -13,7 +13,7 @@
 #include "libft.h"
 
 /*
-char	f(unsigned int index, char c)
+static char	f(unsigned int index, char c)
 {
 	(void)index;
 	if (c >= 'a' && c <= 'z')
@@ -27,7 +27,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	char			*dest;
 	unsigned int	i;
 
-	l = strlen(s);
+	l = ft_strlen(s);
 	i = 0;
 	if (s == NULL || f == NULL)
 		return (NULL);

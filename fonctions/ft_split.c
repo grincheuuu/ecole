@@ -6,133 +6,82 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/20 13:35:09 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/26 18:57:25 by gschwart         ###   ########.fr       */
+/*   Updated: 2023/11/07 17:27:03 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	**ft_malloc_error(char **dest)
+size_t	ft_nbparts(char const *s, char c)
 {
-	size_t	i;
+	size_t	nb;
+	int		newstr;
 
-	i = 0;
-	while (dest[i])
+	nb = 0;
+	newstr = 0;
+	while (*s)
 	{
-		free(dest[i]);
-		i++;
+		if (*s != c && newstr == 0)
+		{
+			newstr = 1;
+			nb++;
+		}
+		else if (*s == c)
+			newstr = 0;
+		s++;
 	}
-	free(dest);
-	return (NULL);
+	return (nb);
 }
 
-int	ft_nbparts(char const *s, char c)
+size_t	ft_count_chr(char const *s, char c)
 {
-	int	i;
-	int	j;
-	int	t;
+	size_t	twolen;
 
-	i = 0;
-	j = 0;
-	t = 0;
-	if (s[i])
-		return (0);
-	while (s[i] != '\0')
+	twolen = 0;
+	while (*s && *s++ != c)
 	{
-		while (s[i] == c)
-		{
-			t++;
-			i++;
-		}
-		while (s[i] != c)
-		{
-			i++;
-		}
-		j++;
+		twolen++;
 	}
-	return (j);
+	return (twolen);
 }
 
-char	**ft_l_parts(char **dest, char const *s, char c, int len)
+void	ft_malloc_error(char **dest, size_t n)
 {
-	int	b;
-	int	i;
-	int	t;
-	int	g;
-
-	b = 0;
-	i = 0;
-	t = 0;
-	g = 0;
-	while (len > 0)
+	if (!dest[n])
 	{
-		while (s[i] == c)
+		while (n > 0)
 		{
-			t++;
-			i++;
+			free(dest[n--]);
 		}
-		while (s[i] != c)
-			i++;
-		dest[g] = (char *)malloc((i - t + 1) * sizeof(char));
-		if (dest[g] == NULL)
-			return (ft_malloc_error(dest));
-		g++;
-		len--;
+		free(dest);
 	}
-	return (dest);
-}
-
-char	**ft_tdest(char	**dest, char const *s, char c, int len)
-{
-	int	i;
-	int	j;
-	int	t;
-
-	i = 0;
-	j = 0;
-	while (len > 0)
-	{
-		t = 0;
-		while (s[i] == c)
-			i++;
-		while (s[i] != c)
-		{
-			dest[j][t] = s[i];
-			i++;
-			t++;
-		}
-		dest[j][t] = '\0';
-		j++;
-		len--;
-	}
-	return (dest);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**dest;
-	int		i;
-	int		len;
+	size_t	n;
+	size_t	len;
+	size_t	twolen;
 
-	i = 0;
-	if (s == NULL)
-		return (NULL);
+	if (!s)
+		return (0);
 	len = ft_nbparts(s, c);
 	dest = (char **)malloc((len + 1) * sizeof(char *));
-	if (*dest == NULL)
-		return (NULL);
-	dest = ft_l_parts(dest, s, c, len);
-	dest = ft_tdest(dest, s, c, len);
-	dest[len] = NULL;
+	if (!dest)
+		return (0);
+	n = 0;
+	while (n < len)
+	{
+		while (*s == c)
+			s++;
+		twolen = ft_count_chr(s, c);
+		dest[n] = (char *)malloc(sizeof(char) * (twolen + 1));
+		ft_malloc_error(dest, n);
+		ft_strlcpy(dest[n], (char *)s, twolen + 1);
+		s = s + twolen;
+		n++;
+	}
+	dest[len] = 0;
 	return (dest);
 }
-/*
-int	main(void)
-{
-	char	s[] = "hello world bouh";
-	char	c;
-
-	c = 0;
-	ft_split(s, c);
-	return (0);
-}*/

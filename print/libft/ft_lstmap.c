@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/23 14:11:54 by gschwart          #+#    #+#             */
-/*   Updated: 2023/10/23 14:21:58 by gschwart         ###   ########.fr       */
+/*   Created: 2023/10/30 15:01:12 by gschwart          #+#    #+#             */
+/*   Updated: 2023/11/07 18:02:32 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(char *s, int fd)
+t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 {
-	int	l;
+	t_list	*new_list;
+	t_list	*new_elem;
 
-	l = ft_strlen(s);
-	write (fd, s, l);
+	if (lst == NULL || f == NULL)
+		return (NULL);
+	new_list = NULL;
+	while (lst != NULL)
+	{
+		new_elem = ft_lstnew(f(lst->content));
+		if (new_elem == NULL)
+		{
+			ft_lstclear(&new_list, del);
+			return (NULL);
+		}
+		ft_lstadd_back(&new_list, new_elem);
+		lst = lst->next;
+	}
+	return (new_list);
 }
-/*
-int	main(void)
-{
-	int	fd;
-	char	s[] = "hello, World";
-
-	fd = 1;
-	ft_putstr_fd(s, fd);
-	return (0);
-}*/
