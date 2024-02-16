@@ -144,13 +144,15 @@ int	main(int argc, char **argv, char **env)
 		ft_error((a_pid = fork()), "a_pid");
 		if (a_pid == 0)
 			ft_childun(pipe_fd, file_fd, argv, env);
+		ft_error((b_pid = fork()), "b_pid");
 		close(file_fd);
-		waitpid(a_pid, NULL, 0);
 		file_fdfinal = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
-		ft_parents(pipe_fd, file_fdfinal, argv, env);
+		if (b_pid == 0)
+			ft_childdeux(pipe_fd, argv, env, file_fdfinal);
 		close(pipe_fd[0]);
 		close(pipe_fd[1]);
 		close(file_fdfinal);
+		waitpid(a_pid, NULL, 0);
 		waitpid(b_pid, NULL, 0);
 		exit(EXIT_SUCCESS);
 	}
