@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:53:02 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/15 13:58:32 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/02/20 16:12:21 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	**ft_testpath(char **result, char *argv)
 	l = 1 + ft_strlen(argv);
 	temp = malloc((l + 1) * sizeof(char));
 	if (temp == NULL)
-	{	
+	{
 		ft_fre(result);
 		return (NULL);
 	}
@@ -67,56 +67,79 @@ char	**ft_testpath(char **result, char *argv)
 	return (testpatch);
 }
 
-void	ft_childun(int pipe_fd[], int file_fd, char **argv, char **env)
+void	ft_childun(int pipe_fd[], char **argv, char **env)
 {
 	char	**patch;
 	char	**thor;
+	char	**com;
 	int		t;
+	int		file_fd;
 
 	t = 0;
+	file_fd = 0;
 	patch = NULL;
 	thor = NULL;
+	com = NULL;
+	ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fd");
 	dup2(file_fd, STDIN_FILENO);
+	close(file_fd);
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[0]);
+	close(pipe_fd[1]);
 	patch = ft_testpath(ft_path(env), argv[2]);
 	while (patch[t] != NULL)
 	{
 		thor = ft_split(patch[t], ' ');
+		com = ft_split(argv[2], ' ');
 		free(patch[t]);
-		if ((access(thor[0], F_OK) == 0) && ((access(thor[0], X_OK) == 0)))
-			execve(thor[0], &argv[2], env);
+		if (access(thor[0], F_OK | X_OK) == 0)
+			ft_error(execve(thor[0], com, env), "execve");
 		ft_fre(thor);
-
+		ft_fre(com);
 		t++;
 	}
 	free(patch);
+	perror("childun");
+	exit(EXIT_FAILURE);
 }
 
-void	ft_childdeux(int pipe_fd[], char **argv, char **env, int file_fdfinal)
+void	ft_childdeux(int pipe_fd[], char **argv, char **env)
 {
 	char	**patch;
 	char	**thor;
+	char	**com;
 	int		t;
+	int		file_fdfinal;
 
 	t = 0;
+	file_fdfinal = 0;
 	thor = NULL;
-	ft_error(file_fdfinal, "file_fdfinal");
-	dup2(pipe_fd[0], STDIN_FILENO);
+	patch = NULL;
+	com = NULL;
+	if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
+		perror("pipe_fd");
+	close(pipe_fd[0]);
 	close(pipe_fd[1]);
-	dup2(file_fdfinal, STDOUT_FILENO);
+	file_fdfinal = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	ft_error(file_fdfinal, "file_fdfinal");
+	if (dup2(file_fdfinal, STDOUT_FILENO) != 0)
+		perror("dup22222");
+	close(file_fdfinal);
 	patch = ft_testpath(ft_path(env), argv[3]);
 	while (patch[t] != NULL)
 	{
 		thor = ft_split(patch[t], ' ');
 		free(patch[t]);
-		if ((access(thor[0], F_OK) == 0) && ((access(thor[0], X_OK) == 0)))
-			execve(thor[0], &argv[3], env);
+		com = ft_split(argv[3], ' ');
+		if ((access(thor[0], F_OK | X_OK) == 0))
+			ft_error(execve(thor[0], com, env), "execve");
 		ft_fre(thor);
-
+		ft_fre(com);
 		t++;
 	}
 	free(patch);
+	perror("childeux");
+	exit(EXIT_FAILURE);
 }
 
 int	main(int argc, char **argv, char **env)
@@ -124,27 +147,22 @@ int	main(int argc, char **argv, char **env)
 	pid_t	a_pid;
 	pid_t	b_pid;
 	int		pipe_fd[2];
-	int		file_fd;
-	int		file_fdfinal;
 
-	printf("1");
 	if (argc == 5)
 	{
-		ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fd");
 		ft_error(pipe(pipe_fd), "pipe_fd");
 		ft_error((a_pid = fork()), "a_pid");
 		if (a_pid == 0)
-			ft_childun(pipe_fd, file_fd, argv, env);
+			ft_childun(pipe_fd, argv, env);
+		else
+			close(pipe_fd[1]);
 		ft_error((b_pid = fork()), "b_pid");
-		close(file_fd);
-		file_fdfinal = open(argv[4], O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (b_pid == 0)
-			ft_childdeux(pipe_fd, argv, env, file_fdfinal);
+			ft_childdeux(pipe_fd, argv, env);
+		else
+			close(pipe_fd[0]);
 		waitpid(a_pid, NULL, 0);
 		waitpid(b_pid, NULL, 0);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
-		close(file_fdfinal);
 		exit(EXIT_SUCCESS);
 	}
 	perror("argv erreur");
