@@ -12,6 +12,61 @@
 
 #include "pipex_bonus.h"
 
+char	**ft_result(char **result, char *temp)
+{
+	char	**testpatch;
+	int		len;
+	int		t;
+	int		i;
+
+	len = 0;
+	i = 0;
+	t = 0;
+	while (result[t] != NULL)
+		t++;
+	testpatch = malloc((t + 1) * sizeof(char *));
+	if (testpatch == NULL)
+		return (NULL);
+	while (i < t)
+	{
+		len = ft_strlen(result[i]) + ft_strlen(temp);
+		testpatch[i] = ft_strjoin(result[i], temp);
+		i++;
+	}
+	testpatch[i] = NULL;
+	ft_fre(result);
+	free(temp);
+	return (testpatch);
+}
+
+char	**ft_testpath(char **result, char *argv)
+{
+	char	**testpatch;
+	char	*temp;
+	int		l;
+	int		i;
+	int		t;
+
+	i = 0;
+	t = 0;
+	l = 1 + ft_strlen(argv);
+	temp = malloc((l + 1) * sizeof(char));
+	if (temp == NULL)
+	{
+		ft_fre(result);
+		return (NULL);
+	}
+	temp[i] = '/';
+	while (argv[i] != '\0')
+	{
+		temp[i + 1] = argv[i];
+		i++;
+	}
+	temp[i + 1] = '\0';
+	testpatch = ft_result(result, temp);
+	return (testpatch);
+}
+
 int	ft_child(int file_fd, char *argv, char **env)
 {
 	char	**patch;
@@ -97,35 +152,31 @@ int	main(int argc, char **argv, char **env)
 	int	file_fdfinal;
 	int	i;
 	
-	if (argc >= 5)
+	if (argc > 5)
 	{
-/*		if (strncmp(argv[2], "here_doc", 8) == 0)
+		if (strncmp(argv[2], "here_doc", 8) == 0)
 		{
-			ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "HERE_DOC");
-			 = ft_limiteur(file_fd, "LIMITEUR");
-			write (STDIN_FILENO, fileun, ft_strlen(fileun));
-			dup2(pipe_fd[1], STDOUT_FILENO);
-			execve();
+			ft_error(file_fd = ft_limiteur(argv[2]), "here_doc");
 		}
 		else
-		{	ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fd");
-		}*/
-		i = argc - 2;
-		file_fdfinal = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-		ft_error(file_fdfinal, "file_fdfinal");
-		ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fddebut");
-		while (1 < i)
-		{
-			if (i == argc - 2)
-			{
-				ft_childfinal(file_fd, file_fdfinal, argv[i], env);
-			}
-			else
-			{
-				ft_child(file_fd, argv[argc - i], env);
-			}
-			i--;
+		{	ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fd1");
 		}
+	}
+	i = argc - 2;
+	file_fdfinal = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	ft_error(file_fdfinal, "file_fdfinal");
+	ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fddebut");
+	while (1 < i)
+	{
+		if (i == argc - 2)
+		{
+			ft_childfinal(file_fd, file_fdfinal, argv[i], env);
+		}
+		else
+		{
+			ft_child(file_fd, argv[argc - i], env);
+		}
+		i--;
 	}
 	return (0);
 }

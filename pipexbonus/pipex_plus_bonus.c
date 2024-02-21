@@ -68,3 +68,18 @@ char	*ft_strcat(char *dest, const char *src)
 	dest[i + j] = '\0';
 	return (dest);
 }
+
+int	ft_limiteur(char *argv)
+{
+	int	file_fd;
+	char	*line;
+
+	line = NULL;
+	file_fd = open(argv, O_RDWR | O_CREAT | O_APPEND, 0644);
+	while ((line = get_next_line(0)) != NULL)
+	{
+		write(file_fd, line, ft_strlen(line));
+		free(line);
+	}
+	return (file_fd);
+}

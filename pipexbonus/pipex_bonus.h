@@ -42,6 +42,7 @@ int			ft_strncmp(char *env, char *str, int nb);
 int			ft_strlenn(char *env, char *str);
 int			main(int argc, char **argv, char **env);
 int			ft_strlen(char *env);
+int			ft_limiteur(char *argv);
 void		ft_childdeux(int pipe_fd[], char **argv, char **env, int file_fdfinal);
 char		*ft_strchr(const char *s, int c);
 char		*get_next_line(int fd);
