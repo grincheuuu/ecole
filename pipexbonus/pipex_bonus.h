@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.h                                            :+:      :+:    :+:   */
+/*   pipex_bonus.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:52:23 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/15 12:53:33 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/02/23 16:33:14 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,11 @@
 size_t		ft_count_chr(char const *s, char c);
 void		ft_malloc_error(char **dest, size_t n);
 void		ft_fre(char **patch);
-void		ft_childun(int pipe_fd[], int file_fd, char **argv, char **env);
 void		ft_error(int n, const char *str);
+void		ft_exe(char **patch, int t, char *argv, char **env);
+void		ft_un(int file_fd, int *pipe_fd, char *argv, char **env);
+void		ft_family(char *argv, char **env, int *pipe_fd);
+void		ft_last(int file_fdfinal, char *argv, char **env, int *pipe_fd);
 char		**ft_testpath(char **result, char *argv);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
@@ -42,8 +45,7 @@ int			ft_strncmp(char *env, char *str, int nb);
 int			ft_strlenn(char *env, char *str);
 int			main(int argc, char **argv, char **env);
 int			ft_strlen(char *env);
-int			ft_limiteur(char *argv);
-void		ft_childdeux(int pipe_fd[], char **argv, char **env, int file_fdfinal);
+int			ft_gnl(char *str);
 char		*ft_strchr(const char *s, int c);
 char		*get_next_line(int fd);
 char		*ft_strcat(char *dest, const char *src);

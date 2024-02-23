@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 13:53:02 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/20 16:12:21 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/02/23 15:20:27 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,75 +70,44 @@ char	**ft_testpath(char **result, char *argv)
 void	ft_childun(int pipe_fd[], char **argv, char **env)
 {
 	char	**patch;
-	char	**thor;
-	char	**com;
 	int		t;
 	int		file_fd;
 
 	t = 0;
 	file_fd = 0;
 	patch = NULL;
-	thor = NULL;
-	com = NULL;
-	ft_error((file_fd = open(argv[1], O_RDONLY, 0777)), "file_fd");
-	if (dup2(file_fd, STDIN_FILENO) == -1)
-		perror("dup1");
+	ft_error((file_fd = open(argv[1], O_RDONLY, 0644)), "file_fd");
+	dup2(file_fd, STDIN_FILENO);
 	close(file_fd);
 	dup2(pipe_fd[1], STDOUT_FILENO);
 	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	patch = ft_testpath(ft_path(env), argv[2]);
-	while (patch[t] != NULL)
-	{
-		thor = ft_split(patch[t], ' ');
-		com = ft_split(argv[2], ' ');
-		free(patch[t]);
-		if (access(thor[0], F_OK | X_OK) == 0)
-			ft_error(execve(thor[0], com, env), "execve");
-		ft_fre(thor);
-		ft_fre(com);
-		t++;
-	}
+	ft_exe(patch, t, argv[2], env);
 	free(patch);
-	perror("childun");
+	write (2, "pb child1", 9);
 	exit(EXIT_FAILURE);
 }
 
 void	ft_childdeux(int pipe_fd[], char **argv, char **env)
 {
 	char	**patch;
-	char	**thor;
-	char	**com;
 	int		t;
 	int		file_fdfinal;
 
 	t = 0;
 	file_fdfinal = 0;
-	thor = NULL;
 	patch = NULL;
-	com = NULL;
-	if (dup2(pipe_fd[0], STDIN_FILENO) == -1)
-		perror("pipe_fd");
+	dup2(pipe_fd[0], STDIN_FILENO);
 	close(pipe_fd[0]);
 	file_fdfinal = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0644);
 	ft_error(file_fdfinal, "file_fdfinal");
-	if (dup2(file_fdfinal, STDOUT_FILENO) != 0)
-		perror("dup22222");
+	dup2(file_fdfinal, STDOUT_FILENO);
 	close(file_fdfinal);
 	patch = ft_testpath(ft_path(env), argv[3]);
-	while (patch[t] != NULL)
-	{
-		thor = ft_split(patch[t], ' ');
-		free(patch[t]);
-		com = ft_split(argv[3], ' ');
-		if ((access(thor[0], F_OK | X_OK) == 0))
-			ft_error(execve(thor[0], com, env), "execve");
-		ft_fre(thor);
-		ft_fre(com);
-		t++;
-	}
+	ft_exe(patch, t, argv[3], env);
 	free(patch);
-	perror("childeux");
+	write(2, "pb child2", 9);
 	exit(EXIT_FAILURE);
 }
 
@@ -165,6 +134,6 @@ int	main(int argc, char **argv, char **env)
 		waitpid(b_pid, NULL, 0);
 		exit(EXIT_SUCCESS);
 	}
-	perror("argv erreur");
+	write (2, "argc faux", 9);
 	exit(EXIT_FAILURE);
 }

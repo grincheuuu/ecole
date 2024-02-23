@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_plus.c                                       :+:      :+:    :+:   */
+/*   pipex_plus_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 13:08:05 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/20 16:14:35 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/02/23 18:44:38 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,17 +69,22 @@ char	*ft_strcat(char *dest, const char *src)
 	return (dest);
 }
 
-int	ft_limiteur(char *argv)
+void	ft_exe(char **patch, int t, char *argv, char **env)
 {
-	int	file_fd;
-	char	*line;
+	char	**com;
+	char	**thor;
 
-	line = NULL;
-	file_fd = open(argv, O_RDWR | O_CREAT | O_APPEND, 0644);
-	while ((line = get_next_line(0)) != NULL)
+	com = NULL;
+	thor = NULL;
+	while (patch[t] != NULL)
 	{
-		write(file_fd, line, ft_strlen(line));
-		free(line);
+		thor = ft_split(patch[t], ' ');
+		free(patch[t]);
+		com = ft_split(argv, ' ');
+		if ((access(thor[0], F_OK | X_OK) == 0))
+			ft_error(execve(thor[0], com, env), "execve");
+		ft_fre(thor);
+		ft_fre(com);
+		t++;
 	}
-	return (file_fd);
 }
