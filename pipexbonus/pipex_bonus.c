@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:50:39 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/23 19:04:48 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/02/27 15:29:29 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,67 +67,32 @@ char	**ft_testpath(char **result, char *argv)
 	return (testpatch);
 }
 
-int	ft_gnl(char *str)
-{
-	char	*line;
-	int		file_fd;
-
-	line = NULL;
-	file_fd = open("text.tmp", O_RDWR | O_TRUNC | O_CREAT, 0644);
-	ft_error(file_fd, "file_fd");
-	while (get_next_line(0) != NULL)
-	{
-		line = get_next_line(0);
-		if (strncmp(line, str, ft_strlen(str)))
-			break ;
-		write (file_fd, line, ft_strlen(line));
-		free(line);
-	}
-	return (file_fd);
-}
-
 int	main(int argc, char **argv, char **env)
 {
-	int	file_fd;
-	int	file_fi;
 	int	i;
 	int	pipe_fd[2];
 
 	i = argc - 2;
 	if (argc >= 5)
 	{
-		if (argc >= 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
-		{
-			file_fd = ft_gnl(argv[2]);
-			file_fi = open(argv[argc - 1], O_WRONLY | O_APPEND | O_CREAT, 0644);
-			ft_error(file_fdfi, "file_fdfinal");
-			ft_error(pipe(pipe_fd), "pipe_fd");
-			while (i > 2)
-			{
-				if (i == argc - 2)
-					ft_last(file_fi, argv[i], env, pipe_fd);
-				else if (i == 3)
-					ft_un(file_fd, pipe_fd, argv[i], env);
-				else
-					ft_family(argv[i], env, pipe_fd);
-				i--;
-			}
-		}
+		if (argc == 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
+			ft_heredoc(argv, env);
 		else
 		{
-			ft_error((file_fd = open(argv[1], O_RDONLY, 0644)), "file_fd");
-			file_fi = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
-			ft_error(file_fi, "file_fdfinal");
 			ft_error(pipe(pipe_fd), "pipe_fd");
 			while (i > 1)
 			{
 				if (i == argc - 2)
-					ft_last(file_fi, argv[i], env, pipe_fd);
+					ft_last(argc, argv, env, pipe_fd);
 				else if (i == 2)
-					ft_un(file_fd, pipe_fd, argv[i], env);
+					ft_un(pipe_fd, argv, env);
 				else
 					ft_family(argv[i], env, pipe_fd);
 				i--;
+				close(pipe_fd[0]);
+				close(pipe_fd[1]);
+				waitpid(-1, NULL, 0);
+				waitpid(-1, NULL, 0);
 			}
 		}
 		exit(EXIT_SUCCESS);

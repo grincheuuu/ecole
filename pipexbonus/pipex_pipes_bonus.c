@@ -12,11 +12,12 @@
 
 #include "pipex_bonus.h"
 
-void	ft_un(int file_fd, int *pipe_fd, char *argv, char **env)
+void	ft_un(int *pipe_fd, char **argv, char **env)
 {
 	char	**patch;
 	int		t;
 	int		pid;
+	int		file_fd;
 
 	t = 0;
 	patch = NULL;
@@ -24,20 +25,20 @@ void	ft_un(int file_fd, int *pipe_fd, char *argv, char **env)
 	if (pid == 0)
 	{
 		close(pipe_fd[0]);
+		ft_error((file_fd = open(argv[1], O_RDONLY | O_CREAT, 0644)), "file_fd");
 		dup2(file_fd, STDIN_FILENO);
 		close(file_fd);
 		dup2(pipe_fd[1], STDOUT_FILENO);
 		close(pipe_fd[1]);
-		patch = ft_testpath(ft_path(env), argv);
-		ft_exe(patch, t, argv, env);
+		patch = ft_testpath(ft_path(env), argv[2]);
+		ft_exe(patch, t, argv[2], env);
 		free(patch);
 		write(2, "pb child1", 9);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
-		waitpid(-1, NULL, 0);
-		close(file_fd);
+		close(pipe_fd[1]);
 	}
 	exit(EXIT_FAILURE);
 }
@@ -50,7 +51,7 @@ void	ft_family(char *argv, char **env, int *pipe_fd)
 
 	t = 0;
 	patch = NULL;
-	ft_error(pid = fork(), "pid");
+	ft_error((pid = fork()), "pid");
 	if (pid == 0)
 	{
 		dup2(pipe_fd[0], STDIN_FILENO);
@@ -64,38 +65,36 @@ void	ft_family(char *argv, char **env, int *pipe_fd)
 		exit(EXIT_FAILURE);
 	}
 	else
-		waitpid(-1, NULL, 0);
+	{	
+		close(pipe_fd[1]);
+	}
 	exit(EXIT_FAILURE);
 }
 
-void	ft_last(int file_fdfinal, char *argv, char **env, int *pipe_fd)
+void	ft_last(int argc, char **argv, char **env, int *pipe_fd)
 {
 	char	**patch;
+	int		file_fdfinal;
 	int		t;
 	int		pid;
 
 	t = 0;
 	patch = NULL;
-	ft_error(pid = fork(), "pid");
+	ft_error((pid = fork()), "pid");
 	if (pid == 0)
 	{
-		close(pipe_fd[1]);
 		dup2(pipe_fd[0], STDIN_FILENO);
 		close(pipe_fd[0]);
+		file_fdfinal = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CREAT, 0644);
+		ft_error(file_fdfinal, "file_fdfinal");
 		dup2(file_fdfinal, STDOUT_FILENO);
 		close(file_fdfinal);
-		patch = ft_testpath(ft_path(env), argv);
-		ft_exe(patch, t, argv, env);
+		close(pipe_fd[1]);
+		patch = ft_testpath(ft_path(env), argv[argc - 2]);
+		ft_exe(patch, t, argv[argc - 2], env);
 		free(patch);
 		write(2, "pb last", 9);
 		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		waitpid(-1, NULL, 0);
-		close(file_fdfinal);
-		close(pipe_fd[0]);
-		close(pipe_fd[1]);
 	}
 	exit(EXIT_FAILURE);
 }
