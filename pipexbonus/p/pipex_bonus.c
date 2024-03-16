@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/20 16:50:39 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/01 16:58:19 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/03/16 19:07:27 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,25 +70,18 @@ char	**ft_testpath(char **result, char *argv)
 int	main(int argc, char **argv, char **env)
 {
 	int	i;
-	int	j;
-//	int	file_fd;
 	char	c;
-	t_listpipe	listp;
-	t_listpipe	*pointp;
 	
 	i = 2;
 	c = 0;
-	j = 0;
-//	file_fd = 0;
-	pointp = &listp;
-	pointp->file_fd = 0;
 	if (argc >= 5)
 	{
 		if (argc == 6 && ft_strncmp(argv[1], "here_doc", 8) == 0)
 			ft_heredoc(argv, env);
 		else
 		{
-			while (i < argc - 1)
+			ft_pipeline(argc, argv, env, i);
+/*			while (i < argc - 1)
 			{	
 				if (i == argc - 2)
 				{
@@ -97,17 +90,17 @@ int	main(int argc, char **argv, char **env)
 				else if (i == 2)
 				{
 					ft_un(argv, env, pointp);
-/*					write (1, "\n", 1);
+					write (1, "\n", 1);
 					c = file_fd + '0';
 					write (1, &c, 1);
 					if(file_fd != 0)
-						perror("file_fda");*/
+						perror("file_fda");
 				}
 				else
 				{
 					ft_mid(argv[i], env, listp);
-/*					if (file_fd != 0)
-						perror("file_fd1b");*/
+					if (file_fd != 0)
+						perror("file_fd1b");
 				}
 				i++;
 			}
@@ -117,7 +110,7 @@ int	main(int argc, char **argv, char **env)
 				wait(NULL);
 				write(1, "5", 1);					
 				j++;
-			}
+			}*/
 		}
 		exit(EXIT_SUCCESS);
 	}

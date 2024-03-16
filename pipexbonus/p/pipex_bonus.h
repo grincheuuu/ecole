@@ -27,14 +27,32 @@
 #  define BUFFER_SIZE	5
 # endif
 
+typedef struct	s_listpipe
+{
+	int		file_fd;
+	int		pid;
+	int		*status;
+	struct s_listpipe	*before;
+	struct s_listpipe	*next;
+}	t_listp;
+
+typedef struct	s_cont
+{
+	t_listp	*first;
+	t_listp	*end;
+}	t_pointer;
+
 size_t		ft_count_chr(char const *s, char c);
 void		ft_malloc_error(char **dest, size_t n);
 void		ft_fre(char **patch);
 void		ft_error(int n, const char *str);
 void		ft_exe(char **patch, int t, char *argv, char **env);
-void		ft_un(char **argv, char **env, t_listpipe *listp);
-void		ft_mid(char *argv, char **env, t_listpipe *listp);
-void		ft_last(int argc, char **argv, char **env, t_listpipe *listp);
+void		ft_un(char **argv, char **env, t_listp *listp);
+void		ft_mid(char *argv, char **env, t_listp *listp, t_pointer *pointerA);
+void		ft_last(int argc, char **argv, char **env, t_listp *listp, t_pointer *pointerA);
+void		ft_lstclear(t_listp **chaine);
+void    	ft_lstadd_back(t_listp **chaine, t_listp *new);
+void		ft_pipeline(int argc, char **argv, char **env, int i);
 char		**ft_testpath(char **result, char *argv);
 char		*ft_strjoin(char const *s1, char const *s2);
 char		**ft_split(char const *s, char c);
@@ -56,10 +74,8 @@ char		*get_next_line(int fd);
 char		*ft_strcat(char *dest, const char *src);
 char		*ft_strcpy(char *dest, const char *src);
 char		*ft_strjoined(char *s1, char *s2);
-
-typedef struct	s_listpipe
-{
-	int		file_fd;
-}	t_listpipe;
+t_listp 	*ft_lstnew(void);
+t_listp	*ft_maillon(t_listp *listp, t_pointer *pointerA);
+t_pointer       *ft_pointer_init(t_listp *listp);
 
 #endif
