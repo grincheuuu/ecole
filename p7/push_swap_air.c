@@ -37,19 +37,27 @@ void	ft_try(t_limit *limit,t_pointer *pointerA)
 	}
 }
 
-int	ft_max(t_pointer *pointerA)
+int	ft_mx(t_pointer *pointerA, int nb)
 {
 	int	max;
 	t_list	*temp;
 
-	if (pointerA->first == NULL)
-		return (0);
+	max = 0;
+	temp = NULL;
 	max = pointerA->first->nb;
 	temp = pointerA->first;
 	while (temp != NULL)
 	{
-		if (temp->nb > max)
-			max = temp->nb;
+		if (nb == 1)
+		{
+			if (temp->nb > max)
+				max = temp->nb;
+		}
+		else
+		{
+			if (temp->nb < max)
+				max = temp->nb;
+		}
 		temp = temp->next;
 	}
 	return (max);
@@ -71,6 +79,7 @@ void	ft_cross_b(t_pointer *pointerB)
 	{
 		ft_position(pointerB, l);
 	}
+	free(limit);
 }
 
 void	ft_cross(t_pointer *pointerA, t_pointer *pointerB, int i)
@@ -81,14 +90,15 @@ void	ft_cross(t_pointer *pointerA, t_pointer *pointerB, int i)
 			       	&& (pointerA->end->nb
 				       	< pointerA->first->nb)) && i < 3)
 		{
+			printf("ii%dii", i);
 			ft_rra(pointerA, 3);
 			i++;
-			ft_printlist(pointerA);
+//			ft_printlist(pointerA);
 		}
 		else
 			ft_pa(pointerA, pointerB);
-		ft_printlist(pointerA);
-		ft_printlist(pointerB);
+//		ft_printlist(pointerA);
+//		ft_printlist(pointerB);
 		printf("\n");
 	}
 	while (i < 3)

@@ -31,11 +31,12 @@ t_limit	*ft_init_limit(int nb, int i)
 {
 	t_limit	*limit;
 
-	limit = malloc(sizeof(limit));
+	limit = (t_limit *)malloc(sizeof(t_limit));
 	if (limit == NULL)
 		return (NULL);
 	limit->max = nb;
 	limit->index = i;
+	limit->indexm = i;
 	limit->size = 0;
 	limit->min = nb;
 	limit->max = i;
@@ -72,7 +73,9 @@ int	ft_trois(t_pointer *pointerA, t_pointer *pointerB)
 		ft_try(limit, pointerA);
 	}
 	else
+	{
 		ft_algorithm(pointerA);
+	}
 	free(limit);
 	return (i);
 }
@@ -89,7 +92,5 @@ void	ft_class(t_pointer *pointerA, t_pointer *pointerB, t_list *pile_a, t_list *
 	if (ft_lstsize(pointerA->first) <= 5)
 		ft_five(pointerA, pointerB);
 	else
-	{
 		ft_few(pointerA, pointerB);
-	}
 }

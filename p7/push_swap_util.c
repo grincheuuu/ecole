@@ -99,3 +99,14 @@ void	ft_position(t_pointer *pointerB, int l)
 		pos = pos->next;
 	}
 }
+
+int	ft_rev_num(t_pointer *pointerA, int i, int rev_placeB)
+{
+	int	rev_num_A;
+	
+	rev_num_A = ft_lstsize(pointerA->first) - i + 1;
+	if (rev_num_A >= rev_placeB)
+		return ((rev_num_A + rev_placeB - (rev_num_A - rev_placeB) / 2) + rev_num_A - rev_placeB);
+	else
+		return ((rev_num_A + rev_placeB - (rev_placeB - rev_num_A) / 2) + rev_placeB - rev_num_A);
+}

@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/04 14:47:28 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/07 19:08:01 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/03/26 19:18:37 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	ft_printlist(t_pointer *pointerA)
 	temp = pointerA->first;
 	while (temp != NULL)
 	{
-		printf("%d", temp->nb);
+		printf("%d ", temp->nb);
 		temp = temp->next;
 		i++;
 	}
@@ -97,7 +97,8 @@ int	main(int argc, char **argv)
 	if ((pointerB = malloc(sizeof(t_pointer))) == NULL)
 		return (0);
 	ft_init(&pile_a, &pile_b, pointerA, pointerB);
-	pile_a = ft_maillonlist(argc, argv);
+	if (argc > 1)
+		pile_a = ft_maillonlist(argc, argv);
 	ft_affect(pile_a, pointerA);
 //	ft_printlist(pile_a);
 //	ft_printlist(pile_b);
@@ -107,9 +108,9 @@ int	main(int argc, char **argv)
 	ft_printlist(pointerA);
 	printf("\n");
 	ft_printlist(pointerB);
-//	write (1, "\n", 1);
-//	ft_printlist(pile_b);
-//	ft_lstclear(&pile_a);
-//	ft_lstclear(&pile_b);
+	ft_lstclear(&pointerA->first);
+	ft_lstclear(&pointerB->first);
+	free(pointerA);
+	free(pointerB);
 	return (0);
 }

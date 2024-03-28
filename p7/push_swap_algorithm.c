@@ -35,7 +35,7 @@ t_limit	*ft_which_max(t_pointer *pointerA)
 	temp = pointerA->first;
 	limit = NULL;
 	if (temp != NULL)
-		limit = ft_init_limit(temp->nb, i, temp->nb, i);
+		limit = ft_init_limit(temp->nb, i);
 	while (temp != NULL)
 	{
 		if (temp->nb > limit->max)
@@ -90,5 +90,44 @@ int	ft_which_big(t_limit *limita, t_pointer *pointerB)
 		return (1);
 	}
 	free(limitb);
+	free(limita);
 	return (0);
 }
+
+void	ft_few(t_pointer *pointerA, t_pointer *pointerB)
+{
+	int	i;
+	int	index;
+	t_nb	*tnb;
+
+	i = 0;
+	index = 0;
+	tnb = NULL;
+	ft_pb(pointerA, pointerB);
+	ft_pb(pointerA, pointerB);
+	ft_printlist(pointerB);
+	ft_final(pointerB);
+//	ft_printlist(pointerB);
+	while (ft_lstsize(pointerA->first) > 3)
+	{
+		tnb = ft_count_nb(pointerA, pointerB);
+		printf("i%di,%di,%di%di", tnb->index, tnb->p, tnb->nb, tnb->num);
+		printf("\n**\n");
+		ft_push(pointerA, pointerB, tnb);
+		ft_printlist(pointerA);
+		ft_printlist(pointerB);
+		free(tnb);
+	}
+	ft_printlist(pointerB);
+	ft_ordo_b(pointerB);
+	printf(")))");
+	ft_printlist(pointerB);
+	ft_printlist(pointerA);
+	i = ft_trois(pointerA, pointerB);
+//	ft_printlist(pointerA);
+	ft_cross(pointerA, pointerB, i);
+//	ft_printlist(pointerA);
+//	ft_printlist(pointerB);
+	printf("AAA");
+}
+

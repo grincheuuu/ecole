@@ -13,26 +13,38 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
-NAME = push_swap
+NAME = pipex
+NAME_BONUS = pipex_bonus
 
-SRCS = push_swap.c push_swap_init.c push_swap_mouv.c push_swap_mouvement.c push_swap_util.c push_swap_algorithm.c push_swap_suite.c push_swap_air.c push_swap_freya.c push_swap_algooo.c push_swap_final.c
+SRCS = pipex.c pipex_projet.c pipex_utils.c pipex_func.c pipex_plus.c
 
-INC_FILES = push_swap.h
+SRCS_BONUS = pipex_bonus.c pipex_projet_bonus.c pipex_utils_bonus.c pipex_func_bonus.c pipex_plus_bonus.c pipex_gnl_bonus.c pipex_pipes_bonus.c pipex_heredoc_bonus.c
 
-OBJS = push_swap.o push_swap_init.o push_swap_mouv.o push_swap_mouvement.o push_swap_util.o push_swap_algorithm.o push_swap_suite.o push_swap_air.o push_swap_freya.o push_swap_algooo.o push_swap_final.o
+INC_FILES = pipex.h
+
+INC_FILES_BONUS = pipex_bonus.h
+
+OBJS = pipex.o pipex_projet.o pipex_utils.o pipex_func.o pipex_plus.o
+
+OBJS_BONUS = pipex_bonus.o pipex_projet_bonus.o pipex_utils_bonus.o pipex_func_bonus.o pipex_plus_bonus.o pipex_gnl_bonus.o pipex_pipes_bonus.o pipex_heredoc_bonus.o
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
+
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@ -g
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(OBJS_BONUS)
 fclean: clean
-	$(RM) $(NAME)
-re: fclean all
+	$(RM) $(NAME) $(NAME_BONUS)
+re: fclean all bonus
 
 .PHONY: all clean fclean re
