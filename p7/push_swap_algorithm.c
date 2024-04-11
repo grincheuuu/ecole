@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/12 17:14:54 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/14 16:53:14 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:26:33 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,19 @@ t_limit	*ft_which_max(t_pointer *pointerA)
 {
 	t_list	*temp;
 	t_limit	*limit;
-	int	i;
+	int		i;
 
 	i = 1;
 	temp = pointerA->first;
 	limit = NULL;
 	if (temp != NULL)
 		limit = ft_init_limit(temp->nb, i);
+	limit = ft_which_max_deux(limit, temp, i);
+	return (limit);
+}
+
+t_limit	*ft_which_max_deux(t_limit *limit, t_list *temp, int i)
+{
 	while (temp != NULL)
 	{
 		if (temp->nb > limit->max)
@@ -55,14 +61,10 @@ t_limit	*ft_which_max(t_pointer *pointerA)
 	return (limit);
 }
 
-void	ft_algorithm(t_pointer *pointerA)
+void	ft_algorithm(t_limit *limit, t_pointer *pointerA)
 {
-	t_limit	*limit;
-
-	limit = NULL;
 	if (ft_lstsize(pointerA->first) == 3)
 	{
-		limit = ft_which_max(pointerA);
 		if (limit->index == limit->size)
 		{
 			if (pointerA->first->nb > pointerA->first->next->nb)
@@ -70,64 +72,33 @@ void	ft_algorithm(t_pointer *pointerA)
 		}
 		else
 			ft_pos(pointerA, limit);
-		free(limit);
 	}
 	else if (ft_lstsize(pointerA->first) == 2)
 	{
 		if (pointerA->first->nb > pointerA->first->next->nb)
 			ft_sa(pointerA, 3);
 	}
-	ft_printlist(pointerA);
-}
-
-int	ft_which_big(t_limit *limita, t_pointer *pointerB)
-{
-	t_limit	*limitb;
-
-	limitb = ft_which_max(pointerB);
-	if ((limita->max - limitb->max) < 0)
-	{
-		return (1);
-	}
-	free(limitb);
-	free(limita);
-	return (0);
 }
 
 void	ft_few(t_pointer *pointerA, t_pointer *pointerB)
 {
-	int	i;
-	int	index;
 	t_nb	*tnb;
+	int		i;
+	int		index;
 
 	i = 0;
 	index = 0;
 	tnb = NULL;
 	ft_pb(pointerA, pointerB);
 	ft_pb(pointerA, pointerB);
-	ft_printlist(pointerB);
 	ft_final(pointerB);
-//	ft_printlist(pointerB);
 	while (ft_lstsize(pointerA->first) > 3)
 	{
 		tnb = ft_count_nb(pointerA, pointerB);
-		printf("i%di,%di,%di%di", tnb->index, tnb->p, tnb->nb, tnb->num);
-		printf("\n**\n");
 		ft_push(pointerA, pointerB, tnb);
-		ft_printlist(pointerA);
-		ft_printlist(pointerB);
 		free(tnb);
 	}
-	ft_printlist(pointerB);
 	ft_ordo_b(pointerB);
-	printf(")))");
-	ft_printlist(pointerB);
-	ft_printlist(pointerA);
 	i = ft_trois(pointerA, pointerB);
-//	ft_printlist(pointerA);
 	ft_cross(pointerA, pointerB, i);
-//	ft_printlist(pointerA);
-//	ft_printlist(pointerB);
-	printf("AAA");
 }
-

@@ -15,11 +15,11 @@ CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
 NAME = push_swap
 
-SRCS = push_swap.c push_swap_init.c push_swap_mouv.c push_swap_mouvement.c push_swap_util.c push_swap_algorithm.c push_swap_suite.c push_swap_air.c push_swap_freya.c push_swap_algooo.c push_swap_final.c
+SRCS = push_swap.c push_swap_init.c push_swap_mouv.c push_swap_mouvement.c push_swap_util.c push_swap_algorithm.c push_swap_suite.c push_swap_freya.c push_swap_algooo.c push_swap_final.c push_swap_maillon.c push_swap_split.c push_swap_ex.c push_swap_algoo_deux.c push_swap_ma.c push_swap_five.c
 
 INC_FILES = push_swap.h
 
-OBJS = push_swap.o push_swap_init.o push_swap_mouv.o push_swap_mouvement.o push_swap_util.o push_swap_algorithm.o push_swap_suite.o push_swap_air.o push_swap_freya.o push_swap_algooo.o push_swap_final.o
+OBJS = push_swap.o push_swap_init.o push_swap_mouv.o push_swap_mouvement.o push_swap_util.o push_swap_algorithm.o push_swap_suite.o push_swap_freya.o push_swap_algooo.o push_swap_final.o push_swap_maillon.o push_swap_split.o push_swap_ex.o push_swap_algoo_deux.o push_swap_ma.o push_swap_five.o
 
 all: $(NAME)
 

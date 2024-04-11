@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 15:35:41 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/08 16:22:45 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:15:02 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_sa(t_pointer *pointerA, int nb)
 		pointerA->first->next->next->before = pointerA->first->next;
 	if (nb != 2)
 		write (1, "sa\n", 3);
-	ft_pointerEnd(pointerA);
+	ft_pointerend(pointerA);
 }
 
 void	ft_sb(t_pointer *pointerB, int nb)
@@ -53,7 +53,7 @@ void	ft_sb(t_pointer *pointerB, int nb)
 		pointerB->first->next->next->before = pointerB->first->next;
 	if (nb != 2)
 		write (1, "sb\n", 3);
-	ft_pointerEnd(pointerB);
+	ft_pointerend(pointerB);
 }
 
 void	ft_ss(t_pointer *pointerA, t_pointer *pointerB)
@@ -63,50 +63,50 @@ void	ft_ss(t_pointer *pointerA, t_pointer *pointerB)
 	write (1, "ss\n", 3);
 }
 
-void	ft_pa(t_pointer *pointerA, t_pointer *pointerB)
+void	ft_pa(t_pointer *pointera, t_pointer *pointerb)
 {
-	t_list	*tempA;
-	t_list	*tempB;
+	t_list	*tempa;
+	t_list	*tempb;
 
-	tempA = NULL;
-	tempB = NULL;
-	if (pointerB->first == NULL)
+	tempa = NULL;
+	tempb = NULL;
+	if (pointerb->first == NULL)
 		return ;
-	tempA = pointerA->first;
-	tempB = pointerB->first->next;
-	pointerA->first = pointerB->first;
-	pointerA->first->next = tempA;
-	if (pointerA->first->next != NULL)
-		pointerA->first->next->before = pointerA->first;
-	pointerB->first = tempB;
-	if (pointerB->first != NULL)
-		pointerB->first->before = NULL;
+	tempa = pointera->first;
+	tempb = pointerb->first->next;
+	pointera->first = pointerb->first;
+	pointera->first->next = tempa;
+	if (pointera->first->next != NULL)
+		pointera->first->next->before = pointera->first;
+	pointerb->first = tempb;
+	if (pointerb->first != NULL)
+		pointerb->first->before = NULL;
 	write (1, "pa", 2);
 	write (1, "\n", 1);
-	ft_pointerEnd(pointerB);
-	ft_pointerEnd(pointerA);
+	ft_pointerend(pointerb);
+	ft_pointerend(pointera);
 }
 
-void	ft_pb(t_pointer *pointerA, t_pointer *pointerB)
+void	ft_pb(t_pointer *pointera, t_pointer *pointerb)
 {
-	t_list	*tempA;
-	t_list	*tempB;
+	t_list	*tempa;
+	t_list	*tempb;
 
-	tempA = NULL;
-	tempB = NULL;
-	if (pointerA->first == NULL)
+	tempa = NULL;
+	tempb = NULL;
+	if (pointera->first == NULL)
 		return ;
-	tempB = pointerB->first;
-	tempA = pointerA->first->next;
-	pointerB->first = pointerA->first;
-	pointerB->first->next = tempB;
-	if (pointerB->first->next != NULL)
-		pointerB->first->next->before = pointerB->first;
-	pointerA->first = tempA;
-	if (pointerA->first != NULL)
-		pointerA->first->before = NULL;
+	tempb = pointerb->first;
+	tempa = pointera->first->next;
+	pointerb->first = pointera->first;
+	pointerb->first->next = tempb;
+	if (pointerb->first->next != NULL)
+		pointerb->first->next->before = pointerb->first;
+	pointera->first = tempa;
+	if (pointera->first != NULL)
+		pointera->first->before = NULL;
 	write (1, "pb", 2);
 	write (1, "\n", 1);
-	ft_pointerEnd(pointerA);
-	ft_pointerEnd(pointerB);
+	ft_pointerend(pointera);
+	ft_pointerend(pointerb);
 }

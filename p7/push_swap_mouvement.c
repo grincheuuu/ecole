@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 16:23:40 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/08 17:48:02 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/03/29 17:18:32 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,14 @@ void	ft_ra(t_pointer *pointerA, int nb)
 	t_list	*bas;
 
 	haut = NULL;
-	bas =  NULL;
-	if (pointerA->first == NULL || pointerA->first->next == NULL || pointerA->end == NULL)
+	bas = NULL;
+	if (pointerA->first == NULL
+		|| pointerA->first->next == NULL
+		|| pointerA->end == NULL)
 		return ;
 	haut = pointerA->first;
 	pointerA->first = pointerA->first->next;
-	if (pointerA->first->next != NULL)
-		pointerA->first->next->before = NULL;
+	pointerA->first->before = NULL;
 	bas = pointerA->end;
 	pointerA->end = haut;
 	pointerA->end->next = NULL;
@@ -40,13 +41,14 @@ void	ft_rb(t_pointer *pointerB, int nb)
 	t_list	*bas;
 
 	haut = NULL;
-	bas =  NULL;
-	if (pointerB->first == NULL || pointerB->first->next == NULL || pointerB->end == NULL)
+	bas = NULL;
+	if (pointerB->first == NULL
+		|| pointerB->first->next == NULL
+		|| pointerB->end == NULL)
 		return ;
 	haut = pointerB->first;
 	pointerB->first = pointerB->first->next;
-	if (pointerB->first->next != NULL)
-		pointerB->first->next->before = NULL;
+	pointerB->first->before = NULL;
 	bas = pointerB->end;
 	pointerB->end = haut;
 	pointerB->end->next = NULL;
@@ -70,7 +72,9 @@ void	ft_rra(t_pointer *pointerA, int nb)
 
 	bas = NULL;
 	haut = NULL;
-	if (pointerA->first == NULL || pointerA->first->next == NULL || pointerA->end == NULL)
+	if (pointerA->first == NULL
+		|| pointerA->first->next == NULL
+		|| pointerA->end == NULL)
 		return ;
 	bas = pointerA->end->before;
 	haut = pointerA->first;
@@ -91,7 +95,9 @@ void	ft_rrb(t_pointer *pointerB, int nb)
 
 	bas = NULL;
 	haut = NULL;
-	if (pointerB->first == NULL || pointerB->first->next == NULL || pointerB->end == NULL)
+	if (pointerB->first == NULL
+		|| pointerB->first->next == NULL
+		|| pointerB->end == NULL)
 		return ;
 	bas = pointerB->end->before;
 	haut = pointerB->first;
