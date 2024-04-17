@@ -60,7 +60,7 @@ char	**ft_split(char const *s, char c)
 	len = ft_nbparts(s, c);
 	dest = (char **)malloc((len + 1) * sizeof(char *));
 	if (!dest)
-		return (0);
+		return (NULL);
 	n = 0;
 	while (n < len)
 	{

@@ -1,22 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_func.c                                       :+:      :+:    :+:   */
+/*   pipex_utils_second.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/13 17:32:00 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/15 13:03:23 by gschwart         ###   ########.fr       */
+/*   Created: 2024/04/08 19:41:13 by gschwart          #+#    #+#             */
+/*   Updated: 2024/04/08 19:41:34 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "pipex_bonus.h"
 
 char	*ft_strcpy(char *dest, const char *src)
 {
 	int	i;
 
 	i = 0;
+	if (src == NULL)
+		return (NULL);
 	while (src[i] != '\0')
 	{
 		dest[i] = src[i];
@@ -33,6 +35,8 @@ char	*ft_strcat(char *dest, const char *src)
 
 	i = 0;
 	j = 0;
+	if (src == NULL)
+		return (NULL);
 	while (dest[i] != '\0')
 		i++;
 	while (src[j] != '\0')
@@ -44,32 +48,39 @@ char	*ft_strcat(char *dest, const char *src)
 	return (dest);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+int	ft_file(char *argv)
 {
-	char	*dest;
-	size_t	l;
+	int		file_fd;
 
-	l = ft_strlen((char *)s1) + ft_strlen((char *)s2);
-	dest = malloc((l + 1) * sizeof(char));
-	if (dest == NULL)
-		return (NULL);
-	ft_strcpy(dest, s1);
-	ft_strcat(dest, s2);
-	return (dest);
+	file_fd = open(argv, O_RDONLY, 0644);
+	if (file_fd == -1)
+	{
+		perror("file_fd");
+		file_fd = open("/dev/null", O_RDONLY);
+	}
+	return (file_fd);
 }
 
-char	**ft_testpatch_suite(int t, int i, char **result, char *temp)
+void	ft_test_file_fd(char *argv, t_pointer *pointer)
 {
-	char	**testpatch;
+	int	file_fd;
+	int	i;
 
-	testpatch = malloc((t + 1) * sizeof(char *));
-	if (testpatch == NULL)
-		return (NULL);
-	while (i < t)
+	i = 0;
+	file_fd = open(argv, O_RDONLY, 0644);
+	if (file_fd == -1)
 	{
-		testpatch[i] = ft_strjoin(result[i], temp);
 		i++;
+		ft_lstclear(&pointer->first);
+		free(pointer);
+		exit(EXIT_FAILURE);
 	}
-	testpatch[i] = NULL;
-	return (testpatch);
+	else
+		close(file_fd);
+}
+
+t_listp	*ft_parent_un(t_listp **listp, t_pointer *pointer)
+{
+	close((*listp)->pipe_fd[1]);
+	return (ft_maillon(*listp, pointer));
 }

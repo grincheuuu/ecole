@@ -77,6 +77,8 @@ typedef struct s_fractal
 	double	max_r;
 	double	min_i;
 	double	max_i;
+	double	center_r;
+	double	center_i;
 }	t_fractal;
 
 t_complex	sum_complex(t_complex z1, t_complex z2);
@@ -92,8 +94,11 @@ void		ft_putstr_fd(char *s, int fd);
 void		ft_julia(t_fractal *fractal, int x, int y);
 void		ft_mandelbrot(t_fractal *fractal, int x, int y);
 void		ft_fractal_calculate(t_fractal *fractal, int x, int y);
-void		ft_zoom(t_fractal *fractal, double nb);
+void		ft_zoom(t_fractal *fractal, double nb, int x, int y);
 void		ft_burnigship(t_fractal *fractal, int x, int y);
+void		ft_center(t_fractal *fractal, double nb,  int x, int y);
+void		ft_zoom_deux(t_fractal *fractal, double zoom);
+void		ft_move(t_fractal *fractal, double nb, char c);
 double		map(double unscaled_num, double new_min,
 				double new_max, double old_min);
 double		ft_atof(char *s);

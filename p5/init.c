@@ -6,21 +6,20 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/18 13:02:47 by gschwart          #+#    #+#             */
-/*   Updated: 2023/12/18 15:41:17 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:05:54 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-static void	malloc_error(void)
+static void	ft_malloc_fail(void)
 {
-	perror("malloc_error");
+	perror("malloc fail");
 	exit (EXIT_FAILURE);
 }
 
-static void	data_init(t_fractal *fractal)
+static void	ft_init_struct(t_fractal *fractal)
 {
-	fractal->escape_value = 4;
 	fractal->iterations = 100;
 	fractal->shift_x = 0.0;
 	fractal->shift_y = 0.0;
@@ -31,32 +30,32 @@ static void	data_init(t_fractal *fractal)
 	fractal->max_i = 4;
 	fractal->pixel_r = 0;
 	fractal->pixel_i = 0;
-	fractal->jr = 0;
-	fractal->ji = 0;
+	fractal->dx = (fractal->max_r - fractal->min_r) / WIDTH;
+	fractal->dy = (fractal->max_i - fractal->min_i) / HEIGHT;
 }
 
-static void	events_init(t_fractal *fractal)
+static void	ft_event(t_fractal *fractal)
 {
 	mlx_hook(fractal->mlx_win, KeyPress,
-		KeyPressMask, key_handler, fractal);
+		KeyPressMask, ft_key_action, fractal);
 	mlx_hook(fractal->mlx_win, ButtonPress,
-		ButtonPressMask, mouse_handler, fractal);
+		ButtonPressMask, ft_mouse_action, fractal);
 	mlx_hook(fractal->mlx_win, DestroyNotify,
-		StructureNotifyMask, close_handler, fractal);
+		StructureNotifyMask, ft_close_all, fractal);
 }
 
-void	fractal_init(t_fractal *fractal)
+void	ft_init(t_fractal *fractal)
 {
 	fractal->mlx_co = mlx_init();
 	if (fractal->mlx_co == NULL)
-		malloc_error();
+		ft_malloc_fail();
 	fractal->mlx_win = mlx_new_window(fractal->mlx_co,
-			WIDTH, HEIGHT, fractal->name);
+			WIDTH, HEIGHT, fractal->type);
 	if (fractal->mlx_win == NULL)
 	{
 		mlx_destroy_display(fractal->mlx_co);
 		free(fractal->mlx_co);
-		malloc_error();
+		ft_malloc_fail();
 	}
 	fractal->img.img_ptr = mlx_new_image(fractal->mlx_co, WIDTH, HEIGHT);
 	if (fractal->img.img_ptr == NULL)
@@ -64,10 +63,10 @@ void	fractal_init(t_fractal *fractal)
 		mlx_destroy_window(fractal->mlx_co, fractal->mlx_win);
 		mlx_destroy_display(fractal->mlx_co);
 		free(fractal->mlx_co);
-		malloc_error();
+		ft_malloc_fail();
 	}
 	fractal->img.pixel_ptr = mlx_get_data_addr(fractal->img.img_ptr,
 			&fractal->img.bpp, &fractal->img.line_len, &fractal->img.endian);
-	events_init(fractal);
-	data_init(fractal);
+	ft_init_struct(fractal);
+	ft_event(fractal);
 }

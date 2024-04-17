@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 14:17:02 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/01 14:53:56 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/04/03 19:04:36 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,9 @@ void	ft_gnl(char *str)
 	{
 		write(1, "> ", 2);
 		line = get_next_line(0);
-		if (*str != '\0' && ft_strncmp(line, str, ft_strlen(str)) == 0)
+		if (ft_strncmp(line, str, ft_strlen(str)) == 0
+			&& (ft_strlen(line) - 1 == ft_strlen(str)))
 			break ;
-		else
-		{
-			if (ft_strncmp(line, "\n", 1) == 0)
-				break ;
-		}
 		write (file_fd, line, ft_strlen(line));
 		write (file_fd, "\n", 1);
 		free(line);
@@ -50,6 +46,7 @@ void	ft_childunhere(int pipe_fd[], char **argv, char **env)
 	patch = NULL;
 	close(pipe_fd[0]);
 	ft_gnl(argv[2]);
+	file_fd = open("text.tmp", O_RDONLY, 0644);
 	ft_error((file_fd = open("text.tmp", O_RDONLY, 0644)), "file_fd");
 	if (dup2(file_fd, STDIN_FILENO) != 0)
 		perror("dup2");
@@ -60,6 +57,7 @@ void	ft_childunhere(int pipe_fd[], char **argv, char **env)
 	ft_exe(patch, t, argv[3], env);
 	free(patch);
 	write (2, "pb child1", 9);
+	unlink("text.tmp");
 	exit(EXIT_FAILURE);
 }
 
@@ -91,6 +89,7 @@ int	ft_heredoc(char **argv, char **env)
 	pid_t	a_pid;
 	pid_t	b_pid;
 	int		pipe_fd[2];
+	int		status;
 
 	ft_error(pipe(pipe_fd), "pipe_fd");
 	ft_error((a_pid = fork()), "a_pid");
@@ -103,8 +102,10 @@ int	ft_heredoc(char **argv, char **env)
 		ft_childdeuxhere(pipe_fd, argv, env);
 	else
 		close(pipe_fd[0]);
-	waitpid(a_pid, NULL, 0);
-	waitpid(b_pid, NULL, 0);
+	waitpid(a_pid, &status, 0);
+	waitpid(b_pid, &status, 0);
 	unlink("text.tmp");
+	if (status != 0)
+		exit(status >> 8);
 	exit(EXIT_SUCCESS);
 }

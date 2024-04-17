@@ -6,7 +6,7 @@
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 18:02:48 by gschwart          #+#    #+#             */
-/*   Updated: 2024/04/08 18:02:50 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/04/12 17:04:40 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@ int	ft_strncmp(char *s1, char *s2, int n)
 		return (0);
 	while (*s1 == *s2 && n > 0 && *s1 != '\0')
 	{
-		n--;
 		s1++;
 		s2++;
+		n--;
 	}
 	return (*s1 - *s2);
 }
 
-void	putstr_fd(char *s, int fd)
+void	ft_putstr_fd(char *s, int fd)
 {
 	if (s == NULL || fd < 0)
 		return ;
@@ -68,22 +68,22 @@ int	main(int argc, char **argv)
 {
 	t_fractal	fractal;
 
-	if ((argc == 2 && !ft_strncmp(argv[1], "mandelbrot", 10))
-		|| (argc == 4 && !ft_strncmp(argv[1], "julia", 5)))
+	if ((argc == 2 && ft_strncmp(argv[1], "mandelbrot", 10) == 0)
+		|| (argc == 4 && ft_strncmp(argv[1], "julia", 5) == 0))
 	{
-		fractal.name = argv[1];
-		if (!ft_strncmp(argv[1], "julia", 5))
+		fractal.type = argv[1];
+		if (ft_strncmp(argv[1], "julia", 5) == 0)
 		{
 			fractal.julia_x = ft_atof(argv[2]);
 			fractal.julia_y = ft_atof(argv[3]);
 		}
-		fractal_init(&fractal);
-		fractal_render(&fractal);
+		ft_init(&fractal);
+		ft_render(&fractal);
 		mlx_loop(fractal.mlx_co);
 	}
 	else
 	{
-		putstr_fd(ERROR_MESSAGE, STDERR_FILENO);
+		ft_putstr_fd("tapez : fractol mandelbrot ou fractol julia <x> <y>", 1);
 		exit (EXIT_FAILURE);
 	}
 	return (0);

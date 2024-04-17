@@ -32,17 +32,19 @@ int	ft_strncmp(char *env, char *str, int nb)
 int	ft_strlenn(char *env, char *str)
 {
 	int	i;
+	int	j;
 
 	i = 0;
+	j = 0;
 	while (env[i] == str[i])
 	{
 		i++;
 	}
-	while (env[i] != '\0')
+	while (env[j] != '\0')
 	{
-		i++;
+		j++;
 	}
-	return (i);
+	return (j);
 }
 
 char	*ft_strcpyy(char *env, char *dest, char *str)

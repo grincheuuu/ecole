@@ -32,6 +32,8 @@ static void	data_init(t_fractal *fractal)
 	fractal->pixel_i = 0;
 	fractal->dx = (fractal->max_r - fractal->min_r) / WIDTH;
 	fractal->dy = (fractal->max_i - fractal->min_i) / HEIGHT;
+	fractal->center_r = (fractal->max_r - fractal->min_r) / 2;
+	fractal->center_i = (fractal->max_i - fractal->min_i) / 2;
 }
 
 static void	events_init(t_fractal *fractal)
