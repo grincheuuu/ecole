@@ -81,6 +81,7 @@ void		ft_gnl(char *str);
 void		ft_thor(char *argv);
 void		ft_execve_error(int n, const char *str, char ***thor, char ***com);
 void		ft_free_last(char **patch);
+void		ft_absolut_path(char *argv, char **com, char **env);
 int			ft_heredoc(char **argv, char **env);
 char		*ft_strchr(const char *s, int c);
 char		*get_next_line(int fd);

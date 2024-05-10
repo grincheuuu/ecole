@@ -12,6 +12,22 @@
 
 #include "fractol_bonus.h"
 
+void	my_minilibx_pixel_put(int x, int y, t_img *img, int color)
+{
+	int	pixelindex;
+
+	pixelindex = (y * img->line_len) + (x * (img->bpp / 8));
+	*(unsigned int *)(img->pixel_ptr + pixelindex) = color;
+}
+
+double	ft_zi(double temp, double zi)
+{
+	zi = temp;
+	if (zi < 0)
+		zi = zi * -1;
+	return (zi);
+}
+
 int	ft_strncmp(char *s1, char *s2, int n)
 {
 	if (s1 == NULL || s2 == NULL || n <= 0)
@@ -23,17 +39,6 @@ int	ft_strncmp(char *s1, char *s2, int n)
 		s2++;
 	}
 	return (*s1 - *s2);
-}
-
-void	ft_putstr_fd(char *s, int fd)
-{
-	if (s == NULL || fd < 0)
-		return ;
-	while (*s != '\0')
-	{
-		write (fd, s, 1);
-		s++;
-	}
 }
 
 double	ft_atof(char *s)
@@ -75,6 +80,7 @@ int	main(int argc, char **argv)
 		fractal.type = argv[1];
 		if (ft_strncmp(argv[1], "julia", 5) == 0)
 		{
+			ft_analyse_argjulia(argv);
 			fractal.julia_x = ft_atof(argv[2]);
 			fractal.julia_y = ft_atof(argv[3]);
 		}
@@ -84,8 +90,9 @@ int	main(int argc, char **argv)
 	}
 	else
 	{
-		ft_putstr_fd(
-			"entrez : fractol mandelbrot ou fractol julia <x> <y> ou burnigship", 2);
+		write(2,
+			"entre : fractol mandelbrot ou fractol julia <x> <y> ou burnigship",
+			66);
 		exit (EXIT_FAILURE);
 	}
 	return (0);

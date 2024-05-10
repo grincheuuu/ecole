@@ -28,7 +28,6 @@ void	ft_gnl(char *str)
 			&& (ft_strlen(line) - 1 == ft_strlen(str)))
 			break ;
 		write (file_fd, line, ft_strlen(line));
-		write (file_fd, "\n", 1);
 		free(line);
 	}
 	free(line);

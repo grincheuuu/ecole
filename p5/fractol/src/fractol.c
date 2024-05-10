@@ -74,6 +74,7 @@ int	main(int argc, char **argv)
 		fractal.type = argv[1];
 		if (ft_strncmp(argv[1], "julia", 5) == 0)
 		{
+			ft_analyse_argjulia(argv);
 			fractal.julia_x = ft_atof(argv[2]);
 			fractal.julia_y = ft_atof(argv[3]);
 		}

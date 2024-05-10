@@ -81,6 +81,9 @@ void		ft_mandelbrot(t_fractal *fractal, int x, int y);
 void		ft_which_fractal(t_fractal *fractal, int x, int y);
 void		ft_zoom(t_fractal *fractal, double nb);
 void		my_minilibx_pixel_put(int x, int y, t_img *img, int color);
+void		ft_analyse_argjulia(char **argv);
+void		ft_atof_test(const char *nptr);
+void		ft_error_julia(void);
 double		ft_atof(char *s);
 
 #endif

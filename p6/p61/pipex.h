@@ -42,6 +42,7 @@ char		*ft_arg(char *argv);
 char		**ft_testpatch_suite(int t, int i, char **result, char *temp);
 void		ft_thor(char *argv);
 void		ft_execve_error(int n, const char *str, char ***thor, char ***com);
+void		ft_absolut_path(char *argv, char **com, char **env);
 int			ft_strncmp(char *env, char *str, int nb);
 int			ft_strlenn(char *env, char *str);
 int			main(int argc, char **argv, char **env);

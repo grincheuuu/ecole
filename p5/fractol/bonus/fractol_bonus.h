@@ -78,14 +78,18 @@ int			ft_strncmp(char *s1, char *s2, int n);
 int			main(int argc, char **argv);
 void		ft_render(t_fractal *fractal);
 void		ft_init(t_fractal *fractal);
-void		ft_putstr_fd(char *s, int fd);
 void		ft_julia(t_fractal *fractal, int x, int y);
 void		ft_mandelbrot(t_fractal *fractal, int x, int y);
 void		ft_which_fractal(t_fractal *fractal, int x, int y);
 void		ft_zoom(t_fractal *fractal, double nb, int x, int y);
 void		ft_burnigship(t_fractal *fractal, int x, int y);
-void		ft_center(t_fractal *fractal, double nb,  int x, int y);
+void		ft_center(t_fractal *fractal, double nb, int x, int y);
 void		my_minilibx_pixel_put(int x, int y, t_img *img, int color);
+void		ft_analyse_argjulia(char **argv);
+void		ft_atof_test(const char *nptr);
+void		ft_error_julia(void);
 double		ft_atof(char *s);
+double		ft_zi(double temp, double zi);
+double		ft_zr(double zr, double zi, t_fractal *fractal);
 
 #endif

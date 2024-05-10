@@ -12,26 +12,21 @@
 
 #include "fractol_bonus.h"
 
-void	my_minilibx_pixel_put(int x, int y, t_img *img, int color)
-{
-	int	pixelindex;
-
-	pixelindex = (y * img->line_len) + (x * (img->bpp / 8));
-	*(unsigned int *)(img->pixel_ptr + pixelindex) = color;
-}
-
 void	ft_render(t_fractal *fractal)
 {
 	int	x;
 	int	y;
 
-	y = -1;	while (++y < HEIGHT)
+	y = -1;
+	while (++y < HEIGHT)
 	{
 		x = -1;
 		while (++x < WIDTH)
 		{
-			fractal->pixel_r = fractal->min_r + (double)x * fractal->dx + fractal->shift_x / fractal->zoom;
-			fractal->pixel_i = fractal->min_i + (double)y * fractal->dy + fractal->shift_y / fractal->zoom;
+			fractal->pixel_r = fractal->min_r
+				+ (double)x * fractal->dx + fractal->shift_x / fractal->zoom;
+			fractal->pixel_i = fractal->min_i
+				+ (double)y * fractal->dy + fractal->shift_y / fractal->zoom;
 			ft_which_fractal(fractal, x, y);
 		}
 	}
@@ -41,11 +36,11 @@ void	ft_render(t_fractal *fractal)
 
 void	ft_which_fractal(t_fractal *fractal, int x, int y)
 {
-	if (ft_strncmp(fractal->type , "mandelbrot", 10) == 0)
+	if (ft_strncmp(fractal->type, "mandelbrot", 10) == 0)
 	{
 		ft_mandelbrot(fractal, x, y);
 	}
-	else if (ft_strncmp(fractal->type , "julia", 5) == 0)
+	else if (ft_strncmp(fractal->type, "julia", 5) == 0)
 	{
 		ft_julia(fractal, x, y);
 	}
@@ -57,11 +52,11 @@ void	ft_which_fractal(t_fractal *fractal, int x, int y)
 
 void	ft_mandelbrot(t_fractal *fractal, int x, int y)
 {
-	int	n;
 	double	zr;
 	double	zi;
 	double	temp;
-	int	color;
+	int		color;
+	int		n;
 
 	zr = 0;
 	zi = 0;
@@ -85,11 +80,11 @@ void	ft_mandelbrot(t_fractal *fractal, int x, int y)
 
 void	ft_julia(t_fractal *fractal, int x, int y)
 {
-	int	n;
-	int	color;
 	double	zr;
 	double	zi;
 	double	temp;
+	int		n;
+	int		color;
 
 	zr = fractal->pixel_r;
 	zi = fractal->pixel_i;
@@ -112,11 +107,11 @@ void	ft_julia(t_fractal *fractal, int x, int y)
 
 void	ft_burnigship(t_fractal *fractal, int x, int y)
 {
-	int	n;
 	double	zr;
 	double	zi;
 	double	temp;
-	int	color;
+	int		color;
+	int		n;
 
 	zr = 0;
 	zi = 0;
@@ -130,11 +125,9 @@ void	ft_burnigship(t_fractal *fractal, int x, int y)
 			my_minilibx_pixel_put(x, y, &fractal->img, color);
 			return ;
 		}
-		if (zi < 0)
-			zi = zi * -1;
 		temp = 2 * zr * zi + fractal->pixel_i;
-		zr = zr * zr - zi * zi + fractal->pixel_r;
-		zi = temp;
+		zr = ft_zr(zr, zi, fractal);
+		zi = ft_zi(temp, zi);
 		n++;
 	}
 	my_minilibx_pixel_put(x, y, &fractal->img, RED_INTENSE);

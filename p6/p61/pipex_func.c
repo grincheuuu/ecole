@@ -73,3 +73,13 @@ char	**ft_testpatch_suite(int t, int i, char **result, char *temp)
 	testpatch[i] = NULL;
 	return (testpatch);
 }
+
+void	ft_absolut_path(char *argv, char **com, char **env)
+{
+	char	**pop;
+
+	pop = ft_split(argv, ' ');
+	if ((access(pop[0], F_OK | X_OK) == 0))
+		execve(pop[0], com, env);
+	ft_fre(pop);
+}

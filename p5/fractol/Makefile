@@ -1,13 +1,15 @@
-NAME	:= fractol
-CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
-LIBMLX	:= minilibx-linux
-NAME_BONUS := $(NAME)_bonus
-HEADERS	:= -I ./include -I $(LIBMLX)
-LIBS	:= $(LIBMLX)/libmlx.a -lX11 -lXext -lm
+NAME	= fractol
+CFLAGS  = -Wextra -Wall -Werror -Ofast
+LIBMLX	= minilibx-linux
+NAME_BONUS = $(NAME)_bonus
+LIBS	= $(LIBMLX)/libmlx.a -lX11 -lXext -lm
+HEADERS	= -I ./include -I $(LIBMLX)
+CC = cc
+MAKE = make
 
-SRCS = src/fractol src/fractol_event src/fractol_init src/fractol_render
+SRCS = src/fractol src/fractol_event src/fractol_init src/fractol_render src/fractol_suite
 
-SRCS_BONUS = bonus/fractol_bonus bonus/fractol_event_bonus bonus/fractol_init_bonus bonus/fractol_render_bonus
+SRCS_BONUS = bonus/fractol_bonus bonus/fractol_event_bonus bonus/fractol_init_bonus bonus/fractol_render_bonus bonus/fractol_suite_bonus
 
 INC_FILES = fractol.h
 
@@ -18,18 +20,18 @@ SRC_BONUS = $(addsuffix .c,$(SRCS_BONUS))
 OBJS = $(addsuffix .o,$(SRCS))
 OBJS_BONUS = $(addsuffix .o,$(SRCS_BONUS))
 
-all: libmlx $(NAME)
-
-libmlx:
-	@$(MAKE) -C $(LIBMLX)
+all: $(NAME)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADERS)  && printf "Compiling: $(notdir $<)"
 
-$(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) $(HEADERS) -o $(NAME)
+$(NAME): $(OBJS) $(LIBS)
+	@$(CC) $(OBJS) $(LIBS) $(HEADERS) $(CFLAGS) -o $(NAME)
 
- bonus: libmlx $(OBJS_BONUS)
+$(LIBS):
+	@$(MAKE) -C $(LIBMLX)
+
+ bonus: $(OBJS_BONUS) $(LIBS)
 	@$(CC) $(OBJS_BONUS) $(LIBS) $(HEADERS) -o $(NAME_BONUS)
 
 clean:

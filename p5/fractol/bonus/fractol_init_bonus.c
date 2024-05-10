@@ -81,8 +81,10 @@ int	ft_julia_few(int x, int y, t_fractal *fractal)
 	(void)y;
 	if (ft_strncmp(fractal->type, "julia", 5) == 0)
 	{
-		fractal->julia_x = fractal->min_r + (double)x * fractal->dx + fractal->shift_x / fractal->zoom;
-		fractal->julia_y = fractal->min_i + (double)y * fractal->dy + fractal->shift_y / fractal->zoom;
+		fractal->julia_x = fractal->min_r
+			+ (double)x * fractal->dx + fractal->shift_x / fractal->zoom;
+		fractal->julia_y = fractal->min_i
+			+ (double)y * fractal->dy + fractal->shift_y / fractal->zoom;
 		ft_render(fractal);
 	}
 	return (0);

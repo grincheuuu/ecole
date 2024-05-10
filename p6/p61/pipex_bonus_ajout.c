@@ -27,3 +27,13 @@ void	ft_free_last(char **patch)
 	free(patch);
 	write (2, " command not found last", 23);
 }
+
+void	ft_absolut_path(char *argv, char **com, char **env)
+{
+	char	**pop;
+
+	pop = ft_split(argv, ' ');
+	if ((access(pop[0], F_OK | X_OK) == 0))
+		execve(pop[0], com, env);
+	ft_fre(pop);
+}

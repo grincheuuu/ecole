@@ -50,6 +50,7 @@ void	ft_exe(char **patch, int t, char *argv, char **env)
 		thor = ft_split(patch[t], ' ');
 		free(patch[t]);
 		com = ft_split(argv, ' ');
+		ft_absolut_path(argv, com, env);
 		if ((access(thor[0], F_OK | X_OK) == 0))
 		{
 			execve(thor[0], com, env);

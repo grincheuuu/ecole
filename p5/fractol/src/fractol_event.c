@@ -38,15 +38,15 @@ int	ft_mouse_action(int button, int x, int y, t_fractal *fractal)
 		if (fractal->dx > -0.000000000001 && fractal->dy > -0.000000000001)
 		{
 			fractal->zoom = 0.95;
-			ft_zoom (fractal, 0.95, x, y);
+			ft_zoom (fractal, 0.95);
 		}
 	}
 	else if (button == Button4)
 	{
-		if (fractal->dx < 100000000000  && fractal->dy < 100000000000)
+		if (fractal->dx < 100000000000 && fractal->dy < 100000000000)
 		{
 			fractal->zoom = 1.05;
-			ft_zoom (fractal, 1.05, x, y);
+			ft_zoom (fractal, 1.05);
 		}
 	}
 	ft_render(fractal);
@@ -57,8 +57,10 @@ void	ft_zoom(t_fractal *fractal, double nb)
 {
 	fractal->dx /= nb;
 	fractal->dy /= nb;
-	fractal->min_r += ((fractal->max_r - fractal->min_r) / 2) - (fractal->dx * WIDTH / 2);
+	fractal->min_r += ((fractal->max_r - fractal->min_r) / 2)
+		- (fractal->dx * WIDTH / 2);
 	fractal->max_r = fractal->min_r + (WIDTH * fractal->dx);
-	fractal->min_i += ((fractal->max_i - fractal->min_i) / 2) - (fractal->dy * HEIGHT / 2);
-	fractal->max_i = fractal->min_i + (HEIGHT *fractal->dy);
+	fractal->min_i += ((fractal->max_i - fractal->min_i) / 2)
+		- (fractal->dy * HEIGHT / 2);
+	fractal->max_i = fractal->min_i + (HEIGHT * fractal->dy);
 }

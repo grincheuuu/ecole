@@ -12,7 +12,7 @@
 
 #include "fractol.h"
 
- void	my_minilibx_pixel_put(int x, int y, t_img *img, int color)
+void	my_minilibx_pixel_put(int x, int y, t_img *img, int color)
 {
 	int	indexpixel;
 
@@ -42,11 +42,11 @@ void	ft_render(t_fractal *fractal)
 
 void	ft_which_fractal(t_fractal *fractal, int x, int y)
 {
-	if (ft_strncmp(fractal->type , "mandelbrot", 10) == 0)
+	if (ft_strncmp(fractal->type, "mandelbrot", 10) == 0)
 	{
 		ft_mandelbrot(fractal, x, y);
 	}
-	else if (ft_strncmp(fractal->type , "julia", 5) == 0)
+	else if (ft_strncmp(fractal->type, "julia", 5) == 0)
 	{
 		ft_julia(fractal, x, y);
 	}
@@ -54,11 +54,11 @@ void	ft_which_fractal(t_fractal *fractal, int x, int y)
 
 void	ft_mandelbrot(t_fractal *fractal, int x, int y)
 {
-	int	n;
 	double	zr;
 	double	zi;
 	double	temp;
-	int	color;
+	int		color;
+	int		n;
 
 	zr = 0;
 	zi = 0;
@@ -82,11 +82,11 @@ void	ft_mandelbrot(t_fractal *fractal, int x, int y)
 
 void	ft_julia(t_fractal *fractal, int x, int y)
 {
-	int	n;
-	int	color;
 	double	zr;
 	double	zi;
 	double	temp;
+	int		n;
+	int		color;
 
 	zr = fractal->pixel_r;
 	zi = fractal->pixel_i;
