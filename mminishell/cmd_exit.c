@@ -12,33 +12,28 @@
 
 #include "minishell.h"
 
-void    ft_cmd_exit(char *gv, t_pointer **pointera, t_pointer_cmd *pointerB, char **env)
+void    ft_cmd_exit(char **argv, t_pointer **pointera, t_pointer_cmd *pointerB)
 {
-    unsigned int    code;
     long    nb;
-    char    **str;
-    char    *argv;
+    char    **env;
 
-    code = 0;
-    str = ft_split(gv, ' ');
-    argv = str[1];
     write (1, "exit\n", 5);
-    if (argv == NULL || (argv[0] == 0 && argv[0] == '\0'))
-        ft_exit_success(pointera, pointerB, str, env);
-    if (str[2] != NULL)
+    env = ft_transform_env_list(pointera);
+    if (argv[1] == NULL || (argv[1][0] == 0 && argv[1][0] == '\0'))
+        ft_exit_success(pointera, pointerB, argv, env);
+    if (argv[2] != NULL)
     {
         write (2, "bash: exit: too many arguments\n", 32);
-        ft_fre(str);
         return ;
     }
-    nb = ft_atol(argv);
-    ft_atol_test(argv, pointera, pointerB, str);
+    nb = ft_atol(argv[1]);
+    ft_atol_test(argv[1], pointera, pointerB, argv);
     if (nb < 0 || nb > 2147483647)
-        ft_exit_failure(pointera, pointerB, 255, str);
+        ft_exit_failure(pointera, pointerB, 255, argv);
     if (nb > 255)
-        ft_exit_failure(pointera, pointerB, nb % 255, str);
+        ft_exit_failure(pointera, pointerB, nb % 255, argv);
     if (nb > 0 && nb <= 255)
-        ft_exit_failure(pointera, pointerB, nb, str);
+        ft_exit_failure(pointera, pointerB, nb, argv);
 }
 
 long	ft_atol(const char *nptr)

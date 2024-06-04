@@ -12,28 +12,58 @@
 
 #include "minishell.h"
 
-void	ft_echo(char *str)
+void	ft_echo(char **str, t_pointer **pointera, int status)
 {
-	char **option;
 	int	g;
+	int	i;
+	int t;
+
+	i = 0;
+	t = 0;
+	(void)pointera;
+	(void)status;
+	g = ft_search_option_echo(str);
+	while (i < g)
+		i++;
+	while (str[i] != NULL)
+	{
+		if (t == 1)
+		{
+			write (1, " ", 1);
+			t = 0;
+		}
+		ft_putstr_fd(str[i], 1);
+		t = 1;
+		i++;
+	}
+	ft_space(str);
+}
+
+void	ft_space(char **option)
+{
 	int	i;
 
 	i = 0;
-	option = ft_split(str, ' ');
-	g = ft_search_option_echo(option);
-	if (option[1] != NULL)
+	if (option[1] == NULL)
 	{
-		while (i < g)
-			i++;
-		while (option[i] != NULL)
-		{
-			ft_putstr_fd(option[i], 1);
-			i++;
-		}
-	}
-	if (g >= 2 || g == 0)
 		write (1, "\n", 1);
-	ft_fre(option);
+		return ;
+	}
+	else if (option[1][0] != '-' || option[1][1] != 'n')
+	{
+		write (1, "\n", 1);
+		return ;
+	}
+	i++;
+	while (option[1][i] != '\0')
+	{
+		if (option[1][i] != 'n')
+		{
+			write (1, "\n", 1);
+			break ;
+		}
+		i++;
+	}
 }
 
 int	ft_search_option_echo(char **option)

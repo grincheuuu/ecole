@@ -61,7 +61,7 @@ void	ft_lstadd_back(t_listp **chaine, t_listp *new)
 	}
 }
 
-t_listp	*ft_maillon(t_listp *listp, t_pointer_p *pointerA)
+t_listp	*ft_maillon(t_listp *listp)
 {
 	t_listp	*new;
 
@@ -69,11 +69,10 @@ t_listp	*ft_maillon(t_listp *listp, t_pointer_p *pointerA)
 	new = ft_lstnew();
 	if (new == NULL)
 	{
-		ft_lstclear(&pointerA->first);
+		ft_lstclear(&listp);
 		return (NULL);
 	}
 	ft_lstadd_back(&listp, new);
-	pointerA->end = new;
 	listp = listp->next;
 	return (listp);
 }

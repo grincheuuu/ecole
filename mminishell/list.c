@@ -76,9 +76,7 @@ t_list	*ft_lstnew_bis(char *str)
 void	ft_lstadd_back_bis(t_list **chaine, t_list *new)
 {
 	t_list	*temp;
-	int	i;
 
-	i = 0;
 	temp = *chaine;
 	if (*chaine == NULL)
 		*chaine = new;

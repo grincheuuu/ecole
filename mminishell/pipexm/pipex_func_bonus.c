@@ -50,32 +50,43 @@ char	*ft_strjoined(char *s1, char *s2)
 	return (dest);
 }
 
-int	ft_wait(t_pointer_p *pointerA)
+int	ft_wait(t_listp **listp)
 {
 	t_listp	*temp;
 
-	temp = pointerA->first;
+	temp = *listp;
+	dprintf(2, "\n1wait");
 	while (temp->next != NULL)
 	{
 		close(temp->pipe_fd[0]);
 		waitpid(temp->pid, &temp->status, 0);
 		temp = temp->next;
+		dprintf(2, "\n1caaa");
 	}
 	waitpid(temp->pid, &temp->status, 0);
 	return (temp->status);
 }
 
-void	ft_clean_all(char **patch, t_pointer_p *pointer)
+void	ft_clean_all(char **patch, t_listp **listp)
 {
-	free(patch);
-	ft_lstclear(&pointer->first);
-	free(pointer);
+	ft_fre(patch);
+	ft_lstclear(listp);
 }
-
+/*
 void	ft_clean_final(t_pointer_p *pointer, int j)
 {
+	(void)j;
 	ft_lstclear(&pointer->first);
 	free(pointer);
-	if (j == 1)
-		exit(EXIT_FAILURE);
+//	if (j == 1)
+//		exit(EXIT_FAILURE);
+}*/
+
+
+void	ft_clean_final(t_listp *list, int j)
+{
+	(void)j;
+	ft_lstclear(&list);
+//	if (j == 1)
+//		exit(EXIT_FAILURE);
 }

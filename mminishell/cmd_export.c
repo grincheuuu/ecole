@@ -35,10 +35,10 @@ void	ft_export_only(t_pointer *pointera)
 int	ft_export(char *str, t_pointer **pointera)
 {
 	t_list	*new;
-	t_list	*env_list;
+//	t_list	*env_list;
 
 	new = NULL;
-	env_list = (*pointera)->first;
+//	env_list = (*pointera)->first;
 	if (str == NULL)
 	{
 		ft_export_only(*pointera);
@@ -62,9 +62,7 @@ void	ft_lstadd_back_bis_pointer(t_pointer **pointera, t_list *new)
 {
 	t_list	*temp;
 	t_list	*chaine;
-	int	i;
 
-	i = 0;
 	chaine = (*pointera)->first;
 	temp = chaine;
 	if (chaine == NULL)
@@ -191,9 +189,6 @@ void	ft_maillon_change(t_pointer **pointera, int i, char *var)
 
 void	ft_export_error(char *var, t_pointer **pointera)
 {
-	int	i;
-
-	i = 0;
 	(void)pointera;
 	write (2, "bash: export: '", 16);
 	ft_putstr_fd(var, 2);

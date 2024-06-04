@@ -16,12 +16,10 @@ void	ft_cd(char *str, t_pointer **pointera)
 {
 	char	*var;
 	char	*old_pwd;
-	int	i;
 
 	var = NULL;
 	old_pwd = NULL;
-	i = 0;
-	if (str == NULL)
+	if (str == NULL || (str[0] == '~' && str[1] == '\0'))
 	{
 		ft_only_cd(pointera, "HOME=");
 		return ;
@@ -31,7 +29,10 @@ void	ft_cd(char *str, t_pointer **pointera)
 	{
 		strerror(errno);
 		write (2, "cd: no such file or directory: ", 32);
-		ft_putstr_fd(str, 2);
+		if (str[0] == '~')
+			ft_putstr_fd(str + 1, 2);
+		else
+			ft_putstr_fd(str, 2);
 		write (2, "\n", 1);
 		free(old_pwd);
 	   	return ;
@@ -50,9 +51,7 @@ void	ft_cd(char *str, t_pointer **pointera)
 void	ft_realize_oldpwd(char *old_pwd, t_pointer **pointera)
 {
 	char	*op;
-	int i;
 
-	i = 0;
 	op = NULL;
 	if (old_pwd == NULL)
 		return ;

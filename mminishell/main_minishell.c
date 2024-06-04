@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "minishell.h"
-
+/*
 char    *ft_search_home(t_pointer *pointera, char *var)
 {
     t_list	*temp;
@@ -73,8 +73,8 @@ char    *ft_prompt(t_list *env_list, t_pointer *pointera)
     }
     free(buffer);
     return (prompt);
-}
-
+}*/
+/*
 char	*ft_initialize_shell(t_list *env_list, t_pointer *pointera)
 {
     char    *line;
@@ -84,7 +84,7 @@ char	*ft_initialize_shell(t_list *env_list, t_pointer *pointera)
     line = readline(prompt);
     free(prompt);
     return (line);
-}
+}*/
 /*
 void	ft_analyse_arg(int argc, char **argv, t_list *env_list, t_pointer *pointera)
 {;
@@ -110,12 +110,10 @@ int	main(int argc, char **argv, char **env)
     t_pointer   *pointera;
     t_pointer_cmd   *pointerb;
     t_list      *env_list;
-    char    *line;
 
     pointera = NULL;
     pointerb = NULL;
     env_list = NULL;
-    line =  NULL;
     (void)argc;
 	pointera = malloc(sizeof(t_pointer));
 	if (pointera == NULL)
@@ -133,7 +131,9 @@ int	main(int argc, char **argv, char **env)
     ft_exec(argc, argv, &pointera, pointerb);
 //	ft_printlist(pointera);
 	ft_lstclear_bis(&pointera->first);
+    printf("\n1arhgf               hgfdhd1\n");
 	free(pointera);
+    printf("\n1arhgf               hgfdhd1\n");
 	return (0);
 }
 
@@ -144,7 +144,7 @@ void    ft_print_tab(char **env_tab)
     i = 0;
     while (env_tab[i] != NULL)
     {
-        printf("%s\n", env_tab[i]);
+        dprintf(2, "%s\n", env_tab[i]);
         i++;
     }
 }

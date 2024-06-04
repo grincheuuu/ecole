@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
-
+/*
 void	ft_gnl(char *str)
 {
 	char	*line;
@@ -107,4 +107,4 @@ int	ft_heredoc(char **argv, char **env)
 	if (status != 0)
 		exit(status >> 8);
 	exit(EXIT_SUCCESS);
-}
+}*/

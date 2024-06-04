@@ -38,13 +38,10 @@ int	ft_strlen(char *env)
 	return (i);
 }
 
-void	ft_exe(char **patch, int t, char *argv, char **env)
+void	ft_exe(char **patch, int t, char **argv, char **env)
 {
-	char	**com;
-	char	**thor;
-
-	com = NULL;
-	thor = NULL;
+	dprintf(2, "444\n");
+	ft_print_tab(patch);
 	if (patch == NULL)
 	{
 		ft_thor(argv);
@@ -52,50 +49,42 @@ void	ft_exe(char **patch, int t, char *argv, char **env)
 	}
 	while (patch[t] != NULL)
 	{
-		thor = ft_split(patch[t], ' ');
-		free(patch[t]);
-		com = ft_split(argv, ' ');
-		ft_absolut_path(argv, com, env);
-		if ((access(thor[0], F_OK | X_OK) == 0))
+		if ((access(argv[0], F_OK | X_OK) == 0))
+			execve(argv[0], argv, env);
+		if ((access(patch[t], F_OK | X_OK) == 0))
 		{
-			execve(thor[0], com, env);
+			dprintf(2, "\nexceve %s execve\n", patch[t]);
+			execve(patch[t], argv, env);
 		}
-		ft_fre(thor);
-		ft_fre(com);
+		free(patch[t]);
 		t++;
 	}
+	free(patch);
 }
 
-void	ft_thor(char *argv)
+void	ft_thor(char **argv)
 {
-	char	**thor;
-	char	**com;
-	char	*dest;
-	int		i;
-	int		t;
-	int		k;
+//	char	**com;
+//	char	*dest;
+//	int		k;
 
-	i = 0;
-	t = 0;
-	k = 0;
-	com = NULL;
-	dest = NULL;
-	thor = ft_split(argv, ' ');
-	dest = ft_arg(argv);
-	com = ft_split(dest, ' ');
-	while (com[k] != NULL)
+//	k = 0;
+//	com = NULL;
+//	dest = NULL;
+//	dest = ft_arg(argv);
+//	com = ft_split(dest, ' ');
+/*	while (com[k] != NULL)
 	{
 		dprintf(2, "\nW5s");
 		k++;
-	}
+	}*/
 	write (2, "\n", 1);
-	free(dest);
-	if ((access(thor[0], F_OK | X_OK) == 0))
+//	free(dest);
+	if ((access(argv[0], F_OK | X_OK) == 0))
 	{
-		execve(thor[0], com, NULL);
+		execve(argv[0], argv, NULL);
 	}
-	ft_fre(thor);
-	ft_fre(com);
+//	ft_fre(com);
 }
 
 char	*ft_arg(char *argv)

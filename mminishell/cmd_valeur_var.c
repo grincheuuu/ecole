@@ -12,6 +12,7 @@
 
 #include "minishell.h"
 
+/*
 char	*ft_valeur_var(char *var, t_pointer *pointera)
 {
     char    *valeur;
@@ -19,12 +20,12 @@ char	*ft_valeur_var(char *var, t_pointer *pointera)
 
     valeur = ft_search_var_deux(pointera, var + 1);
     temp = pointera->first;
-/*	while(temp != NULL)
+	while(temp != NULL)
 	{
 		if (ft_strncmp(var + 1, temp->str, ft_strlen(var)) == 0)
 			write (1, temp->str, ft_strlen(str) - 1);
 		temp = temp->next;
-    }*/
+    }
     return (temp->str);
 }
 
@@ -54,4 +55,4 @@ char	*ft_search_var_deux(t_pointer *pointera, char *var)
 		i++;
 	}
 	return (NULL);
-}
+}*/

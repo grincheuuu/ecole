@@ -79,8 +79,8 @@ void	ft_test_file_fd(char *argv, t_pointer_p *pointer)
 		close(file_fd);
 }
 
-t_listp	*ft_parent_un(t_listp **listp, t_pointer_p *pointer)
+t_listp	*ft_parent_un(t_listp **listp)
 {
 	close((*listp)->pipe_fd[1]);
-	return (ft_maillon(*listp, pointer));
+	return (ft_maillon(*listp));
 }

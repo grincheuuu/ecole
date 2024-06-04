@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror -g
 RM = rm -rf
 NAME = minishell
 
-SRCS = cmd_env list cmd_export fonction splitt cmd_unset cmd_pwd cmd_cd ft_exec cmd_exit main_minishell init_chaine_cmd cmd_valeur_var signaux pipexm/pipex_bonus pipexm/pipex_projet_bonus pipexm/pipex_utils_bonus pipexm/pipex_func_bonus pipexm/pipex_plus_bonus pipexm/pipex_gnl_bonus pipexm/pipex_pipes_bonus pipexm/pipex_heredoc_bonus pipexm/pipex_struct_bonus pipexm/pipex_utils_second pipexm/pipex_bonus_ajout cmd_echo
+SRCS = cmd_env list cmd_export fonction splitt cmd_unset cmd_pwd cmd_cd ft_exec cmd_exit main_minishell init_chaine_cmd cmd_valeur_var signaux pipexm/pipex_bonus pipexm/pipex_projet_bonus pipexm/pipex_utils_bonus pipexm/pipex_func_bonus pipexm/pipex_plus_bonus pipexm/pipex_gnl_bonus pipexm/pipex_pipes_bonus pipexm/pipex_heredoc_bonus pipexm/pipex_struct_bonus pipexm/pipex_utils_second pipexm/pipex_bonus_ajout cmd_echo ft_itoa
 
 INC_FILES = minishell.h pipex/pipex_bonus.h
 
@@ -27,7 +27,7 @@ OBJS_BONUS = $(addsuffix .o,$(SRCS_BONUS))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -lreadline $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@ -g

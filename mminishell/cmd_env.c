@@ -73,7 +73,6 @@ void	ft_print_env(t_pointer **pointerA)
 	{
 		write (1, temp->str, ft_strlen(temp->str));
 		write (1, "\n", 1);
-		printf("\n%d\n", i);
 		temp = temp->next;
 		i++;
 	}

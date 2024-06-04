@@ -14,23 +14,17 @@
 
 void    ft_exec(int argc, char **argv, t_pointer **pointera, t_pointer_cmd *pointerB)
 {
-	char    **env_tab;
-    int i;
-    int j;
-
     (void)argv;
     (void)argc;
-    i = 0;
-    j = 0;
 //    temp = pointerB->first;
-    env_tab = ft_transform_env_list(pointera);
 	ft_printlist_cmd(pointerB);
-    write(1, "\n", 2);
-    write(1, "\n", 2);
-    ft_pipex_start(i, env_tab, pointera, pointerB);
+//    write(1, "\n", 1);
+//    write(1, "\n", 1);
+    ft_pipex_start(pointera, pointerB);
 	ft_lstclear_node(&pointerB->first);
-    ft_fre(env_tab);
+    printf("\n1arhgf5463543546hgfdhd1\n");
 	free(pointerB);
+    printf("\n1arhgf5463543546hgfdhd1\n");
 }
 
 void    ft_test_dir(void)
