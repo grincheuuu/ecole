@@ -15,47 +15,44 @@
 void	ft_export_only(t_pointer *pointera)
 {
 	t_list	*temp;
-	char	*copy;
 
 	temp = pointera->first;
-	copy = NULL;
 	while (temp != NULL)
 	{
-		copy = ft_strjoin("declare -x ", temp->str);
-		free(temp->str);
-		temp->str = ft_strdup(copy);
-		free(copy);
+		write (1, "declare -x ", 11);
 		write (1, temp->str, ft_strlen(temp->str));
 		write (1, "\n", 1);
 		temp = temp->next;
 	}
-	ft_print_env(&pointera);
 }
 
-int	ft_export(char *str, t_pointer **pointera)
+int	ft_export(char **str, t_pointer **pointera)
 {
 	t_list	*new;
-//	t_list	*env_list;
+	int		i;
+	int		status;
 
 	new = NULL;
-//	env_list = (*pointera)->first;
-	if (str == NULL)
+	i = 0;
+	status = 0;
+	if (str[1] == NULL)
 	{
 		ft_export_only(*pointera);
 		return (0);
 	}
-	printf("\n8888%s8888\n", str);
-	if (ft_test_var(str, pointera) == 0)
-	{
-		dprintf(2, "\n\nAAAAAAAAAAAAAAAAAAA\n\n");
-		new = ft_lstnew_bis(str);
-		if (new == NULL)
-			return (1); //status = 1
-		ft_lstadd_back_bis_pointer(pointera, new);
+	while (str[++i] != NULL)
+   	{
+		if (ft_test_var(str[i], pointera) == 0)
+		{
+			new = ft_lstnew_bis(str[i]);
+			if (new == NULL)
+				return (1);
+			ft_lstadd_back_bis_pointer(pointera, new);
+   		}
+		else
+			status = 1;
 	}
-	write (2, "\n\n\n\n", 5);
-//	ft_print_env(pointera);
-	return (0); // status=0
+	return (status);
 }
 
 void	ft_lstadd_back_bis_pointer(t_pointer **pointera, t_list *new)
@@ -77,7 +74,6 @@ void	ft_lstadd_back_bis_pointer(t_pointer **pointera, t_list *new)
 		new->before = temp;
 		new->next = NULL;
 	}
-	ft_print_env(pointera);
 }
 
 int	ft_test_var(char *var, t_pointer **pointera)
@@ -89,16 +85,18 @@ int	ft_test_var(char *var, t_pointer **pointera)
 	i = 0;
 	j = -1;
 	t = 1;
-	if (ft_isalpha(var[i]) == 0 && var[i] != '_')
+	if (var == NULL)
+		return (2);
+	if ((ft_isalpha(var[i]) == 0 && var[i] != '_'))
 	{
-		ft_export_error(var, pointera);
+		ft_export_error(var);
 		return (1);
 	}
 	while (var[i] != '\0' && var[i] != '=')
 	{
 		if (ft_isalpha(var[i]) == 0 && ft_isdigit(var[i]) == 0 && var[i] != '_' && var[i] != '=')
 		{
-			ft_export_error(var, pointera);
+			ft_export_error(var);
 			return (1);
 		}
 		i++;
@@ -109,7 +107,7 @@ int	ft_test_var(char *var, t_pointer **pointera)
 	{
 		if ((var[i] >= 0 && var[i] <= 31) && var[i] == 127)
 		{
-			ft_export_error(var, pointera);
+			ft_export_error(var);
 			return (1);
 		}
 		i++;
@@ -120,10 +118,7 @@ int	ft_test_var(char *var, t_pointer **pointera)
 		if (j < 0)
 			return (0);
 		if (j >= 0)
-		{
-			dprintf(2, "22222222222222");
 			ft_maillon_change(pointera, j, var);
-		}
 	}
 	return (1);
 }
@@ -145,10 +140,7 @@ int	ft_search_var(t_pointer *pointera, char *var)
 	{
 		i++;
 		if (ft_strncmp(var, temp->str, len_var) == 0)
-		{
-			printf("\n55555%s  %dj  55555\n", temp->str, i);
 			return (i);
-		}
 		temp = temp->next;
 	}
 	return (-1);
@@ -169,10 +161,7 @@ void	ft_maillon_change(t_pointer **pointera, int i, char *var)
 	}
 	new = ft_lstnew_bis(var);
 	if (new == NULL)
-	{
-//		ft_lstclear_bis(&pointera->first);
 		return ;
-	}
 	if (temp->next != NULL)
 		temp->next->before = new;
 	else
@@ -187,14 +176,9 @@ void	ft_maillon_change(t_pointer **pointera, int i, char *var)
 	free(temp);
 }
 
-void	ft_export_error(char *var, t_pointer **pointera)
+void	ft_export_error(char *var)
 {
-	(void)pointera;
 	write (2, "bash: export: '", 16);
 	ft_putstr_fd(var, 2);
 	write (2, "': not a valid identifier\n", 27);
-//	ft_lstclear_bis(&env_list);
-//	free(pointera);
-//	ft_fre(*tab);
-//	exit(EXIT_FAILURE);
 }

@@ -12,35 +12,25 @@
 
 #include "minishell.h"
 
-void    ft_pwd(t_pointer **pointera)
+int	ft_pwd(void)
 {
-    char    *buffer;
-    size_t  size;
+	char	*buffer;
+	size_t	size;
 
-    size = 1024;
-    if (size <= 0)
-    {
-        ft_failure(pointera);
-    }
-    buffer = malloc((size + 1) * sizeof(char));
-    if (buffer == NULL)
-    {
-        ft_failure(pointera);
-    }
-    if (getcwd(buffer, size) == NULL)
-    {
-        write (2, "Cannot get current working directory path\n", 43);
-        free(buffer);
-        ft_failure(pointera);
-    }
-    ft_putstr_fd(buffer, 1);
-    write(1, "\n", 1);
-    free(buffer);
-    return ;
-}
-
-void    ft_failure(t_pointer **pointera)
-{
-	free(*pointera);
-//    exit(EXIT_FAILURE);
+	size = 1024;
+	if (size <= 0)
+		return (1);
+	buffer = malloc((size + 1) * sizeof(char));
+	if (buffer == NULL)
+		return (1);
+	if (getcwd(buffer, size) == NULL)
+	{
+		write(2, "Cannot get current working directory path\n", 43);
+		free(buffer);
+		return (1);
+	}
+	ft_putstr_fd(buffer, 1);
+	write(1, "\n", 1);
+	free(buffer);
+	return (0);
 }

@@ -85,25 +85,6 @@ char	*ft_initialize_shell(t_list *env_list, t_pointer *pointera)
     free(prompt);
     return (line);
 }*/
-/*
-void	ft_analyse_arg(int argc, char **argv, t_list *env_list, t_pointer *pointera)
-{;
-	if (argc >= 2 && ft_strncmp(argv[1], "export", 6) == 0)
-		ft_export(argv[2], env_list, pointera);
-	if (argc >= 2 && ft_strncmp(argv[1], "unset", 5) == 0)
-		ft_unset(pointera, argv[2]);
-	if (argc == 2 && ft_strncmp(argv[1], "pwd", 3) == 0)
-		ft_pwd(env_list, pointera);
-	if (argc >= 2 && ft_strncmp(argv[1], "cd", 2) == 0)
-		ft_cd(argv[2], env_list, pointera);
-	if (argc >= 2 && ft_strncmp(argv[1], "exit", 4) == 0)
-		ft_cmd_exit(argv[2], pointera);
-    if (argc >= 2 && ft_strncmp(argv[1], "$", 1) == 0)
-    {
-        printf("a revoir");
-		ft_valeur_var(argv[1], pointera);
-    }
-}*/
 
 int	main(int argc, char **argv, char **env)
 {
@@ -128,13 +109,19 @@ int	main(int argc, char **argv, char **env)
         ft_initialize_shell(env_list, pointera);
     }*/
     pointerb = ft_init_maillon_cmd(argv + 1);
-    ft_exec(argc, argv, &pointera, pointerb);
+    ft_exec(&pointera, pointerb);
 //	ft_printlist(pointera);
 	ft_lstclear_bis(&pointera->first);
-    printf("\n1arhgf               hgfdhd1\n");
 	free(pointera);
-    printf("\n1arhgf               hgfdhd1\n");
 	return (0);
+}
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	l;
+
+	l = ft_strlen(s);
+	write (fd, s, l);
 }
 
 void    ft_print_tab(char **env_tab)
@@ -144,7 +131,8 @@ void    ft_print_tab(char **env_tab)
     i = 0;
     while (env_tab[i] != NULL)
     {
-        dprintf(2, "%s\n", env_tab[i]);
+        printf("\n%s\n", env_tab[i]);
         i++;
     }
+    printf("\nprinttab\n");
 }

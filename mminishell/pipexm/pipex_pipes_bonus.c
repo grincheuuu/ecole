@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_pipes_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/23 19:07:36 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/20 14:24:10 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/06/11 20:27:55 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_analyse_here_doc(t_pointer_cmd **pointerB, t_pointer **pointera)
 	file_fd = 0;
 	while (temp != NULL)
 	{
-		if (ft_strncmp(temp->type, "here_doc", 8) == 0 )
+		if (ft_strncmp(temp->type, "here_doc", 8) == 0)
 		{
 			file_fd = open(temp->cmd, O_RDONLY, 0644);
 			if (file_fd < 0)
@@ -43,7 +43,7 @@ int	ft_analyse_here_doc(t_pointer_cmd **pointerB, t_pointer **pointera)
 				free(pointerB);
 				ft_lstclear_bis(&(*pointera)->first);
 				free(pointera);
-				write (2, "minishell: here_doc : error", 28);
+				write(2, "minishell: here_doc : error", 28);
 				exit(1);
 			}
 			close(file_fd);
@@ -53,28 +53,22 @@ int	ft_analyse_here_doc(t_pointer_cmd **pointerB, t_pointer **pointera)
 	return (0);
 }
 
-int	ft_pipeline(t_pointer_cmd *pointerB, t_pointer **pointera)
+int	ft_pipeline(t_pointer_cmd *pointerB, t_pointer **pointera, int status)
 {
-	t_listp		*listp;
-	t_listp		*list;
-	int			j;
-	int			status;
-//	t_pointer_p	*pointer;
+	t_listp	*listp;
+	t_listp	*list;
+	int		j;
+	t_listp	*templistp;
 
+	templistp = NULL;
 	j = 0;
-	status = 0;
 	listp = NULL;
 	ft_lstadd_back(&listp, ft_lstnew());
 	list = listp;
-//	list = ft_pointer_init(listp);
 	ft_analyse_here_doc(&pointerB, pointera);
-//	listp = ft_lstnew();
-//	ft_printlist_aa(&listp);
-	ft_realize_pipe(&pointerB, &listp, pointera);
-//	ft_printlist_cmd(pointerB);
+	ft_realize_pipe(&pointerB, &listp, pointera, status);
 	status = ft_wait(&listp);
-//	ft_printlist_aa(&listp);
-	ft_clean_final(list, j);
+	ft_lstclear(&list);
 	return (status >> 8);
 }
 
@@ -85,82 +79,254 @@ void	ft_printlist_aa(t_listp **listp)
 
 	temp = NULL;
 	i = 0;
-
-	if (*listp== NULL)
+	if (*listp == NULL)
 	{
-		write (1, "NULL", 4);
+		write(1, "NULL", 4);
 		return ;
 	}
 	temp = *listp;
 	while (temp != NULL)
 	{
 		printf("cmd : %d\n", temp->status);
-        printf("type : %d\n", temp->pid);
+		printf("type : %d\n", temp->pid);
 		temp = temp->next;
 		i++;
-    	printf("\nlistp");
+		printf("\nlistp");
 	}
 }
 
-int	ft_realize_pipe(t_pointer_cmd **pointerB, t_listp **listp, t_pointer **pointera)
+void	ft_realize_pipe(t_pointer_cmd **pointerB, t_listp **listp,
+		t_pointer **pointera, int status)
 {
-	t_cmd	*temp;
-	char	**argv;
-	int		t;
-	int		i;
-	int		status;
+	t_cmd		*temp;
 	t_file_fd	*t_file;
 
-	t = 0;
-	status = 0;
 	temp = (*pointerB)->first;
-	argv = NULL;
-	t_file = (t_file_fd *)malloc(sizeof(t_file_fd));
-	if (t_file == NULL)
-		return (0);
-	t_file->file_fd = 0;
-	t_file->file_fdfinal = 0;
+	t_file = ft_t_file_initialise(status);
 	while (temp != NULL)
 	{
-		argv = ft_generate_argv(pointerB, t);
-		t_file->file_fd = 0;
-		t_file->file_fdfinal = 0;
-		while(temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
-		{
-			printf("\neee  eeeee\n");
-			if (ft_strncmp(temp->type, "infile", 6) == 0 || ft_strncmp(temp->type, "here_doc", 8) == 0
-			|| ft_strncmp(temp->type, "outfile", 7) == 0 || ft_strncmp(temp->type, "append", 6) == 0)
-				t_file = ft_realize_fd(temp, t_file);
+		while (temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
 			temp = temp->next;
-		}
 		ft_error(pipe((*listp)->pipe_fd), "pipe_fd");
 		ft_error(((*listp)->pid = fork()), "pid");
 		if (temp == NULL)
-		{
-			printf("\n\n\nlast\n\n\n\n\n");
-			status = ft_last(argv, *pointerB, pointera, t_file, listp);
-		}
-		else if (t == 0)
-		{
-			printf("\n\n\nun\n\n\n\n\n");
-			ft_un(argv, *pointerB, pointera, t_file, listp);
-		}
+			ft_last(pointerB, pointera, t_file, listp);
+		else if (t_file->t == 0)
+			ft_un(pointerB, pointera, t_file, listp);
 		else
-			ft_mid(argv, *pointerB, pointera, t_file, listp);
+			ft_mid(pointerB, pointera, t_file, listp);
 		if (temp != NULL && ft_strncmp(temp->type, "pipe", 4) == 0)
 			temp = temp->next;
-		i = 0;
-		while (argv[i] != NULL)
-		{
-			printf("\n\n\n\ndfdsfa %s fgfdfdg\n", argv[i]);
-			i++;
-		}
-		ft_fre(argv);	
-		t++;
+		t_file->t += 1;
 	}
-//	ft_printlist_cmd(pointerB);
+	ft_restore_fd(t_file);
+	//	ft_printlist_cmd(pointerB);
 	free(t_file);
-	return (status);
+}
+
+t_file_fd	*ft_t_file_initialise(int status)
+{
+	t_file_fd	*t_file;
+
+	t_file = (t_file_fd *)malloc(sizeof(t_file_fd));
+	if (t_file == NULL)
+		return (NULL);
+	t_file->stdin_fd = dup(STDIN_FILENO);
+	if (t_file->stdin_fd == -1)
+	{
+		free(t_file);
+		return (NULL);
+	}
+	t_file->stdout_fd = dup(STDOUT_FILENO);
+	if (t_file->stdout_fd == -1)
+	{
+		free(t_file);
+		return (NULL);
+	}
+	t_file->t = 0;
+	t_file->status = status;
+	return (t_file);
+}
+
+int	ft_generate_fd(t_pointer_cmd **pointerB, t_file_fd *t_file, char **argv)
+{
+	t_cmd	*temp;
+	int		file_fd;
+	int		file_fdfinal;
+
+	file_fd = 0;
+	file_fdfinal = 0;
+	temp = (*pointerB)->first;
+	if (t_file == NULL)
+		return (0);
+	while (temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
+	{
+		if (ft_strncmp(temp->type, "infile", 6) == 0 || ft_strncmp(temp->type,
+				"here_doc", 8) == 0)
+		{
+			if (ft_error_deux(file_fd = open(temp->cmd, O_RDONLY, 0644),
+					temp->cmd, t_file) == 1)
+			{
+				file_fd = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fd, STDIN_FILENO);
+				close(file_fd);
+				close(t_file->stdin_fd);
+				close(t_file->stdout_fd);
+				if (argv != NULL)
+					ft_fre(argv);
+				free(t_file);
+				return (-1);
+			}
+			dup2(file_fd, STDIN_FILENO);
+			close(file_fd);
+		}
+		if (ft_strncmp(temp->type, "outfile", 7) == 0)
+		{
+			if (ft_error_deux(file_fdfinal = open(temp->cmd,
+						O_WRONLY | O_TRUNC | O_CREAT, 0644), temp->cmd, t_file))
+			{
+				file_fdfinal = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fdfinal, STDOUT_FILENO);
+				close(file_fdfinal);
+				close(t_file->stdin_fd);
+				close(t_file->stdout_fd);
+				if (argv != NULL)
+					ft_fre(argv);
+				free(t_file);
+				return (-1);
+			}
+			dup2(file_fdfinal, STDOUT_FILENO);
+			close(file_fdfinal);
+		}
+		else if (ft_strncmp(temp->type, "append", 6) == 0)
+		{
+			if (ft_error_deux(file_fdfinal = open(temp->cmd,
+						O_WRONLY | O_APPEND | O_CREAT, 0644), temp->cmd,
+					t_file))
+			{
+				file_fdfinal = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fdfinal, STDOUT_FILENO);
+				close(file_fdfinal);
+				close(t_file->stdin_fd);
+				close(t_file->stdout_fd);
+				if (argv != NULL)
+					ft_fre(argv);
+				free(t_file);
+				return (-1);
+			}
+			dup2(file_fdfinal, STDOUT_FILENO);
+			close(file_fdfinal);
+		}
+		temp = temp->next;
+	}
+	//	dprintf(2, "\n file_fd=%d file_fdfinal=%d \n", file_fd, file_fdfinal);
+	return (0);
+}
+
+t_cmd	*ft_temp(t_cmd *temp, int t)
+{
+	int	j;
+
+	j = 0;
+	while (temp != NULL && j < t)
+	{
+		if (ft_strncmp(temp->type, "pipe", 4) == 0)
+			j++;
+		temp = temp->next;
+	}
+	return (temp);
+}
+
+int	ft_generate_infile(t_pointer_cmd **pointerB, t_file_fd *t_file,
+		t_pointer **pointera, t_listp **listp)
+{
+	t_cmd	*temp;
+	int		file_fd;
+
+	file_fd = 0;
+	temp = (*pointerB)->first;
+	if (t_file == NULL)
+		return (0);
+	temp = ft_temp(temp, t_file->t);
+	while (temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
+	{
+		if (ft_strncmp(temp->type, "infile", 6) == 0 || ft_strncmp(temp->type,
+				"here_doc", 8) == 0)
+		{
+			if (ft_error_deux(file_fd = open(temp->cmd, O_RDONLY, 0644),
+					temp->cmd, t_file) == 1)
+			{
+				file_fd = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fd, STDIN_FILENO);
+				close(file_fd);
+				if ((*listp)->before != NULL)
+					close((*listp)->before->pipe_fd[0]);
+				close((*listp)->pipe_fd[0]);
+				close((*listp)->pipe_fd[1]);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				exit(1);
+			}
+			dup2(file_fd, STDIN_FILENO);
+			close(file_fd);
+		}
+		temp = temp->next;
+	}
+	return (file_fd);
+}
+
+int	ft_generate_outfile(t_pointer_cmd **pointerB, t_file_fd *t_file,
+		t_pointer **pointera, t_listp **listp)
+{
+	t_cmd	*temp;
+	int		file_fdfinal;
+
+	file_fdfinal = 0;
+	temp = (*pointerB)->first;
+	if (t_file == NULL)
+		return (0);
+	temp = ft_temp(temp, t_file->t);
+	while (temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
+	{
+		if (ft_strncmp(temp->type, "outfile", 7) == 0)
+		{
+			if (ft_error_deux(file_fdfinal = open(temp->cmd,
+						O_WRONLY | O_TRUNC | O_CREAT, 0644), temp->cmd, t_file))
+			{
+				file_fdfinal = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fdfinal, STDOUT_FILENO);
+				close(file_fdfinal);
+				if ((*listp)->before != NULL)
+					close((*listp)->before->pipe_fd[0]);
+				close((*listp)->pipe_fd[0]);
+				close((*listp)->pipe_fd[1]);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				exit(1);
+			}
+			dup2(file_fdfinal, STDOUT_FILENO);
+			close(file_fdfinal);
+		}
+		else if (ft_strncmp(temp->type, "append", 6) == 0)
+		{
+			if (ft_error_deux(file_fdfinal = open(temp->cmd,
+						O_WRONLY | O_APPEND | O_CREAT, 0644), temp->cmd,
+					t_file))
+			{
+				file_fdfinal = open("/dev/null", O_RDONLY, 0644);
+				dup2(file_fdfinal, STDOUT_FILENO);
+				close(file_fdfinal);
+				if ((*listp)->before != NULL)
+					close((*listp)->before->pipe_fd[0]);
+				close((*listp)->pipe_fd[0]);
+				close((*listp)->pipe_fd[1]);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				exit(1);
+			}
+			dup2(file_fdfinal, STDOUT_FILENO);
+			close(file_fdfinal);
+		}
+		temp = temp->next;
+	}
+	return (file_fdfinal);
 }
 
 char	**ft_generate_argv(t_pointer_cmd **pointerB, int t)
@@ -169,153 +335,142 @@ char	**ft_generate_argv(t_pointer_cmd **pointerB, int t)
 	t_cmd	*temp;
 	t_cmd	*zoro;
 	int		i;
-	int		j;
 
 	argv = NULL;
 	i = 0;
-	j = 0;
 	temp = (*pointerB)->first;
 	zoro = (*pointerB)->first;
-	printf("%dtt", t);
-	while (temp != NULL && j < t)
-	{
-		if (ft_strncmp(temp->type, "pipe", 4) == 0)
-			j++;
-		temp = temp->next;
-	}
+	temp = ft_temp(temp, t);
 	while (temp != NULL && ft_strncmp(temp->type, "pipe", 4) != 0)
 	{
-		if (ft_strncmp(temp->type, "word", 4) == 0)
+		if (ft_strncmp(temp->type, "pipe", 4) != 0)
 			i++;
 		temp = temp->next;
 	}
 	argv = (char **)malloc((i + 1) * sizeof(char *));
 	if (argv == NULL)
 		return (NULL);
-	j = 0;
-	while (zoro != NULL && j < t)
+	i = 0;
+	while (zoro != NULL && i < t)
 	{
 		if (ft_strncmp(zoro->type, "pipe", 4) == 0)
-			j++;
+			i++;
 		zoro = zoro->next;
 	}
-	j = 0;
+	i = 0;
 	while (zoro != NULL && ft_strncmp(zoro->type, "pipe", 4) != 0)
 	{
 		if (ft_strncmp(zoro->type, "word", 4) == 0)
 		{
-			argv[j] = ft_strdup(zoro->cmd);
-			j++;
+			argv[i] = ft_strdup(zoro->cmd);
+			i++;
 		}
 		zoro = zoro->next;
 	}
-	argv[j] = NULL;
+	argv[i] = NULL;
 	return (argv);
 }
 
-t_file_fd	*ft_realize_fd(t_cmd *temp, t_file_fd *t_file)
-{
-	int	i;
-
-	i = 0;
-	if (t_file == NULL)
-	{
-		printf("tfile == NULL");
-		return (NULL);
-	}
-	if (ft_strncmp(temp->type, "infile", 7) == 0)
-		i = ft_error_deux(t_file->file_fd = open(temp->cmd, O_RDONLY, 0644), temp->cmd, t_file);
-//	else if (ft_strncmp(temp->type, "here_doc", 9) == 0)
-//		ft_error_deux(t_file->file_fd = ft_heredoc(temp->cmd), "here_doc", t_file);
-	else if (ft_strncmp(temp->type, "outfile", 8) == 0)
-		i = ft_error_deux(t_file->file_fdfinal = open(temp->cmd, O_WRONLY | O_TRUNC | O_CREAT, 0644), temp->cmd, t_file);
-	else if (ft_strncmp(temp->type, "append", 7) == 0)
-		i = ft_error_deux(t_file->file_fdfinal = open(temp->cmd, O_WRONLY | O_APPEND | O_CREAT, 0644), temp->cmd, t_file);
-	if (i == 1)
-		t_file->file_fd = open("/dev/null", O_RDONLY, 0644);
-//	printf("\n file_fd=%d file_fdfinal=%d \n", t_file->file_fd, t_file->file_fdfinal);
-	return (t_file);
-}
-
-
-void	ft_un(char **argv, t_pointer_cmd *pointerB, t_pointer **pointera, t_file_fd *t_file, t_listp **listp)
+void	ft_un(t_pointer_cmd **pointerB, t_pointer **pointera, t_file_fd *t_file,
+		t_listp **listp)
 {
 	char	**patch;
+	char	**argv;
 	char	**env;
-	int		t;
+	int		status;
 
-	t = 0;
+	status = 0;
 	patch = NULL;
 	env = NULL;
-	dprintf(2, "dd%sdd ", argv[0]);
+	argv = NULL;
 	if ((*listp)->pid == 0)
 	{
-		if (t_file->file_fd > 2)
-		{
-			dup2(t_file->file_fd, STDIN_FILENO);
-			close(t_file->file_fd);
-		}
-		if (t_file->file_fdfinal > 2)
-		{
-			dup2(t_file->file_fdfinal, STDOUT_FILENO);
-			close(t_file->file_fdfinal);
-		}
-		else
-			dup2((*listp)->pipe_fd[1], STDOUT_FILENO);
 		close((*listp)->pipe_fd[0]);
+		close(t_file->stdin_fd);
+		close(t_file->stdout_fd);
+		ft_generate_infile(pointerB, t_file, pointera, listp);
+		if (ft_generate_outfile(pointerB, t_file, pointera, listp) == 0)
+			dup2((*listp)->pipe_fd[1], STDOUT_FILENO);
 		close((*listp)->pipe_fd[1]);
-		if (ft_arg_buildin(argv) == 0)
-			ft_analyse_arg_buildin(argv, pointera, pointerB, listp, t_file);
-		env = ft_transform_env_list(pointera);
-		patch = ft_testpath(ft_path(env), argv);
-		ft_exe(patch, t, argv, env);
-		ft_fre(env);
-		ft_clean_all(patch, listp);
-		write (2, "command not found 1", 19);
+		argv = ft_generate_argv(pointerB, t_file->t);
+		if (!(argv == NULL || argv[0] == NULL))
+		{
+			if (ft_arg_buildin(argv) == 0)
+			{
+				ft_signaux_annul(0);
+				if (ft_strncmp(argv[0], "exit", ft_strlen(argv[0]) - 1) == 0)
+					status = ft_arg_exit(argv, status);
+				else
+					status = ft_analyse_arg_buildin(argv, pointera, t_file);
+				ft_fre(argv);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				ft_signaux_annul(1);
+				exit(status);
+			}
+			env = ft_transform_env_list(pointera);
+			patch = ft_testpath(ft_path(env), argv);
+			ft_exe(patch, 0, argv, env);
+			ft_test_dir(argv[0]);
+			ft_fre(env);
+		}
+		ft_fre(argv);
+		free(t_file);
+		ft_clean_all(patch, listp, pointerB, pointera);
 		exit(EXIT_FAILURE);
 	}
 	else
-	{
-		dprintf(2, "\nelseeeeeeeeeeeeeeeeeeeeeeeee\n");
 		*listp = ft_parent_un(listp);
-	}
 }
 
-void	ft_mid(char **argv, t_pointer_cmd *pointerB, t_pointer **pointera, t_file_fd *t_file, t_listp **listp)
+void	ft_mid(t_pointer_cmd **pointerB, t_pointer **pointera,
+		t_file_fd *t_file, t_listp **listp)
 {
 	char	**patch;
+	char	**argv;
 	char	**env;
 	int		t;
+	int		status;
 
 	t = 0;
 	patch = NULL;
+	argv = NULL;
 	env = NULL;
+	status = 0;
 	if ((*listp)->pid == 0)
 	{
-		if (t_file->file_fd > 2)
-		{
-			dup2(t_file->file_fd, STDIN_FILENO);
-			close(t_file->file_fd);
-		}
-		else
+		close(t_file->stdin_fd);
+		close(t_file->stdout_fd);
+		if (ft_generate_infile(pointerB, t_file, pointera, listp) == 0)
 			dup2((*listp)->before->pipe_fd[0], STDIN_FILENO);
 		close((*listp)->before->pipe_fd[0]);
-		if (t_file->file_fdfinal > 2)
-		{
-			dup2(t_file->file_fdfinal, STDOUT_FILENO);
-			close(t_file->file_fdfinal);
-		}
-		else
+		close((*listp)->pipe_fd[0]);
+		if (ft_generate_outfile(pointerB, t_file, pointera, listp) == 0)
 			dup2((*listp)->pipe_fd[1], STDOUT_FILENO);
 		close((*listp)->pipe_fd[1]);
-		close((*listp)->pipe_fd[0]);
-		if (ft_arg_buildin(argv) == 0)
-			ft_analyse_arg_buildin(argv, pointera, pointerB, listp, t_file);
-		env = ft_transform_env_list(pointera);
-		patch = ft_testpath(ft_path(env), argv);
-		ft_exe(patch, t, argv, env);
-		ft_clean_all(patch, listp);
-		write (2, " command not found ", 19);
+		argv = ft_generate_argv(pointerB, t_file->t);
+		if (!(argv == NULL || argv[0] == NULL))
+		{
+			if (ft_arg_buildin(argv) == 0)
+			{
+				ft_signaux_annul(0);
+				if (ft_strncmp(argv[0], "exit", ft_strlen(argv[0]) - 1) == 0)
+					status = ft_arg_exit(argv, status);
+				else
+					status = ft_analyse_arg_buildin(argv, pointera, t_file);
+				ft_fre(argv);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				ft_signaux_annul(1);
+				exit(status);
+			}
+			env = ft_transform_env_list(pointera);
+			patch = ft_testpath(ft_path(env), argv);
+			ft_exe(patch, t, argv, env);
+			ft_test_dir(argv[0]);
+			ft_fre(env);
+		}
+		ft_fre(argv);
+		free(t_file);
+		ft_clean_all(patch, listp, pointerB, pointera);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -326,42 +481,53 @@ void	ft_mid(char **argv, t_pointer_cmd *pointerB, t_pointer **pointera, t_file_f
 	}
 }
 
-int	ft_last(char **argv, t_pointer_cmd *pointerB, t_pointer **pointera, t_file_fd *t_file, t_listp **listp)
+int	ft_last(t_pointer_cmd **pointerB, t_pointer **pointera, t_file_fd *t_file,
+		t_listp **listp)
 {
 	char	**patch;
+	char	**argv;
 	char	**env;
 	int		t;
+	int		status;
 
 	t = 0;
+	status = 0;
 	patch = NULL;
-	(void)pointerB;
-//	dprintf(2, "ll%sll ", argv[0]);
+	argv = NULL;
 	close((*listp)->pipe_fd[0]);
 	close((*listp)->pipe_fd[1]);
 	if ((*listp)->pid == 0)
 	{
-		if (t_file->file_fd > 2)
-		{
-			dprintf(2, "\nfilefd = %d\n", t_file->file_fd);
-			dup2(t_file->file_fd, STDIN_FILENO);
-			close(t_file->file_fd);
-		}
-		else
+		close(t_file->stdin_fd);
+		close(t_file->stdout_fd);
+		if (ft_generate_infile(pointerB, t_file, pointera, listp) == 0)
 			dup2((*listp)->before->pipe_fd[0], STDIN_FILENO);
-		if (t_file->file_fdfinal > 2)
+		close((*listp)->before->pipe_fd[0]);
+		ft_generate_outfile(pointerB, t_file, pointera, listp);
+		argv = ft_generate_argv(pointerB, t_file->t);
+		if (!(argv == NULL || argv[0] == NULL))
 		{
-			dprintf(2, "\nfilefdfinal = %d\n", t_file->file_fdfinal);
-			dup2(t_file->file_fdfinal, STDOUT_FILENO);
-			close(t_file->file_fdfinal);
+			if (ft_arg_buildin(argv) == 0)
+			{
+				ft_signaux_annul(0);
+				if (ft_strncmp(argv[0], "exit", ft_strlen(argv[0]) - 1) == 0)
+					status = ft_arg_exit(argv, status);
+				else
+					status = ft_analyse_arg_buildin(argv, pointera, t_file);
+				ft_fre(argv);
+				ft_clean_final(listp, pointera, pointerB, t_file);
+				ft_signaux_annul(1);
+				exit(status);
+			}
+			env = ft_transform_env_list(pointera);
+			patch = ft_testpath(ft_path(env), argv);
+			ft_exe(patch, t, argv, env);
+			ft_test_dir(argv[0]);
+			ft_fre(env);
 		}
-		if (ft_arg_buildin(argv) == 0)
-			ft_analyse_arg_buildin(argv, pointera, pointerB, listp, t_file);
-		env = ft_transform_env_list(pointera);
-		patch = ft_testpath(ft_path(env), argv);
-		ft_exe(patch, t, argv, env);
-		ft_free_last(patch);
-		ft_lstclear(listp);
-		ft_fre(env);
+		ft_fre(argv);
+		free(t_file);
+		ft_clean_all(patch, listp, pointerB, pointera);
 		exit(EXIT_FAILURE);
 	}
 	else
@@ -369,98 +535,37 @@ int	ft_last(char **argv, t_pointer_cmd *pointerB, t_pointer **pointera, t_file_f
 	return (0);
 }
 
+void	ft_restore_fd(t_file_fd *t_file)
+{
+	if (t_file != NULL)
+	{
+		dup2(t_file->stdin_fd, STDIN_FILENO);
+		close(t_file->stdin_fd);
+		dup2(t_file->stdout_fd, STDOUT_FILENO);
+		close(t_file->stdout_fd);
+	}
+}
+
 int	ft_arg_buildin(char **argv)
 {
+	if (argv == NULL || argv[0] == NULL)
+		return (1);
+	if (argv[0][0] >= '0' && argv[0][0] <= '9')
+		return (1);
 	if (ft_strncmp(argv[0], "echo", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "cd", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "pwd", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "export", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "unset", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "env", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else if (ft_strncmp(argv[0], "exit", ft_strlen(argv[0]) - 1) == 0)
-		return(0);
+		return (0);
 	else
 		return (1);
 }
-
-/*
-char	**ft_create_arg(t_pointer_cmd **pointerB)
-{
-	t_cmd	*zoro;
-	t_cmd	*temp;
-	char	**argv;
-	int		i;
-	int		t;
-
-	i = 0;
-	argv = NULL;
-	zoro = (*pointerB)->first;
-	temp = (*pointerB)->first;
-//	i = ft_lst_size(*pointerB);
-	while (temp != NULL)
-	{
-		if (ft_strncmp(temp->type, "pipe", 4) == 0)
-			i++;
-		else if (ft_strncmp(temp->type, "word", 4) == 0)
-			i++;
-		printf("\n\n\n\n  %s  \n\n\n\n\n", temp->type);
-		temp = temp->next;
-	}			printf("\n\n\n\n  %s type \n\n\n\n\n", zoro->type);
-			printf("\n\n\n\n  %s  argv \n\n\n\n\n", argv[i]);
-	argv = (char **)malloc((i + 1) * sizeof(char *));
-	if (argv == NULL)
-		return (NULL);
-	printf("  ca%dca  ", i);
-	t = 0;
-	while (zoro != NULL)
-	{
-		printf("\nI\n");
-		if (ft_strncmp(zoro->type, "pipe", 4) == 0)
-		{
-			printf("\n\n\n\n  %s type \n\n\n\n\n", zoro->type);
-			printf("\n\n\n\n  %s  argv \n\n\n\n\n", argv[i]);
-			argv[t] = ft_strdup(zoro->cmd);
-		}
-		else if (ft_strncmp(zoro->type, "word", 5) == 0)
-		{
-			printf("\n\n\n\n  %s type \n\n\n\n\n", zoro->type);
-			printf("\n\n\n\n  %s  argv \n\n\n\n\n", argv[i]);
-			argv[t] = ft_strdup(zoro->cmd);
-		}
-		printf("\n\n\n\n  %s type \n\n\n\n\n", zoro->type);
-		printf("\n\n\n\n  %s  cmd \n\n\n\n\n", zoro->cmd);
-		t++;
-	}
-	argv[t] = NULL;
-	i = 0;
-	while (argv[i] != NULL)
-	{
-		printf("\n\n\n\n  %s aargv \n\n\n\n\n", argv[i]);
-		i++;		
-	}
-	return (argv);
-}
-
-int	ft_lst_size(t_pointer_cmd *pointerB)
-{
-	t_cmd	*temp;
-	int	i;
-
-	i = 0;
-	temp = pointerB->first;
-	while (temp != NULL)
-	{
-		if (ft_strncmp(temp->type, "pipe", 4) == 0)
-			i++;
-		else if (ft_strncmp(temp->type, "word", 4) == 0)
-			i++;
-		temp = temp->next;
-	}
-	return (i);
-}*/

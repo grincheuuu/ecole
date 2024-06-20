@@ -12,16 +12,14 @@
 
 #include "minishell.h"
 
-void	ft_echo(char **str, t_pointer **pointera, int status)
+int	ft_echo(char **str)
 {
 	int	g;
 	int	i;
-	int t;
+	int	t;
 
-	i = 0;
+	i = 1;
 	t = 0;
-	(void)pointera;
-	(void)status;
 	g = ft_search_option_echo(str);
 	while (i < g)
 		i++;
@@ -29,7 +27,7 @@ void	ft_echo(char **str, t_pointer **pointera, int status)
 	{
 		if (t == 1)
 		{
-			write (1, " ", 1);
+			write(1, " ", 1);
 			t = 0;
 		}
 		ft_putstr_fd(str[i], 1);
@@ -37,6 +35,7 @@ void	ft_echo(char **str, t_pointer **pointera, int status)
 		i++;
 	}
 	ft_space(str);
+	return (0);
 }
 
 void	ft_space(char **option)
@@ -46,12 +45,12 @@ void	ft_space(char **option)
 	i = 0;
 	if (option[1] == NULL)
 	{
-		write (1, "\n", 1);
+		write(1, "\n", 1);
 		return ;
 	}
 	else if (option[1][0] != '-' || option[1][1] != 'n')
 	{
-		write (1, "\n", 1);
+		write(1, "\n", 1);
 		return ;
 	}
 	i++;
@@ -59,7 +58,7 @@ void	ft_space(char **option)
 	{
 		if (option[1][i] != 'n')
 		{
-			write (1, "\n", 1);
+			write(1, "\n", 1);
 			break ;
 		}
 		i++;
@@ -68,17 +67,17 @@ void	ft_space(char **option)
 
 int	ft_search_option_echo(char **option)
 {
-	int	i;
-	int	j;
+	int i;
+	int j;
 
 	j = 1;
 	while (option[j] != NULL)
 	{
 		i = 0;
-
 		while (option[j][i] != '\0')
 		{
-			if ((i == 0 && option[j][i] != '-') || (i > 0 && option[j][i] != 'n'))
+			if ((i == 0 && option[j][i] != '-') || (i > 0
+					&& option[j][i] != 'n'))
 			{
 				return (j);
 			}

@@ -85,3 +85,11 @@ int ft_realize_cmd(t_pointer_cmd *pointerB, char **env, t_pointer **pointera)
 	printf("D");
 	return (status);
 }
+
+void	ft_putstr_fd(char *s, int fd)
+{
+	int	l;
+
+	l = ft_strlen(s);
+	write (fd, s, l);
+}

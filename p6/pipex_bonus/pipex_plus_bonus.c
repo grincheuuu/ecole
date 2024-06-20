@@ -12,15 +12,13 @@
 
 #include "pipex_bonus.h"
 
-int	ft_error(int n, const char *str)
+void	ft_error(int n, const char *str)
 {
 	if (n == -1)
 	{
 		perror(str);
-		write(2, "\n", 1);
-		return (1);
+		exit(EXIT_FAILURE);
 	}
-	return (0);
 }
 
 int	ft_strlen(char *env)
@@ -37,10 +35,13 @@ int	ft_strlen(char *env)
 	return (i);
 }
 
-void	ft_exe(char **patch, int t, char **argv, char **env)
+void	ft_exe(char **patch, int t, char *argv, char **env)
 {
-	//	dprintf(2, "44exe4\n");
-	//	ft_print_tab(patch);
+	char	**com;
+	char	**thor;
+
+	com = NULL;
+	thor = NULL;
 	if (patch == NULL)
 	{
 		ft_thor(argv);
@@ -48,41 +49,38 @@ void	ft_exe(char **patch, int t, char **argv, char **env)
 	}
 	while (patch[t] != NULL)
 	{
-		if ((access(argv[0], F_OK | X_OK) == 0))
-			execve(argv[0], argv, env);
-		if ((access(patch[t], F_OK | X_OK) == 0))
+		thor = ft_split(patch[t], ' ');
+		free(patch[t]);
+		com = ft_split(argv, ' ');
+		ft_absolut_path(argv, com, env);
+		if ((access(thor[0], F_OK | X_OK) == 0))
 		{
-			dprintf(2, "\nexceve %s execve\n", patch[t]);
-			execve(patch[t], argv, env);
+			execve(thor[0], com, env);
 		}
-		//		free(patch[t]);
+		ft_fre(thor);
+		ft_fre(com);
 		t++;
 	}
-	//	free(patch);
 }
 
-void	ft_thor(char **argv)
+void	ft_thor(char *argv)
 {
-	//	char	**com;
-	//	char	*dest;
-	//	int		k;
-	//	k = 0;
-	//	com = NULL;
-	//	dest = NULL;
-	//	dest = ft_arg(argv);
-	//	com = ft_split(dest, ' ');
-	/*	while (com[k] != NULL)
-		{
-			dprintf(2, "\nW5s");
-			k++;
-		}*/
-	write(2, "\n", 1);
-	//	free(dest);
-	if ((access(argv[0], F_OK | X_OK) == 0))
+	char	**thor;
+	char	**com;
+	char	*dest;
+
+	com = NULL;
+	dest = NULL;
+	thor = ft_split(argv, ' ');
+	dest = ft_arg(argv);
+	com = ft_split(dest, ' ');
+	free(dest);
+	if ((access(thor[0], F_OK | X_OK) == 0))
 	{
-		execve(argv[0], argv, NULL);
+		execve(thor[0], com, NULL);
 	}
-	//	ft_fre(com);
+	ft_fre(thor);
+	ft_fre(com);
 }
 
 char	*ft_arg(char *argv)
@@ -110,33 +108,4 @@ char	*ft_arg(char *argv)
 	}
 	dest[j] = '\0';
 	return (dest);
-}
-
-int	ft_atol_test(char *gv)
-{
-	int	i;
-
-	i = 0;
-	while ((gv[i] > 8 && gv[i] < 14) || gv[i] == 32)
-		i++;
-	if (gv[i] == 45 || gv[i] == 43)
-		i++;
-	if (!(gv[i] > 47 && gv[i] < 58))
-	{
-		write(2, "minishell: exit: ", 17);
-		ft_putstr_fd(gv, 2);
-		write(2, ": numeric argument required\n", 28);
-		return (2);
-	}
-	while (gv[i] > 47 && gv[i] < 58)
-		i++;
-	if (gv[i] == '\0')
-		return (0);
-	else
-	{
-		write(2, "minishell: exit: ", 17);
-		ft_putstr_fd(gv, 2);
-		write(2, ": numeric argument required\n", 28);
-		return (2);
-	}
 }

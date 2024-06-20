@@ -26,7 +26,7 @@ int	ft_unset(t_pointer **pointera, char **var)
         status = ft_unset_deux(var[t], temp, pointera);
         t++;
     }
-    return (status);
+    return (0);
 }
 
 int ft_unset_deux(char *var, t_list *temp, t_pointer **pointera)
@@ -39,13 +39,13 @@ int ft_unset_deux(char *var, t_list *temp, t_pointer **pointera)
     j = 0;
     status = 0;
     if (ft_isalpha(var[j]) == 0 && var[j] != '_')
-		status = ft_unset_error(var);
+		return (status);
     while (var[j] != '\0')
 	{
 		if (ft_isalpha(var[j]) == 0 && ft_isdigit(var[j]) == 0 && var[j] != '_' && var[j] != '=')
-			status = ft_unset_error(var);
+			return (status);
 		if (var[j] == '=')
-			status = ft_unset_error(var);
+			return (status);
 		j++;
 	}
 	while(temp != NULL)
@@ -60,14 +60,14 @@ int ft_unset_deux(char *var, t_list *temp, t_pointer **pointera)
     }
     return (status);
 }
-
+/*
 int    ft_unset_error(char *var)
 {
     write (2, "bash: unset: '", 15);
     ft_putstr_fd(var, 2);
     write (2, "': not a valid identifier\n", 27);
     return (1);
-}
+}*/
 
 void    ft_free_maillon(t_pointer **pointera, int i)
 {
@@ -93,17 +93,6 @@ void    ft_free_maillon(t_pointer **pointera, int i)
         (*pointera)->first = temp->next;
     free(temp->str);
     free(temp);
-}
-void    ft_exit_success(t_pointer **pointera, t_pointer_cmd *pointerB, char **str, char **env)
-{
-//    ft_printlist(pointera);
-    ft_lstclear_bis_pointera(pointera);
-    free(*pointera);
-    ft_lstclear_node(&pointerB->first);
-	free(pointerB);
-    ft_fre(env);
-    ft_fre(str);
-    exit(EXIT_SUCCESS);
 }
 
 void	ft_lstclear_bis_pointera(t_pointer **pointera)

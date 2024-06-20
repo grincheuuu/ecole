@@ -70,12 +70,3 @@ char	*ft_itoa(int n)
 	dest = ft_destgo(dest, n, len);
 	return (dest);
 }
-/*
-int	main(void)
-{
-	int	n;
-
-	n = -1456;
-	printf("%s", ft_itoa(n));
-	return (0);
-}*/

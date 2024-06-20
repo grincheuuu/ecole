@@ -18,14 +18,6 @@ void	ft_init( t_pointer *pointerA)
 	pointerA->end = NULL;
 }
 
-void	ft_putstr_fd(char *s, int fd)
-{
-	int	l;
-
-	l = ft_strlen(s);
-	write (fd, s, l);
-}
-
 char	**ft_transform_env_list(t_pointer **pointera)
 {
 	t_list	*temp;
@@ -57,7 +49,7 @@ char	**ft_transform_env_list(t_pointer **pointera)
 	return (env_tab);
 }
 
-void	ft_print_env(t_pointer **pointerA)
+int	ft_print_env(t_pointer **pointerA)
 {
 	t_list	*temp;
 	int		i;
@@ -66,7 +58,7 @@ void	ft_print_env(t_pointer **pointerA)
 	i = 0;
 	if (*pointerA == NULL)
 	{
-		return ;
+		return (1);
 	}
 	temp = (*pointerA)->first;
 	while (temp != NULL)
@@ -76,6 +68,7 @@ void	ft_print_env(t_pointer **pointerA)
 		temp = temp->next;
 		i++;
 	}
+	return (0);
 }
 
 void	ft_printlist(t_pointer *pointerA)

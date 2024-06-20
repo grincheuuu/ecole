@@ -50,16 +50,11 @@ char	*ft_strjoined(char *s1, char *s2)
 	return (dest);
 }
 
-int	ft_wait(t_listp **listp)
+int	ft_wait(t_pointer *pointerA)
 {
 	t_listp	*temp;
 
-	temp = *listp;
-	while (*listp != NULL)
-	{
-		temp = *listp;
-		*listp = (*listp)->before;
-	}
+	temp = pointerA->first;
 	while (temp->next != NULL)
 	{
 		close(temp->pipe_fd[0]);
@@ -70,78 +65,17 @@ int	ft_wait(t_listp **listp)
 	return (temp->status);
 }
 
-void	ft_clean_all(char **patch, t_listp **listp, t_pointer_cmd **pointerB,
-		t_pointer **pointera)
+void	ft_clean_all(char **patch, t_pointer *pointer)
 {
-	t_listp	*temp;
-
-	temp = NULL;
-	while (*listp != NULL)
-	{
-		temp = *listp;
-		*listp = (*listp)->before;
-	}
-	if (patch != NULL)
-		ft_fre(patch);
-	ft_lstclear(&temp);
-	ft_lstclear_bis(&(*pointera)->first);
-	free(*pointera);
-	ft_lstclear_node(&(*pointerB)->first);
-	free(*pointerB);
+	free(patch);
+	ft_lstclear(&pointer->first);
+	free(pointer);
 }
 
-void	ft_clean_final(t_listp **listp, t_pointer **pointera,
-		t_pointer_cmd **pointerB, t_file_fd *t_file)
+void	ft_clean_final(t_pointer *pointer, int j)
 {
-	t_listp	*temp;
-
-	temp = NULL;
-	free(t_file);
-	if (listp != NULL)
-	{
-		while (*listp != NULL)
-		{
-			temp = *listp;
-			*listp = (*listp)->before;
-		}
-		ft_lstclear(&temp);
-	}
-	ft_lstclear_bis(&(*pointera)->first);
-	free(*pointera);
-	ft_lstclear_node(&(*pointerB)->first);
-	free(*pointerB);
-}
-
-void	ft_test_dir(char *patch)
-{
-	struct stat	file;
-
-	if (stat(patch, &file) == 0)
-	{
-		if (S_ISDIR(file.st_mode))
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(patch, 2);
-			write(2, ": Is a directory\n", 17);
-		}
-		else if ((access(patch, F_OK | X_OK) < 0))
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(patch, 2);
-			write(2, ": Permission denied\n", 20);
-		}
-	}
-	else if ((patch != NULL && patch[0] != '\0') && (patch[ft_strlen(patch)
-			- 1] == '/' || patch[0] == '/'))
-	{
-		write(2, "minishell: ", 11);
-		ft_putstr_fd(patch, 2);
-		write(2, ": No such file or directory\n", 28);
-	}
-	else
-	{
-		write(2, "minishell: command not found: ", 30);
-		ft_putstr_fd(patch, 2);
-		write(2, "\n", 1);
-	}
+	ft_lstclear(&pointer->first);
+	free(pointer);
+	if (j == 1)
+		exit(EXIT_FAILURE);
 }

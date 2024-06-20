@@ -12,28 +12,51 @@
 
 #include "minishell.h"
 
-void    ft_cmd_exit(char **argv, t_pointer **pointera, t_pointer_cmd *pointerB)
+int	ft_cmd_exit(char **argv, int status)
 {
-    long    nb;
-    char    **env;
+	long	nb;
 
-    write (1, "exit\n", 5);
-    env = ft_transform_env_list(pointera);
-    if (argv[1] == NULL || (argv[1][0] == 0 && argv[1][0] == '\0'))
-        ft_exit_success(pointera, pointerB, argv, env);
-    if (argv[2] != NULL)
-    {
-        write (2, "bash: exit: too many arguments\n", 32);
-        return ;
-    }
-    nb = ft_atol(argv[1]);
-    ft_atol_test(argv[1], pointera, pointerB, argv);
-    if (nb < 0 || nb > 2147483647)
-        ft_exit_failure(pointera, pointerB, 255, argv);
-    if (nb > 255)
-        ft_exit_failure(pointera, pointerB, nb % 255, argv);
-    if (nb > 0 && nb <= 255)
-        ft_exit_failure(pointera, pointerB, nb, argv);
+	if (argv[1] == NULL)
+	{
+		ft_only_exit(status);
+		return (status);
+	}
+	write(1, "exit\n", 5);
+	if (((argv[1][0] == 0 && argv[1][1] == '\0') && argv[2] == NULL))
+		return (0);
+	if (argv[1] == NULL || (((argv[1][0] == '-' || argv[1][0] == '+')
+				&& argv[1][1] == 0) && argv[1][2] == '\0' && argv[2] == NULL))
+		return (0);
+	nb = ft_atol(argv[1]);
+	if (ft_atol_test(argv[1]) == 2)
+		return (2);
+	if (nb > 2147483647)
+		return (255);
+	if (nb < 0 && nb > -257)
+		return (256 + nb);
+	if (nb > 255 || nb < -256)
+		return (nb % 255);
+	if (nb > 0 && nb <= 255)
+		return (nb);
+	return (0);
+}
+
+void	ft_only_exit(int status)
+{
+	char	**temp;
+	char	*str;
+
+	str = NULL;
+	temp = malloc((3) * sizeof(char *));
+	if (temp == NULL)
+		return ;
+	temp[0] = ft_strdup("exit");
+	str = ft_itoa(status);
+	temp[1] = ft_strdup(str);
+	temp[2] = NULL;
+	ft_cmd_exit(temp, status);
+	free(str);
+	ft_fre(temp);
 }
 
 long	ft_atol(const char *nptr)
@@ -60,39 +83,24 @@ long	ft_atol(const char *nptr)
 	return (resultat * signe);
 }
 
-void	ft_atol_test(char *gv, t_pointer **pointera, t_pointer_cmd *pointerB, char **str)
+void	ft_exit_failure(t_pointer **pointera, t_pointer_cmd *pointerB,
+		unsigned int n, char **str)
 {
-	while ((*gv > 8 && *gv < 14) || *gv == 32)
-		gv++;
-	if (*gv == 45 || *gv == 43)
-		gv++;
-	if (!(*gv > 47 && *gv < 58))
-	{
-        write (2, "bash: exit: ", 13);
-        ft_putstr_fd(gv, 2);
-        write (2, ": numeric argument required\n", 29);
-        ft_exit_failure(pointera, pointerB, 2, str);
-    }
-	while (*gv > 47 && *gv < 58)
-		gv++;
-    if (*gv == '\0')
-		return ;
-    else
-    {
-        write (2, "bash: exit: ", 13);
-        ft_putstr_fd(gv, 2);
-        write (2, ": numeric argument required\n", 29);
-        ft_exit_failure(pointera, pointerB, 2, str);
-    }
+	ft_lstclear_bis_pointera(pointera);
+	free(pointera);
+	ft_lstclear_node(&pointerB->first);
+	free(pointerB);
+	ft_fre(str);
+	exit(n);
 }
 
-void    ft_exit_failure(t_pointer **pointera, t_pointer_cmd *pointerB, unsigned int n, char **str)
+void	ft_exit_success(t_pointer **pointera, t_pointer_cmd *pointerB,
+		char **str)
 {
-    ft_lstclear_bis_pointera(pointera);
-    free(pointera);
-    ft_lstclear_node(&pointerB->first);
+	ft_lstclear_bis_pointera(pointera);
+	free(*pointera);
+	ft_lstclear_node(&pointerB->first);
 	free(pointerB);
-    ft_fre(str);
-//    ft_fre(env_tab);
-    exit(n);
+	ft_fre(str);
+	exit(EXIT_SUCCESS);
 }

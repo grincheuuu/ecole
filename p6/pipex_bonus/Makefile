@@ -11,31 +11,41 @@
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 RM = rm -rf
-NAME = minishell
+NAME = pipex
+NAME_BONUS = pipex_bonus
 
-SRCS = cmd_env list cmd_export fonction cmd_unset cmd_pwd cmd_cd ft_exec cmd_exit main_minishell init_chaine_cmd signaux pipexm/pipex_bonus pipexm/pipex_projet_bonus pipexm/pipex_utils_bonus pipexm/pipex_func_bonus pipexm/pipex_plus_bonus pipexm/pipex_gnl_bonus pipexm/pipex_pipes_bonus pipexm/pipex_heredoc_bonus pipexm/pipex_struct_bonus pipexm/pipex_utils_second pipexm/pipex_bonus_ajout cmd_echo ft_itoa
+SRCS = pipex.c pipex_projet.c pipex_utils.c pipex_func.c pipex_plus.c pipex_suite.c
 
-INC_FILES = minishell.h pipex/pipex_bonus.h
+SRCS_BONUS = pipex_bonus.c pipex_projet_bonus.c pipex_utils_bonus.c pipex_func_bonus.c pipex_plus_bonus.c pipex_gnl_bonus.c pipex_pipes_bonus.c pipex_heredoc_bonus.c pipex_struct_bonus.c pipex_utils_second.c pipex_bonus_ajout.c
 
-SRC = $(addsuffix .c,$(SRCS))
-SRC_BONUS = $(addsuffix .c,$(SRCS_BONUS))
-OBJS = $(addsuffix .o,$(SRCS))
-OBJS_BONUS = $(addsuffix .o,$(SRCS_BONUS))
+
+INC_FILES = pipex.h
+
+INC_FILES_BONUS = pipex_bonus.h
+
+OBJS = pipex.o pipex_projet.o pipex_utils.o pipex_func.o pipex_plus.o pipex_suite.o
+
+OBJS_BONUS = pipex_bonus.o pipex_projet_bonus.o pipex_utils_bonus.o pipex_func_bonus.o pipex_plus_bonus.o pipex_gnl_bonus.o pipex_pipes_bonus.o pipex_heredoc_bonus.o pipex_struct_bonus.o pipex_utils_second.o pipex_bonus_ajout.o
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(OBJS_BONUS)
+	$(CC) $(CFLAGS) $(OBJS_BONUS) -o $(NAME_BONUS)
+
 .c.o:
 	$(CC) $(CFLAGS) -c $< -o $@ -g
 
 clean:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(OBJS_BONUS)
 fclean: clean
-	$(RM) $(NAME)
-re: fclean all
+	$(RM) $(NAME) $(NAME_BONUS)
+re: fclean all bonus
 
 .PHONY: all clean fclean re
