@@ -14,7 +14,7 @@
 
 int	ft_strncmp_deux(const char *env, const char *str, size_t nb)
 {
-	int	i;
+	int		i;
 	size_t	j;
 
 	i = 0;

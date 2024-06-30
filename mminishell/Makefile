@@ -3,39 +3,36 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: gschwart <marvin@42.fr>                    +#+  +:+       +#+         #
+#    By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/11/13 17:34:06 by gschwart          #+#    #+#              #
-#    Updated: 2023/11/13 18:18:27 by gschwart         ###   ########.fr        #
+#    Created: 2023/11/08 16:14:59 by tlegendr          #+#    #+#              #
+#    Updated: 2024/06/30 15:40:24 by tlegendr         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-CC = cc
-CFLAGS = -Wall -Wextra -Werror -g
-RM = rm -rf
 NAME = minishell
 
-SRCS = cmd_env list cmd_export fonction cmd_unset cmd_pwd cmd_cd ft_exec cmd_exit main_minishell init_chaine_cmd signaux pipexm/pipex_bonus pipexm/pipex_projet_bonus pipexm/pipex_utils_bonus pipexm/pipex_func_bonus pipexm/pipex_plus_bonus pipexm/pipex_gnl_bonus pipexm/pipex_pipes_bonus pipexm/pipex_heredoc_bonus pipexm/pipex_struct_bonus pipexm/pipex_utils_second pipexm/pipex_bonus_ajout cmd_echo ft_itoa
+SRC = main.c signal.c ft_split.c error_handling.c  cmd_env.c list.c cmd_export.c fonction.c cmd_unset.c cmd_pwd.c cmd_cd.c ft_exec.c cmd_exit.c init_chaine_cmd.c signaux.c pipexm/pipex_bonus.c pipexm/pipex_projet_bonus.c pipexm/pipex_utils_bonus.c pipexm/pipex_func_bonus.c pipexm/pipex_plus_bonus.c pipexm/pipex_gnl_bonus.c pipexm/pipex_pipes_bonus.c pipexm/pipex_heredoc_bonus.c pipexm/pipex_struct_bonus.c pipexm/pipex_utils_second.c pipexm/pipex_bonus_ajout.c cmd_echo.c ft_itoa.c  pipexm/pipex_addition_one.c pipexm/pipex_attribut.c pipexm/pipex_minishell_ajout.c pipexm/pipex_minishell_generate_argv.c pipexm/pipex_minishell_generate.c pipexm/pipex_pipes_ome.c pipexm/pipex_plus_plus_pipe.c pipexm/pipex_minishell_pipe.c pipexm/pipex_mini_ajout.c
+OBJ = $(SRC:.c=.o)
 
-INC_FILES = minishell.h pipex/pipex_bonus.h
-
-SRC = $(addsuffix .c,$(SRCS))
-SRC_BONUS = $(addsuffix .c,$(SRCS_BONUS))
-OBJS = $(addsuffix .o,$(SRCS))
-OBJS_BONUS = $(addsuffix .o,$(SRCS_BONUS))
+CC = cc
+CFLAGS = -g -Wall -Wextra -Werror -I/usr/include 
+LDFLAGS = -lm -lz -lreadline
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
 
-.c.o:
-	$(CC) $(CFLAGS) -c $< -o $@ -g
+$(NAME): $(OBJ)
+	$(CC) -o $(NAME) $(OBJ) $(LDFLAGS)
 
 clean:
-	$(RM) $(OBJS)
+	rm -f $(OBJ)
+
 fclean: clean
-	$(RM) $(NAME)
+	rm -f $(NAME)
+
 re: fclean all
 
 .PHONY: all clean fclean re

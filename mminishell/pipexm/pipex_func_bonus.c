@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_func_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 17:32:00 by gschwart          #+#    #+#             */
-/*   Updated: 2024/03/19 20:02:21 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/06/30 16:06:59 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,6 @@ char	*ft_strjoined(char *s1, char *s2)
 	return (dest);
 }
 
-int	ft_wait(t_listp **listp)
-{
-	t_listp	*temp;
-
-	temp = *listp;
-	while (*listp != NULL)
-	{
-		temp = *listp;
-		*listp = (*listp)->before;
-	}
-	while (temp->next != NULL)
-	{
-		close(temp->pipe_fd[0]);
-		waitpid(temp->pid, &temp->status, 0);
-		temp = temp->next;
-	}
-	waitpid(temp->pid, &temp->status, 0);
-	return (temp->status);
-}
-
 void	ft_clean_all(char **patch, t_listp **listp, t_pointer_cmd **pointerB,
 		t_pointer **pointera)
 {
@@ -88,6 +68,7 @@ void	ft_clean_all(char **patch, t_listp **listp, t_pointer_cmd **pointerB,
 	free(*pointera);
 	ft_lstclear_node(&(*pointerB)->first);
 	free(*pointerB);
+	rl_clear_history();
 }
 
 void	ft_clean_final(t_listp **listp, t_pointer **pointera,
@@ -96,7 +77,10 @@ void	ft_clean_final(t_listp **listp, t_pointer **pointera,
 	t_listp	*temp;
 
 	temp = NULL;
-	free(t_file);
+	if (t_file != NULL)
+	{
+		free(t_file);
+	}
 	if (listp != NULL)
 	{
 		while (*listp != NULL)
@@ -110,38 +94,12 @@ void	ft_clean_final(t_listp **listp, t_pointer **pointera,
 	free(*pointera);
 	ft_lstclear_node(&(*pointerB)->first);
 	free(*pointerB);
+	rl_clear_history();
 }
 
-void	ft_test_dir(char *patch)
+void	ft_clean_argv_pipe(char **argv, int status)
 {
-	struct stat	file;
-
-	if (stat(patch, &file) == 0)
-	{
-		if (S_ISDIR(file.st_mode))
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(patch, 2);
-			write(2, ": Is a directory\n", 17);
-		}
-		else if ((access(patch, F_OK | X_OK) < 0))
-		{
-			write(2, "minishell: ", 11);
-			ft_putstr_fd(patch, 2);
-			write(2, ": Permission denied\n", 20);
-		}
-	}
-	else if ((patch != NULL && patch[0] != '\0') && (patch[ft_strlen(patch)
-			- 1] == '/' || patch[0] == '/'))
-	{
-		write(2, "minishell: ", 11);
-		ft_putstr_fd(patch, 2);
-		write(2, ": No such file or directory\n", 28);
-	}
-	else
-	{
-		write(2, "minishell: command not found: ", 30);
-		ft_putstr_fd(patch, 2);
-		write(2, "\n", 1);
-	}
+	ft_fre(argv);
+	ft_signaux_annul(1);
+	exit(status);
 }

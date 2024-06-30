@@ -14,94 +14,94 @@
 
 int	ft_unset(t_pointer **pointera, char **var)
 {
-    t_list	*temp;
-    int status;
-    int t;
+	t_list	*temp;
+	int		status;
+	int		t;
 
-    status = 0;
-    t = 1;
-	temp = (*pointera)->first;
-    while (var[t] != NULL)
-    {
-        status = ft_unset_deux(var[t], temp, pointera);
-        t++;
-    }
-    return (0);
+	status = 0;
+	t = 1;
+	temp = NULL;
+	while (var[t] != NULL)
+	{
+		temp = (*pointera)->first;
+		status = ft_unset_deux(var[t], temp, pointera);
+		t++;
+	}
+	return (0);
 }
 
-int ft_unset_deux(char *var, t_list *temp, t_pointer **pointera)
+int	ft_unset_deux(char *var, t_list *temp, t_pointer **pointera)
 {
-    int j;
-    int i;
-    int status;
+	int	j;
+	int	status;
 
-    i = 0;
-    j = 0;
-    status = 0;
-    if (ft_isalpha(var[j]) == 0 && var[j] != '_')
+	j = 0;
+	status = 0;
+	if (ft_isalpha(var[j]) == 0 && var[j] != '_')
 		return (status);
-    while (var[j] != '\0')
+	while (var[j] != '\0')
 	{
-		if (ft_isalpha(var[j]) == 0 && ft_isdigit(var[j]) == 0 && var[j] != '_' && var[j] != '=')
+		if (ft_isalpha(var[j]) == 0 && ft_isdigit(var[j]) == 0 && var[j] != '_'
+			&& var[j] != '=')
 			return (status);
 		if (var[j] == '=')
 			return (status);
 		j++;
 	}
-	while(temp != NULL)
-	{
-		if (ft_strncmp(var, temp->str, ft_strlen(var)) == 0)
-        {
-			ft_free_maillon(pointera, i);
-            break ;
-        }
-	    temp = temp->next;
-		i++;
-    }
-    return (status);
+	ft_unset_trois(var, temp, pointera);
+	return (status);
 }
-/*
-int    ft_unset_error(char *var)
-{
-    write (2, "bash: unset: '", 15);
-    ft_putstr_fd(var, 2);
-    write (2, "': not a valid identifier\n", 27);
-    return (1);
-}*/
 
-void    ft_free_maillon(t_pointer **pointera, int i)
+void	ft_unset_trois(char *var, t_list *temp, t_pointer **pointera)
 {
-    t_list  *temp;
-    int j;
+	int	i;
 
-    j = 0;
-    temp = (*pointera)->first;
-    while (temp != NULL && j < i)
-    {
-        temp = temp->next;
-        j++;
-    }
-    if (temp == NULL)
-        return;
-    if (temp->next != NULL)
-        temp->next->before = temp->before;
-    else
-        (*pointera)->end = temp->before;
-    if (temp->before != NULL)
-        temp->before->next = temp->next;
-    else
-        (*pointera)->first = temp->next;
-    free(temp->str);
-    free(temp);
+	i = 0;
+	while (temp != NULL)
+	{
+		if (ft_strncmp(var, temp->str, ft_strlen(var) - 1) == 0)
+		{
+			ft_free_maillon(pointera, i);
+			break ;
+		}
+		temp = temp->next;
+		i++;
+	}
+}
+
+void	ft_free_maillon(t_pointer **pointera, int i)
+{
+	t_list	*temp;
+	int		j;
+
+	j = 0;
+	temp = (*pointera)->first;
+	while (temp != NULL && j < i)
+	{
+		temp = temp->next;
+		j++;
+	}
+	if (temp == NULL)
+		return ;
+	if (temp->next != NULL)
+		temp->next->before = temp->before;
+	else
+		(*pointera)->end = temp->before;
+	if (temp->before != NULL)
+		temp->before->next = temp->next;
+	else
+		(*pointera)->first = temp->next;
+	free(temp->str);
+	free(temp);
 }
 
 void	ft_lstclear_bis_pointera(t_pointer **pointera)
 {
 	t_list	*current;
 	t_list	*second;
-    t_list  *chaine;
+	t_list	*chaine;
 
-    chaine = (*pointera)->first;
+	chaine = (*pointera)->first;
 	if (chaine == NULL)
 		return ;
 	current = chaine;

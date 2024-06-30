@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_exec.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 15:41:24 by gschwart          #+#    #+#             */
-/*   Updated: 2023/11/07 13:56:29 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/06/27 16:39:06 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,38 +15,22 @@
 int	ft_exec(t_pointer **pointera, t_pointer_cmd *pointerB)
 {
 	int		status;
-	int		i;
-	char	*var;
-	char	*op;
 
 	status = 0;
-	i = -1;
-	var = NULL;
-	op = NULL;
-	i = ft_search_var(*pointera, "SHLVL=");
-	if (i < 0)
-		ft_export_plus(pointera);
-	else if (i >= 0)
-	{
-		op = ft_export_moin(pointera, i);
-		var = ft_strjoin("SHLVL=", op);
-		free(op);
-		ft_maillon_change(pointera, i, var);
-		free(var);
-	}
 	status = ft_pipex_start(pointera, pointerB, status);
 	ft_lstclear_node(&pointerB->first);
 	free(pointerB);
 	return (status);
 }
+
 void	ft_export_plus(t_pointer **pointera)
 {
 	char	**op;
 
 	op = malloc(3 * sizeof(char *));
-	if (op== NULL)
+	if (op == NULL)
 		return ;
-    op[0] = ft_strdup("export");
+	op[0] = ft_strdup("export");
 	op[1] = ft_strdup("SHLVL=1");
 	op[2] = NULL;
 	ft_export(op, pointera);
@@ -59,6 +43,7 @@ char	*ft_export_moin(t_pointer **pointera, int i)
 	t_list	*temp;
 	char	*op;
 	char	*nbchar;
+	char	*temp2;
 
 	j = 0;
 	op = NULL;
@@ -67,19 +52,17 @@ char	*ft_export_moin(t_pointer **pointera, int i)
 	while (temp != NULL && j++ < i)
 		temp = temp->next;
 	op = ft_strdup(temp->str + 6);
+	temp2 = op;
 	if (ft_atoi_test(op) == 2)
-	{
-		free(op);
 		op = ft_strdup("1");
-	}
 	else
 	{
 		j = 1 + ft_atoi(op);
-		free (op);
 		nbchar = ft_itoa(j);
 		op = ft_strdup(nbchar);
 		free(nbchar);
 	}
+	free(temp2);
 	return (op);
 }
 
@@ -128,3 +111,4 @@ int	ft_atoi(const char *nptr)
 		endptr = (char *)nptr;
 	return (resultat * signe);
 }
+

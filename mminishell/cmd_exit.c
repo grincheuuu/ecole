@@ -22,7 +22,8 @@ int	ft_cmd_exit(char **argv, int status)
 		return (status);
 	}
 	write(1, "exit\n", 5);
-	if (((argv[1][0] == 0 && argv[1][1] == '\0') && argv[2] == NULL))
+	if (argv[1][0] == '\0' || (((argv[1][0] == 0 && argv[1][1] == '\0')
+				&& argv[2] == NULL)))
 		return (0);
 	if (argv[1] == NULL || (((argv[1][0] == '-' || argv[1][0] == '+')
 				&& argv[1][1] == 0) && argv[1][2] == '\0' && argv[2] == NULL))
@@ -31,7 +32,12 @@ int	ft_cmd_exit(char **argv, int status)
 	if (ft_atol_test(argv[1]) == 2)
 		return (2);
 	if (nb > 2147483647)
-		return (255);
+	{
+		write (2, "minishell: exit: ", 17);
+		ft_putstr_fd(argv[1], 2);
+		write (2, " :numeric argument required", 27);
+		return (2);
+	}
 	if (nb < 0 && nb > -257)
 		return (256 + nb);
 	if (nb > 255 || nb < -256)

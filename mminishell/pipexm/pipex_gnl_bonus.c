@@ -35,7 +35,7 @@ char	*ft_read_and_save(int fd, char *save)
 		if (ft_strchr(save, '\n'))
 			break ;
 	}
-	free (buf);
+	free(buf);
 	return (save);
 }
 
@@ -74,11 +74,11 @@ char	*ft_after(char *save)
 
 	i = 0;
 	j = 0;
-	while (save[i] != '\0' && save [i] != '\n')
+	while (save[i] != '\0' && save[i] != '\n')
 		i++;
 	if (save[i] == '\0')
 	{
-		free (save);
+		free(save);
 		return (NULL);
 	}
 	while (save[i + j + 1] != '\0')
@@ -105,7 +105,7 @@ char	*get_next_line(int fd)
 	save = ft_read_and_save(fd, save);
 	if (save == NULL)
 	{
-		free (save);
+		free(save);
 		return (NULL);
 	}
 	line = ft_tronc(save);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   export.c                                           :+:      :+:    :+:   */
+/*   cmd_export.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/29 15:46:42 by gschwart          #+#    #+#             */
-/*   Updated: 2024/04/29 18:02:20 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/06/10 16:19:37 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	ft_export_only(t_pointer *pointera)
 	temp = pointera->first;
 	while (temp != NULL)
 	{
-		write (1, "declare -x ", 11);
-		write (1, temp->str, ft_strlen(temp->str));
-		write (1, "\n", 1);
+		write(1, "declare -x ", 11);
+		write(1, temp->str, ft_strlen(temp->str));
+		write(1, "\n", 1);
 		temp = temp->next;
 	}
 }
@@ -41,15 +41,15 @@ int	ft_export(char **str, t_pointer **pointera)
 		return (0);
 	}
 	while (str[++i] != NULL)
-   	{
+	{
 		if (ft_test_var(str[i], pointera) == 0)
 		{
 			new = ft_lstnew_bis(str[i]);
 			if (new == NULL)
 				return (1);
 			ft_lstadd_back_bis_pointer(pointera, new);
-   		}
-		else
+		}
+		else if (ft_test_var(str[i], pointera) != 3000)
 			status = 1;
 	}
 	return (status);
@@ -94,13 +94,19 @@ int	ft_test_var(char *var, t_pointer **pointera)
 	}
 	while (var[i] != '\0' && var[i] != '=')
 	{
-		if (ft_isalpha(var[i]) == 0 && ft_isdigit(var[i]) == 0 && var[i] != '_' && var[i] != '=')
+		if (ft_isalpha(var[i]) == 0 && ft_isdigit(var[i]) == 0 && var[i] != '_'
+			&& var[i] != '=')
 		{
 			ft_export_error(var);
 			return (1);
 		}
 		i++;
 	}
+	return (ft_test_var_deux(var, i, t, pointera));
+}
+
+int	ft_test_var_deux(char *var, int i, int t, t_pointer **pointera)
+{
 	if (var[i] == '=')
 		t = 0;
 	while (var[i] != '\0')
@@ -114,71 +120,13 @@ int	ft_test_var(char *var, t_pointer **pointera)
 	}
 	if (t == 0)
 	{
-		j = ft_search_var(*pointera, var);
-		if (j < 0)
+		i = ft_search_var(*pointera, var);
+		if (i < 0)
 			return (0);
-		if (j >= 0)
-			ft_maillon_change(pointera, j, var);
+		if (i >= 0)
+		{
+			ft_maillon_change(pointera, i, var);
+		}
 	}
-	return (1);
-}
-
-int	ft_search_var(t_pointer *pointera, char *var)
-{
-	t_list	*temp;
-	int	i;
-	int	j;
-	int	len_var;
-
-	i = -1;
-	j = 0;
-	len_var = 1;
-	temp = pointera->first;
-	while (var[j++] != '\0' && var[j] != '=')
-		len_var += 1;
-	while(temp != NULL)
-	{
-		i++;
-		if (ft_strncmp(var, temp->str, len_var) == 0)
-			return (i);
-		temp = temp->next;
-	}
-	return (-1);
-}
-
-void	ft_maillon_change(t_pointer **pointera, int i, char *var)
-{
-	t_list	*temp;
-	t_list	*new;
-	int	j;
-
-	j = 0;
-	temp = (*pointera)->first;
-	while (temp != NULL && j < i)
-	{
-		temp = temp->next;
-		j++;
-	}
-	new = ft_lstnew_bis(var);
-	if (new == NULL)
-		return ;
-	if (temp->next != NULL)
-		temp->next->before = new;
-	else
-		(*pointera)->end = new;
-	if (temp->before != NULL)
-		temp->before->next = new;
-	else
-		(*pointera)->first = new;
-	new->next = temp->next;
-	new->before = temp->before;
-	free(temp->str);
-	free(temp);
-}
-
-void	ft_export_error(char *var)
-{
-	write (2, "bash: export: '", 16);
-	ft_putstr_fd(var, 2);
-	write (2, "': not a valid identifier\n", 27);
+	return (3000);
 }

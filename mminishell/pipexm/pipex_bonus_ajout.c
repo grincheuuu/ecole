@@ -17,7 +17,6 @@ int	ft_error_deux(int n, const char *str, t_file_fd *t_file)
 	(void)t_file;
 	if (n == -1)
 	{
-//		write(2, "minishell: ", 11);
 		perror(str);
 		return (1);
 	}
@@ -33,10 +32,8 @@ void	ft_free_last(char **patch)
 void	ft_absolut_path(char **argv, char **com, char **env)
 {
 	(void)com;
-	//	dprintf(2, "patggggggggghh %s \n", pop[0]);
 	if ((access(argv[0], F_OK | X_OK) == 0))
 	{
-		//		dup2(2, 1);
 		execve(argv[0], argv, env);
 	}
 }
@@ -56,11 +53,24 @@ int	ft_arg_exit(char **argv, int status)
 			else
 			{
 				write(2, "minishell: exit: too many arguments\n", 36);
-				return (1); // pas exit
+				return (1);
 			}
 		}
 	}
 	else
 		status = ft_cmd_exit(argv, status);
 	return (status);
+}
+
+void	ft_close_exit_success(t_pointer **pointera, t_pointer_cmd **pointerB,
+		t_file_fd *t_file, char **argv)
+{
+	ft_lstclear_bis(&(*pointera)->first);
+	free(*pointera);
+	ft_fre(argv);
+	ft_lstclear_node(&(*pointerB)->first);
+	free(*pointerB);
+	free(t_file);
+	rl_clear_history();
+	exit(0);
 }

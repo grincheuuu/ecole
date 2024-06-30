@@ -11,6 +11,33 @@
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
+
+void	ft_signaux_pipeline(int n)
+{
+	struct sigaction	sa_ignore;
+	struct sigaction	sa_default;
+
+	if (n == 0)
+	{
+		ft_bzero(&sa_ignore, sizeof(sa_ignore));
+		sa_ignore.sa_handler = SIG_IGN;
+		sa_ignore.sa_flags = 0;
+		sigemptyset(&sa_ignore.sa_mask);
+		if (sigaction(SIGINT, &sa_ignore, NULL) == -1)
+			perror("sigaction");
+	}
+	else
+	{
+		ft_bzero(&sa_default, sizeof(sa_default));
+		sa_default.sa_handler = SIG_DFL;
+		sa_default.sa_flags = 0;
+		sigemptyset(&sa_default.sa_mask);
+		if (sigaction(SIGINT, &sa_default, NULL) == -1)
+			perror("sigaction");
+	}
+}
+
+
 /*
 void	ft_gnl(char *str)
 {

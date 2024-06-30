@@ -34,6 +34,7 @@ t_list	*ft_maillonlist(char **env)
 	}
 	return (chaine);
 }
+
 void	ft_lstclear_bis(t_list **chaine)
 {
 	t_list	*current;
@@ -91,6 +92,7 @@ void	ft_lstadd_back_bis(t_list **chaine, t_list *new)
 		new->next = NULL;
 	}
 }
+
 void	ft_affect(t_list *pile_a, t_pointer *pointera)
 {
 	t_list	*temp;

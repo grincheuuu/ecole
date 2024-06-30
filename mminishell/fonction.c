@@ -20,6 +20,7 @@ int	ft_isalpha(int c)
 		return (0);
 	return (1);
 }
+
 int	ft_isdigit(int c)
 {
 	if (c == '\0')
@@ -28,6 +29,7 @@ int	ft_isdigit(int c)
 		return (0);
 	return (1);
 }
+
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	unsigned char	*p1;
@@ -45,7 +47,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 		p2++;
 		n--;
 	}
-	return (0);
+	return (*p1 - *p2);
 }
 
 char	*ft_strdup(const char *s)

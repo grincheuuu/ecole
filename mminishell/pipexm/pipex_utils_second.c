@@ -50,7 +50,7 @@ char	*ft_strcat(char *dest, const char *src)
 
 int	ft_file(char *argv)
 {
-	int		file_fd;
+	int	file_fd;
 
 	file_fd = open(argv, O_RDONLY, 0644);
 	if (file_fd == -1)
