@@ -23,7 +23,6 @@ int	ft_build_pipe(char **argv, int status, t_pointer **pointera,
 		t_file_fd *t_file)
 {
 	(void)status;
-	dprintf(2, "%d \n", (*pointera)->status);
 	ft_signaux_annul(0);
 	if (ft_strncmp(argv[0], "exit", 5) == 0)
 		status = ft_arg_exit(argv, (*pointera)->status);
@@ -34,6 +33,7 @@ int	ft_build_pipe(char **argv, int status, t_pointer **pointera,
 
 void	ft_parents_mid(t_listp **listp)
 {
+	ft_signaux_pipeline(0);
 	close((*listp)->before->pipe_fd[0]);
 	close((*listp)->pipe_fd[1]);
 	*listp = ft_maillon(*listp);
@@ -51,7 +51,7 @@ void	ft_exe_child(t_pointer **pointera, char **argv, char **patch)
 	ft_fre(patch);
 }
 
-int	ft_initialize_final(int *status, char ***patch, char ***argv,
+void	ft_initialize_final(int *status, char ***patch, char ***argv,
 		t_listp **listp)
 {
 	*status = 0;
@@ -59,6 +59,4 @@ int	ft_initialize_final(int *status, char ***patch, char ***argv,
 	*argv = NULL;
 	close((*listp)->pipe_fd[0]);
 	close((*listp)->pipe_fd[1]);
-	set_signal();
-	return (EXIT_SUCCESS);
 }

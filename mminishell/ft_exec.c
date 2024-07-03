@@ -111,4 +111,3 @@ int	ft_atoi(const char *nptr)
 		endptr = (char *)nptr;
 	return (resultat * signe);
 }
-

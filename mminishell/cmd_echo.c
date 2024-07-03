@@ -74,6 +74,8 @@ int	ft_search_option_echo(char **option)
 	int	j;
 
 	j = 1;
+	if (option[1] != NULL && option[1][0] == '\0')
+		return (1);
 	while (option[j] != NULL)
 	{
 		i = 0;

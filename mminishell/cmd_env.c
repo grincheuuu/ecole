@@ -108,25 +108,3 @@ void	ft_realize_oldpwd(char *old_pwd, t_pointer **pointera)
 	ft_export(op, pointera);
 	ft_fre(op);
 }
-
-/*
-void	ft_printlist(t_pointer *pointerA)
-{
-	t_list	*temp;
-	int		i;
-
-	temp = NULL;
-	i = 0;
-	if (pointerA == NULL)
-	{
-		write(1, "NULL", 4);
-		return ;
-	}
-	temp = pointerA->first;
-	while (temp != NULL)
-	{
-		printf("%s\n", temp->str);
-		temp = temp->next;
-		i++;
-	}
-}*/

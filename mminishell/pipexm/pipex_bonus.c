@@ -76,16 +76,6 @@ char	**ft_testpath(char **result, char **argv)
 	return (testpatch);
 }
 
-void	ft_execve_error(int n, const char *str, char ***thor, char ***com)
-{
-	(void)thor;
-	(void)com;
-	if (n == -1)
-	{
-		perror(str);
-	}
-}
-
 int	ft_pipex_start(t_pointer **pointera, t_pointer_cmd *pointerB, int status)
 {
 	if (ft_search_pipe(pointerB) == 1)
@@ -111,7 +101,7 @@ char	**ft_generate_argv_deux(t_pointer_cmd **pointerB, int t)
 	temp = ft_temp(temp, t);
 	while (temp != NULL)
 	{
-		if(temp->special_token != 5)
+		if (temp->special_token != 5)
 			return (NULL);
 		if (temp->special_token == 0)
 			i++;

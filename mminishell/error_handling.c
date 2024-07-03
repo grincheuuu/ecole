@@ -6,7 +6,7 @@
 /*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/31 15:46:36 by tlegendr          #+#    #+#             */
-/*   Updated: 2024/06/30 19:33:38 by tlegendr         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:05:11 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,8 @@ int	redirection_error(char *line)
 			line++;
 		if (*line == '>' || *line == '<' || *line == '|' || !*line)
 		{
-			putstr_fd("minishell: syntax error near unexpected token `newline'\n",
+			putstr_fd(
+				"minishell: syntax error near unexpected token `newline'\n",
 				2);
 			return (1);
 		}
@@ -75,8 +76,9 @@ int	is_in_quote(char c, int *is_in_quote)
 
 int	check_for_errors(char *line)
 {
-	int in_quote = 0;
+	int	in_quote;
 
+	in_quote = 0;
 	while (if_whitespace(*line))
 		line++;
 	if (!*line)
@@ -89,15 +91,11 @@ int	check_for_errors(char *line)
 	while (*line)
 	{
 		if (*line == '|' && in_quote == 0)
-		{
 			if (pipe_usage_error(line))
 				return (1);
-		}
 		if ((*line == '>' || *line == '<') && in_quote == 0)
-		{
 			if (redirection_error(line))
 				return (1);
-		}
 		if ((*line == '\'' || *line == '\"' ))
 			in_quote = is_in_quote(*line, &in_quote);
 		line++;

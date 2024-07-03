@@ -6,7 +6,7 @@
 /*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/01 19:01:19 by tlegendr          #+#    #+#             */
-/*   Updated: 2024/06/10 16:55:29 by tlegendr         ###   ########.fr       */
+/*   Updated: 2024/07/01 18:51:26 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 		i++;
 	}
 	str[i] = '\0';
+	return (str);
+}
+
+char	*ft_substr_parsing(t_parsing *parsing)
+{
+	char	*str;
+
+	str = ft_substr(parsing->line, parsing->old_i, parsing->i - parsing->old_i);
 	return (str);
 }
 

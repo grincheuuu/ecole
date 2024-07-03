@@ -20,20 +20,31 @@ void	sigint_handler(int signal)
 	}
 }
 
-void	set_signal(void)
+void	ft_signaux_pipeline(int n)
 {
-	struct sigaction	action;
+	struct sigaction	sig_int_pipe;
+	struct sigaction	sig_quit_pipe;
 
-	ft_bzero(&action, sizeof(action));
-	action.sa_handler = &sigint_handler;
-	sigemptyset(&action.sa_mask);
-	action.sa_flags = SA_RESTART;
-	action.sa_flags = 0;
-	if (sigaction(SIGINT, &action, NULL) == -1)
+	ft_bzero(&sig_int_pipe, sizeof(&sig_int_pipe));
+	ft_bzero(&sig_quit_pipe, sizeof(&sig_quit_pipe));
+	sig_int_pipe.sa_flags = SA_RESTART;
+	sig_quit_pipe.sa_flags = SA_RESTART;
+	if (n == 0)
 	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
+		sig_int_pipe.sa_handler = SIG_IGN;
+		sig_quit_pipe.sa_handler = SIG_IGN;
 	}
+	else
+	{
+		sig_int_pipe.sa_handler = SIG_DFL;
+		sig_quit_pipe.sa_handler = SIG_DFL;
+	}
+	sigemptyset(&sig_int_pipe.sa_mask);
+	sigemptyset(&sig_quit_pipe.sa_mask);
+	if (sigaction(SIGQUIT, &sig_quit_pipe, NULL) == -1)
+		perror("sigaction: SIGQUIT");
+	if (sigaction(SIGINT, &sig_int_pipe, NULL) == -1)
+		perror("sigaction: SIGINT");
 }
 
 int	ft_search_var(t_pointer *pointera, char *var)

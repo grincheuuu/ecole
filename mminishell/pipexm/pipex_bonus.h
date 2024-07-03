@@ -6,7 +6,7 @@
 /*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/08 16:52:23 by gschwart          #+#    #+#             */
-/*   Updated: 2024/06/30 16:00:21 by tlegendr         ###   ########.fr       */
+/*   Updated: 2024/07/01 19:50:54 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,15 @@
 
 # include <assert.h>
 # include <fcntl.h>
+# include <readline/readline.h>
 # include <stdio.h>
 # include <stdlib.h>
 # include <string.h>
+# include <signal.h>
 # include <sys/stat.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
-# include <readline/readline.h>
 
 # ifndef BUFFER_SIZE
 #  define BUFFER_SIZE 5
@@ -33,6 +34,28 @@ typedef struct s_garbage
 	char				*prompt;
 	char				*line;
 }						t_garbage;
+
+typedef struct s_addlist_token
+{
+	int					token;
+	int					next_token;
+	int					*token_var;
+}						t_addlist_token;
+
+typedef struct s_addlist
+{
+	int					index;
+	int					full_len;
+	int					special_token;
+}						t_addlist;
+
+typedef struct s_parsing
+{
+	char				*line;
+	int					old_i;
+	int					i;
+	int					token;
+}						t_parsing;
 
 typedef struct s_file
 {
@@ -66,7 +89,7 @@ typedef struct s_list
 typedef struct s_control
 {
 	struct s_garbage	*garbage;
-	int 				status;
+	int					status;
 	struct s_list		*first;
 	struct s_list		*end;
 }						t_pointer;
@@ -109,7 +132,7 @@ void					ft_un(t_pointer_cmd **pointerB, t_pointer **pointera,
 void					ft_mid(t_pointer_cmd **pointerB, t_pointer **pointera,
 							t_file_fd *t_file, t_listp **listp);
 void					ft_printlist_aa(t_listp **listp);
-int						ft_last(t_pointer_cmd **pointerB, t_pointer **pointera,
+void					ft_last(t_pointer_cmd **pointerB, t_pointer **pointera,
 							t_file_fd *t_file, t_listp **listp);
 void					ft_lstclear(t_listp **chaine);
 void					ft_lstadd_back(t_listp **chaine, t_listp *new);
@@ -117,7 +140,7 @@ void					ft_lstclear_bis(t_list **chaine);
 void					ft_lstclear_node(t_lexing **chaine);
 int						ft_pipeline(t_pointer_cmd *pointerB,
 							t_pointer **pointera, int status);
-int						ft_wait(t_listp **listp);
+int						ft_wait(t_listp **listp, t_pointer_cmd **pointerB);
 void					ft_clean_all(char **patch, t_listp **listp,
 							t_pointer_cmd **pointerB, t_pointer **pointera);
 void					ft_clean_final(t_listp **listp, t_pointer **pointera,
@@ -246,7 +269,7 @@ char					**ft_child_mid_deux(t_pointer_cmd **pointerB,
 char					**ft_child_last_deux(t_pointer_cmd **pointerB,
 							t_pointer **pointera, t_file_fd *t_file,
 							t_listp **listp);
-int						ft_initialize_final(int *status, char ***patch,
+void					ft_initialize_final(int *status, char ***patch,
 							char ***argv, t_listp **listp);
 void					ft_parents_mid(t_listp **listp);
 int						ft_error_out(int *file_fdfinal, int n, t_lexing *temp,
@@ -254,5 +277,14 @@ int						ft_error_out(int *file_fdfinal, int n, t_lexing *temp,
 void					ft_close_exit_success(t_pointer **pointera,
 							t_pointer_cmd **pointerB, t_file_fd *t_file,
 							char **argv);
+void					ft_signaux_pipeline(int n);
+void					change_signal(int param);
+int						ft_fre_listp(t_listp **listp, char **argv);
+void					ft_parents(int pipe_fd[]);
+int						ft_exit_arg_nb(char **argv);
+void					ft_end_child(char **argv, char **env, char **patch);
+void					ft_parent_last(t_listp **listp);
+int						ft_int(long nb, char **argv);
+void					ft_unlink(t_pointer_cmd **pointerB);
 
 #endif

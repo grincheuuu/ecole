@@ -54,6 +54,7 @@ int	ft_generate_fd_un(t_file_fd *t_file, char **argv, t_lexing *temp,
 		close(file_fd);
 		close(t_file->stdin_fd);
 		close(t_file->stdout_fd);
+		free(t_file);
 		if (argv != NULL)
 			ft_fre(argv);
 		return (-1);
@@ -79,6 +80,7 @@ int	ft_generate_fd_deux(t_file_fd *t_file, char **argv, t_lexing *temp,
 		close(t_file->stdout_fd);
 		if (argv != NULL)
 			ft_fre(argv);
+		free(t_file);
 		return (-1);
 	}
 	dup2(file_fdfinal, STDOUT_FILENO);
@@ -102,6 +104,7 @@ int	ft_generate_fd_trois(t_file_fd *t_file, char **argv, t_lexing *temp,
 		close(t_file->stdout_fd);
 		if (argv != NULL)
 			ft_fre(argv);
+		free(t_file);
 		return (-1);
 	}
 	dup2(file_fdfinal, STDOUT_FILENO);

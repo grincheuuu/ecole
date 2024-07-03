@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_limiteur_bonus.c                             :+:      :+:    :+:   */
+/*   pipex_gnl_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/21 15:05:05 by gschwart          #+#    #+#             */
-/*   Updated: 2024/02/21 15:07:06 by gschwart         ###   ########.fr       */
+/*   Updated: 2024/07/02 15:55:01 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ char	*get_next_line(int fd)
 	}
 	line = ft_tronc(save);
 	save = ft_after(save);
+	if (save != NULL && *save == '\0')
+	{
+		free(save);
+		save = NULL;
+	}
 	return (line);
 }
 

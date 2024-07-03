@@ -33,6 +33,8 @@ void	ft_un(t_pointer_cmd **pointerB, t_pointer **pointera, t_file_fd *t_file,
 			}
 			ft_exe_child(pointera, argv, patch);
 		}
+		if (ft_fre_listp(listp, argv) == 1)
+			ft_close_exit_success(pointera, pointerB, t_file, argv);
 		ft_clean_all(patch, listp, pointerB, pointera);
 		ft_quit_pipe(argv, t_file);
 	}
@@ -46,10 +48,10 @@ char	**ft_child_un_deux(t_pointer_cmd **pointerB, t_pointer **pointera,
 	char	**argv;
 
 	argv = NULL;
+	ft_signaux_pipeline(1);
 	close((*listp)->pipe_fd[0]);
 	close(t_file->stdin_fd);
 	close(t_file->stdout_fd);
-	set_signal();
 	ft_generate_infile(pointerB, t_file, pointera, listp);
 	if (ft_generate_outfile(pointerB, t_file, pointera, listp) == 0)
 		dup2((*listp)->pipe_fd[1], STDOUT_FILENO);
@@ -63,10 +65,9 @@ void	ft_mid(t_pointer_cmd **pointerB, t_pointer **pointera,
 {
 	char	**patch;
 	char	**argv;
-	int		t;
 	int		status;
 
-	t = ft_initialize(&status, &patch, &argv);
+	ft_initialize(&status, &patch, &argv);
 	if ((*listp)->pid == 0)
 	{
 		argv = ft_child_mid_deux(pointerB, pointera, t_file, listp);
@@ -80,6 +81,8 @@ void	ft_mid(t_pointer_cmd **pointerB, t_pointer **pointera,
 			}
 			ft_exe_child(pointera, argv, patch);
 		}
+		if (ft_fre_listp(listp, argv) == 1)
+			ft_close_exit_success(pointera, pointerB, t_file, argv);
 		ft_clean_all(patch, listp, pointerB, pointera);
 		ft_quit_pipe(argv, t_file);
 	}
@@ -95,7 +98,7 @@ char	**ft_child_mid_deux(t_pointer_cmd **pointerB, t_pointer **pointera,
 	argv = NULL;
 	close(t_file->stdin_fd);
 	close(t_file->stdout_fd);
-	set_signal();
+	ft_signaux_pipeline(1);
 	if (ft_generate_infile(pointerB, t_file, pointera, listp) == 0)
 		dup2((*listp)->before->pipe_fd[0], STDIN_FILENO);
 	close((*listp)->before->pipe_fd[0]);
@@ -107,15 +110,14 @@ char	**ft_child_mid_deux(t_pointer_cmd **pointerB, t_pointer **pointera,
 	return (argv);
 }
 
-int	ft_last(t_pointer_cmd **pointerB, t_pointer **pointera, t_file_fd *t_file,
-		t_listp **listp)
+void	ft_last(t_pointer_cmd **pointerB, t_pointer **pointera,
+		t_file_fd *t_file, t_listp **listp)
 {
 	char	**patch;
 	char	**argv;
-	int		t;
 	int		status;
 
-	t = ft_initialize_final(&status, &patch, &argv, listp);
+	ft_initialize_final(&status, &patch, &argv, listp);
 	if ((*listp)->pid == 0)
 	{
 		argv = ft_child_last_deux(pointerB, pointera, t_file, listp);
@@ -129,10 +131,11 @@ int	ft_last(t_pointer_cmd **pointerB, t_pointer **pointera, t_file_fd *t_file,
 			}
 			ft_exe_child(pointera, argv, patch);
 		}
+		if (ft_fre_listp(listp, argv) == 1)
+			ft_close_exit_success(pointera, pointerB, t_file, argv);
 		ft_clean_all(patch, listp, pointerB, pointera);
 		ft_quit_pipe(argv, t_file);
 	}
 	else
-		close((*listp)->before->pipe_fd[0]);
-	return (0);
+		ft_parent_last(listp);
 }

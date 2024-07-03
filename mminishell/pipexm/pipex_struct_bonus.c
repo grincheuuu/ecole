@@ -69,7 +69,6 @@ t_listp	*ft_maillon(t_listp *listp)
 	new = ft_lstnew();
 	if (new == NULL)
 	{
-		dprintf(2, " maillon erreur\n");
 		ft_lstclear(&listp);
 		return (NULL);
 	}

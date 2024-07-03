@@ -15,11 +15,13 @@
 void	ft_close_exit_failure(t_pointer **pointera, t_pointer_cmd **pointerB,
 		t_file_fd *t_file)
 {
+	(void)t_file;
 	ft_lstclear_bis(&(*pointera)->first);
 	free(*pointera);
 	ft_lstclear_node(&(*pointerB)->first);
 	free(*pointerB);
-	free(t_file);
+//	if (t_file != NULL)
+//		free(t_file);
 	rl_clear_history();
 	exit(127);
 }
@@ -47,7 +49,7 @@ void	ft_bzero(void *s, size_t n)
 	}
 }
 
-int	ft_wait(t_listp **listp)
+int	ft_wait(t_listp **listp, t_pointer_cmd **pointerB)
 {
 	t_listp	*temp;
 
@@ -66,6 +68,7 @@ int	ft_wait(t_listp **listp)
 	waitpid(temp->pid, &temp->status, 0);
 	if (WEXITSTATUS(temp->status))
 		temp->status = WEXITSTATUS(temp->status);
+	ft_unlink(pointerB);
 	return (temp->status);
 }
 

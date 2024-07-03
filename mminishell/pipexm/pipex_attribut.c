@@ -20,6 +20,7 @@ char	**ft_child_last_deux(t_pointer_cmd **pointerB, t_pointer **pointera,
 	argv = NULL;
 	close(t_file->stdin_fd);
 	close(t_file->stdout_fd);
+	ft_signaux_pipeline(1);
 	if (ft_generate_infile(pointerB, t_file, pointera, listp) == 0)
 		dup2((*listp)->before->pipe_fd[0], STDIN_FILENO);
 	close((*listp)->before->pipe_fd[0]);

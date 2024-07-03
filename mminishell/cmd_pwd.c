@@ -34,3 +34,17 @@ int	ft_pwd(void)
 	free(buffer);
 	return (0);
 }
+
+int	ft_int(long nb, char **argv)
+{
+	if (ft_atol_test(argv[1]) == 2)
+		return (2);
+	if (nb > 2147483647)
+	{
+		write(2, "minishell: exit: ", 17);
+		ft_putstr_fd(argv[1], 2);
+		write(2, " : numeric argument required", 28);
+		return (2);
+	}
+	return (0);
+}

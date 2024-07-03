@@ -66,7 +66,7 @@ int	ft_pipeline(t_pointer_cmd *pointerB, t_pointer **pointera, int status)
 	list = listp;
 	ft_analyse_here_doc(&pointerB, pointera);
 	ft_realize_pipe(&pointerB, &listp, pointera, status);
-	status = ft_wait(&listp);
+	status = ft_wait(&listp, &pointerB);
 	ft_lstclear(&list);
 	return (status);
 }
@@ -94,6 +94,7 @@ void	ft_realize_pipe(t_pointer_cmd **pointerB, t_listp **listp,
 		if (temp != NULL && temp->special_token == 5)
 			temp = temp->next;
 		t_file->t += 1;
+		change_signal(0);
 	}
 	ft_restore_fd(t_file);
 	free(t_file);

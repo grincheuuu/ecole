@@ -38,7 +38,7 @@ void	ft_exe(char **patch, int t, char **argv, char **env)
 		if ((access(argv[0], F_OK | X_OK) == 0))
 			execve(argv[0], argv, env);
 		if ((access(patch[t], F_OK | X_OK) == 0) && (argv[0][0] != '.'
-				&& argv[0][0] != '\0' && argv[0][1] != '/'))
+			&& argv[0][0] != '\0' && argv[0][1] != '/'))
 		{
 			execve(patch[t], argv, env);
 		}

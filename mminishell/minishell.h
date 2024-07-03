@@ -6,7 +6,7 @@
 /*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/25 17:39:15 by gschwart          #+#    #+#             */
-/*   Updated: 2024/06/30 15:57:56 by tlegendr         ###   ########.fr       */
+/*   Updated: 2024/07/03 13:42:50 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include <errno.h>
 # include <readline/history.h>
 # include <readline/readline.h>
-# include <signal.h>
 # include <stddef.h>
 # include <stdio.h>
 # include <stdlib.h>
@@ -29,7 +28,7 @@ void			putstr_fd(char *str, int fd);
 char			*ft_substr(char const *s, unsigned int start, size_t len);
 int				parse_line(char *line, t_pointer **pointera);
 int				ft_strlen(const char *string);
-
+char			*ft_substr_parsing(t_parsing *parsing);
 int				check_for_errors(char *line);
 
 void			ft_printlist(t_pointer *pointerA);
@@ -89,7 +88,66 @@ void			ft_unset_trois(char *var, t_list *temp, t_pointer **pointera);
 int				ft_test_var_deux(char *var, int i, int t, t_pointer **pointera);
 void			ft_shlvl(t_pointer **pointera);
 
-void			change_signal(int param);
 void			sig_exit_code(t_pointer **arg);
+
+void			clean_table(t_lexing *cmd);
+void			clear_garbage(t_garbage **garbage);
+
+void			putstr_fd(char *str, int fd);
+void			ft_putstr_fd(char *s, int fd);
+void			putnbr_fd(int n, int fd);
+
+void			handle_redir_upper(t_lexing **tmp, char *line, t_parsing **par);
+void			handle_redir_lower(t_lexing **tmp, char *line, t_parsing **par);
+void			handle_standard_char_add(t_lexing **tmp, t_parsing **parsing);
+void			handle_get_status(t_lexing **tmp, t_pointer **pointera, int *i,
+					int *token);
+void			handle_get_envvar(t_lexing **tmp, char *line,
+					t_parsing **parsing, t_pointer **pointera);
+
+int				is_blank(char c);
+int				ft_isalnum(char c);
+int				is_authorized_for_env_char(char c);
+
+t_lexing		*add_to_list(t_lexing *tmp, char *cmd,
+					t_addlist_token *addlist_token, t_addlist *addlist);
+void			handle_quote_add(t_lexing **tmp, t_parsing **par,
+					t_pointer **poina, int len);
+char			*extract_next_word(char *line, int *i, t_parsing **parsing);
+t_lexing		*merge_and_add(t_lexing *tmp2, t_lexing *cmd,
+					t_lexing **updated_cmd);
+int				merge_and_run(t_lexing *cmd, t_pointer **pointera);
+t_lexing		*merge_nearby_word(t_lexing *cmd);
+
+char			*ft_search_home(t_pointer *pointera, char *var);
+char			*ft_search_env_var(t_pointer *pointera, char *var);
+void			ft_shlvl(t_pointer **pointera);
+
+int				parse_line(char *line, t_pointer **pointera);
+char			*ft_prompt(t_pointer *pointera);
+int				prompt(t_pointer **pointera);
+char			*process_heredoc(char *delimiter, int index);
+
+int				handle_special_case(t_parsing *parsing);
+
+t_addlist		*bstruct(int index, int full_len, int special_token);
+t_addlist_token	*bstructtok(int token, int next_token, int *token_var);
+
+void			handle_env_variable(char **tmp_cmd, t_parsing **par,
+					t_pointer **pointera, int *len);
+void			handle_status_variable(char **tmp_cmd, int *i,
+					t_pointer **pointera, int *len);
+void			handle_else_part(char **tmp_cmd, t_parsing **par, int *len);
+void			handle_quote_add(t_lexing **tmp, t_parsing **par,
+					t_pointer **poina, int len);
+
+void			handle_special_cases(t_parsing **par, char *line, char **value);
+void 			handle_redirlow_part(t_lexing **tmp, char *line, t_parsing **par);
+
+int				handle_heredoc_input(int fd, char *delimiter);
+void			handle_dollar(char *line, t_parsing **par, t_lexing **tmp, t_pointer **pointera);
+void			process_line_chars(char *line, t_parsing **par, t_lexing **tmp, t_pointer **pointera);
+int				handle_input(t_pointer **pointera, t_garbage **garbage);
+char			*get_prompt_home(t_pointer *pointera, char *buffer);
 
 #endif

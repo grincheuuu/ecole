@@ -6,7 +6,7 @@
 /*   By: tlegendr <tlegendr@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/29 17:26:36 by tlegendr          #+#    #+#             */
-/*   Updated: 2024/06/29 18:39:51 by tlegendr         ###   ########.fr       */
+/*   Updated: 2024/07/02 18:08:03 by tlegendr         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	sig_readline(int sig)
 		g_signal = SIGINT;
 	}
 }
-
 
 void	sig_cmd(int sig)
 {
@@ -85,6 +84,8 @@ void	change_signal(int param)
 		sig_quit.sa_handler = &sig_heredoc;
 		sig_int.sa_flags = 0;
 	}
+	sigemptyset(&sig_int.sa_mask);
+	sigemptyset(&sig_quit.sa_mask);
 	sigaction(SIGINT, &sig_int, NULL);
 	sigaction(SIGQUIT, &sig_quit, NULL);
 }

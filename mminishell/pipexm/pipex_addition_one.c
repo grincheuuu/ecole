@@ -29,17 +29,14 @@ int	ft_realize_cmd(t_pointer_cmd **pointerB, t_pointer **pointera, int status)
 	if (a_pid == 0)
 		ft_childun(pipe_fd, pointerB, t_file, pointera);
 	else
-	{
-		close(pipe_fd[1]);
-		close(pipe_fd[0]);
-	}
+		ft_parents(pipe_fd);
 	waitpid(a_pid, &status, 0);
-	if (access("text.tmp", F_OK) == 0)
-		unlink("text.tmp");
+	ft_unlink(pointerB);
 	ft_restore_fd(t_file);
 	free(t_file);
 	if (WEXITSTATUS(status))
 		status = WEXITSTATUS(status);
+	change_signal(0);
 	return (status);
 }
 
@@ -65,23 +62,21 @@ int	ft_exit(char **argv, t_file_fd *t_file, t_pointer **pointera,
 		t_pointer_cmd **pointerB)
 {
 	int	status;
-	int	i;
 
 	status = 0;
-	i = 1;
 	if (argv[1] != NULL && argv[1][0] != 0 && argv[2] != NULL)
 	{
 		write(1, "exit\n", 5);
-		while (argv[i++] != NULL)
+		if (ft_atol_test(argv[1]) != 0)
 		{
-			if (ft_atol_test(argv[1]) != 0)
-				break ;
-			else
-			{
-				write(2, "minishell: exit: too many arguments\n", 36);
-				return (1);
-			}
+			close(t_file->stdin_fd);
+			close(t_file->stdout_fd);
+			ft_clean_final(NULL, pointera, pointerB, t_file);
+			ft_fre(argv);
+			exit(2);
 		}
+		if (ft_exit_arg_nb(argv) == 1)
+			return (1);
 	}
 	close(t_file->stdin_fd);
 	close(t_file->stdout_fd);
@@ -130,7 +125,7 @@ void	ft_childun(int pipe_fd[], t_pointer_cmd **pointerB, t_file_fd *t_file,
 	patch = NULL;
 	argv = NULL;
 	ft_close_fd(pipe_fd, t_file);
-	set_signal();
+	ft_signaux_pipeline(1);
 	if (ft_generate_fd(pointerB, t_file, argv) == 0)
 	{
 		argv = ft_generate_argv(pointerB, 0);
@@ -141,14 +136,11 @@ void	ft_childun(int pipe_fd[], t_pointer_cmd **pointerB, t_file_fd *t_file,
 			env = ft_transform_env_list(pointera);
 			patch = ft_testpath(ft_path(env), argv);
 			ft_exe(patch, 0, argv, env);
-			ft_test_dir(argv[0]);
-			ft_fre(env);
-			ft_fre(argv);
-			if (patch != NULL)
-				ft_fre(patch);
+			ft_end_child(argv, env, patch);
 		}
 		else if (argv != NULL && argv[0][0] == '\0')
 			ft_fre(argv);
+		free(t_file);
 	}
 	ft_close_exit_failure(pointera, pointerB, t_file);
 }

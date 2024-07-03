@@ -81,6 +81,7 @@ void	ft_test_file_fd(char *argv, t_pointer_p *pointer)
 
 t_listp	*ft_parent_un(t_listp **listp)
 {
+	ft_signaux_pipeline(0);
 	close((*listp)->pipe_fd[1]);
 	return (ft_maillon(*listp));
 }
