@@ -34,6 +34,8 @@ unsigned long	ft_atoiulong(const char *nptr)
 	unsigned long		resultat;
 
 	resultat = 0;
+	if (nptr == NULL)
+		return (100000);
 	while ((*nptr > 8 && *nptr < 14) || *nptr == 32)
 		nptr++;
 	if (*nptr == 45 || *nptr == 43)

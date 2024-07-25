@@ -11,11 +11,11 @@
 # **************************************************************************** #
 
 CC = gcc -pthread
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g
 RM = rm -rf
 NAME = philo
 
-SRCS = philosopher philosopher_thread philosopher_util
+SRCS = philosopher philosopher_thread philosopher_util philo_list_chainee philo_t
 
 INC_FILES = philosopher.h
 

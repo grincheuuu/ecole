@@ -56,13 +56,15 @@ t_list	*ft_initialize(char **argv)
 		return (NULL);
 	list->nb = ft_atoi(argv[1]);
 	list->die = ft_atoiulong(argv[2]);
-	list->think = ft_atoiulong(argv[3]);
-	list->eat = ft_atoiulong(argv[4]);
-	list->sleep = ft_atoiulong(argv[5]);
+	list->eat = ft_atoiulong(argv[3]);
+	list->sleep = ft_atoiulong(argv[4]);
 	list->fork_r = 1;
 	list->fork_l = 1;
+	list->end = 0;
 	list->write = 0;
-	list->sleep = ft_atoiulong(argv[5]);
+	list->nb_eat = ft_atoiulong(argv[5]);
+	list->begin_time = 0;
+	list->time = 0;
 	return (list);
 }
 
@@ -72,9 +74,9 @@ unsigned long	ft_translate_time(char *type)
 	double			time;
 
 	gettimeofday(&tv, NULL);
-	printf("\ntv %ld s. %ld micro s\n\n", tv.tv_sec, tv.tv_usec);
+//	printf("\ntv %ld s. %ld micro s\n\n", tv.tv_sec, tv.tv_usec);
 	time = tv.tv_sec + tv.tv_usec / 1000000.0;
-	printf("%f time\n", time);
+//	printf("%f time\n", time);
 	if (ft_strncmp(type, "ms", 2) == 0)
 	{
 		return (time * 1000);
@@ -84,7 +86,7 @@ unsigned long	ft_translate_time(char *type)
 	return (0);
 }
 
-void	ft_only_philo(char **argv)
+void	ft_translate(char **argv)
 {
 	unsigned long	time_ms_un;
 	unsigned long	time_ms_deux;
@@ -100,40 +102,17 @@ void	ft_only_philo(char **argv)
 	printf("time_passed %ld \n", time_passed);
 }
 
-void    *ft_thread_routine(void *data)
-{
-
-}
-
 int	main(int argc, char **argv)
 {
-	pthread_t	p1;
 	t_list		*list;
 
+	list = NULL;
 	ft_analyse_argc(argc, argv);
 	list = ft_initialize(argv);
 	if (ft_atoi(argv[1]) == 1)
-		ft_only_philo(argv);
-	pthread_mutex_init(&list->write_mutex, NULL);
-	pthread_mutex_init(&list->eat_mutex, NULL);
-	pthread_mutex_init(&list->fork_r_mutex, NULL);
-	pthread_mutex_init(&list->fork_l_mutex, NULL);
-	pthread_create(&p1, NULL, ft_thread_routine, list);
-	printf("\nMAIN, creation 1er thread %lu\n", p1);
-//	pthread_create(&tid2, NULL, thread_routine, &counter);
-//	printf("\nMAIN, creation 2eme thread %lu\n", tid2);
-	pthread_join(p1, NULL);
-	printf("\nunion du 1er thread %lu\n", p1);
-//	pthread_join(tid2, NULL);
-//	printf("\nunion du 2eme thread %lu\n", tid2);
-/*	if (counter.count != (2 * TIMES_TO_COUNT))
-		printf("%sMain: ERREUR ! Le compte est de %u%s\n", RED, counter.count,
-			NC);
+		ft_only_philo(list);
 	else
-		printf("%sMain: OK. Le compte est de %u%s\n", GREEN, counter.count, NC);*/
-	pthread_mutex_destroy(&list->write_mutex);
-	pthread_mutex_destroy(&list->eat_mutex);
-	pthread_mutex_destroy(&list->fork_r_mutex);
-	pthread_mutex_destroy(&list->fork_l_mutex);
+		ft_create_philo(list);
+	free(list);
 	return (0);
 }
