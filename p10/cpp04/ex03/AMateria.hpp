@@ -10,12 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef AMATERIA_HPP
-# define AMATERIA_HPP
+#pragma once
 
 # include <iostream>
 # include <string>
 # include "ICharacter.hpp"
+# include "colors.hpp"
+
+class ICharacter;
 
 class AMateria
 {
@@ -31,9 +33,7 @@ public:
 
     std::string const & getType() const; //Returns the materia type
 
-    virtual std::string     get_type();
     virtual AMateria*       clone() const = 0;
     virtual void            use(ICharacter& target);
 };
 
-#endif // AMATERIA_HPP

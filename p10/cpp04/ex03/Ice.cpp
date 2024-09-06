@@ -14,20 +14,20 @@
 
 Ice::Ice(void) : AMateria("ice")
 {
-    std::cout << "default constructor Ice call" << std::endl;
+//    std::cout << BLUE "default constructor Ice call" RESET << std::endl;
     return;
 }
 
 Ice::Ice(Ice const & src) : AMateria(src._type)
 {
-    std::cout << "copy constructor Ice call" << std::endl;
+//    std::cout << BLUE "copy constructor Ice call" RESET << std::endl;
     *this = src;
     return;
 }
 
 Ice::~Ice(void)
 {
-    std::cout << "destructor Ice call" << std::endl;
+//    std::cout << YELLO "destructor Ice call" RESET << std::endl;
     return;
 }
 
@@ -46,6 +46,6 @@ AMateria*   Ice::clone() const
 
 void        Ice::use(ICharacter& target)
 {
-    std::cout << "* shoots an Ice bolt at " << target.getName() << " *" << std::endl;
+    std::cout << GREEN "* shoots an Ice bolt at " << target.getName() << " *" RESET << std::endl;
     return;
 }

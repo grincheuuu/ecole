@@ -21,12 +21,12 @@ MateriaSource::MateriaSource(void) : IMateriaSource()
         this->_tab[i] = NULL; 
         i++;
     }
-    std::cout << "Default MateriaSource call" << std::endl;
+//   std::cout << BLUE "Default MateriaSource call" RESET << std::endl;
 }
 
 MateriaSource::MateriaSource(MateriaSource const & src) : IMateriaSource(src)
 {
-    std::cout << "copy constructor MateriaSource call" << std::endl;
+//    std::cout << BLUE "copy constructor MateriaSource call" RESET << std::endl;
     *this = src;
     return;
 }
@@ -41,7 +41,7 @@ MateriaSource::~MateriaSource(void)
             delete _tab[i];
         i++;
     }
-    std::cout << "Destructor MateriaSource call" << std::endl;
+//    std::cout << YELLO "Destructor MateriaSource call" RESET << std::endl;
     return;
 }
 
@@ -76,14 +76,14 @@ void        MateriaSource::learnMateria(AMateria* m)
 
     if (m == NULL)
     {
-        std::cout << "they have no materia to learn" << std::endl;
+        std::cout << RED "they have no materia to learn" RESET << std::endl;
         return;
     }
     while (i < 4)
     {
         if (_tab[i] == NULL)
         {
-            _tab[i] == m;
+            _tab[i] = m;
             return;
         }
         i++;
@@ -97,10 +97,12 @@ AMateria*   MateriaSource::createMateria(std::string const & type)
 
     while (i < 4)
     {
-        if (_tab[i] && _tab[i]->get_type() == type)
+        if (_tab[i] && _tab[i]->getType() == type)
+        {
             return (_tab[i]->clone());
+        }
         i++;
     }
-    std::cout << "they have no materia to create" << std::endl;
+    std::cout << RED "they have no materia to create" RESET << std::endl;
     return (NULL);
 }

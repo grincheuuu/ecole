@@ -14,7 +14,7 @@
 
 Character::Character(void)
 {
-    std::cout << "Default constructor Character call" << std::endl;
+//    std::cout << BLUE "Default constructor Character call" RESET << std::endl;
     return;
 }
 
@@ -26,13 +26,13 @@ Character::Character(std::string name) : _name(name)
         this->_item[i] = NULL; 
         i++;
     }
-    std::cout << "assignement constructor Character call" << std::endl;
+//    std::cout << BLUE "assignement constructor Character call" RESET << std::endl;
     return;
 }
 
 Character::Character(Character const & src)
 {
-    std::cout << "copy constructor Character call" << std::endl;
+//    std::cout << BLUE "copy constructor Character call" RESET << std::endl;
     *this = src;
     return;
 }
@@ -44,10 +44,13 @@ Character::~Character(void)
     while (i < 4)
     {
         if (_item[i] != NULL)
+        {
+//            std::cout << YELLO "Character call " RESET << _item[i]->getType() << std::endl;
             delete _item[i];
+        }
         i++;
     }
-    std::cout << "Destructor Character call" << std::endl;
+//    std::cout << YELLO "Destructor Character call " RESET << std::endl;
     return;
 }
 
@@ -89,7 +92,7 @@ void    Character::equip(AMateria* m)
 
     if (m == NULL)
     {
-        std::cout << "AMateria m == NULL" << std::endl;
+        std::cout << RED "AMateria m == NULL" RESET << std::endl;
         return;
     }
     while (i < 4)
@@ -97,7 +100,7 @@ void    Character::equip(AMateria* m)
         if (_item[i] == NULL)
         {
             _item[i] = m;
-            std::cout << "Character " << getName() << " take a weapon " << m->get_type() << " at the emplacement " << i << std::endl;
+            std::cout << "Character " << BL << getName() << RESET << " take a weapon " << m->getType() << " at the emplacement " << i << std::endl;
             return;
         }
         i++;
@@ -111,30 +114,30 @@ void    Character::unequip(int idx)
 
     if (idx < 0 || idx > 3)
     {
-        std::cout << "idx is not between 0-3, we can't unequip" << std::endl;
+        std::cout << RED "idx is not between 0-3, we can't unequip" RESET << std::endl;
         return;
     }
     temp = _item[idx];
     if (_item[idx] == NULL)
     {
-        std::cout << "they have no weapons at the emplacement n'" << idx << std::endl;
+        std::cout << RED "they have no weapons at the emplacement n'" RESET << idx << std::endl;
         return;
     }
     _item[idx] = NULL;
-    std::cout << "Character " << getName() << " unequip a weapon at the emplacement " << idx << std::endl;
+    std::cout << "Character " << BL << getName() << RESET << " unequip a weapon at the emplacement " << idx << std::endl;
     delete temp;
     return;
 }
 
 void    Character::use(int idx, ICharacter& target)
 {
-    if (idx > 0 && idx < 4 && _item[idx] != NULL)
+    if (idx >= 0 && idx < 4 && _item[idx] != NULL)
     {
         _item[idx]->use(target);
     }
     else if (_item[idx] == NULL)
     {
-        std::cout << "they have no weapon to use a the emplacement " << idx << std::endl;
+        std::cout << RED "they have no weapon to use a the emplacement " RESET << idx << std::endl;
     }
     return;
 }

@@ -1,31 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ICharacter.hpp                                     :+:      :+:    :+:   */
+/*   colors.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/05 15:52:22 by gschwart          #+#    #+#             */
-/*   Updated: 2024/09/05 15:52:24 by gschwart         ###   ########.fr       */
+/*   Created: 2024/09/06 20:11:07 by gschwart          #+#    #+#             */
+/*   Updated: 2024/09/06 20:11:08 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #pragma once
 
-# include <iostream>
-# include <string>
-# include "AMateria.hpp"
 
-class AMateria;
-
-class ICharacter
-{
-    public:
-        virtual ~ICharacter() {}
-
-        virtual std::string const & getName() const = 0;
-        virtual void    equip(AMateria* m) = 0;
-        virtual void    unequip(int idx) = 0;
-        virtual void    use(int idx, ICharacter& target) = 0;
-};
-
+# define RESET "\e[0m"
+# define BLUE "\e[34;2;2;3m"
+# define BL "\e[34m"
+# define RED "\e[31m"
+# define GREEN "\e[32;1m"
+# define YELLO "\e[33m"
