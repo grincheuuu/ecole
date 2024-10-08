@@ -23,7 +23,7 @@ Point::Point(Fixed const a, Fixed const b) : _x(a), _y(b)
     return;
 }
 
-Point::Point(Point const & src) : _x(this->get_x()), _y(this->get_y())
+Point::Point(Point const & src) : _x(src._x), _y(src._y)
 {
     *this = src;
     return;
@@ -38,9 +38,7 @@ Point::~Point(void)
 Point & Point::operator=(Point const &rhs)
 {
     if (this->_x != rhs.get_x())
-        this->_x == rhs.get_x();
-    if (this->_y != rhs.get_y())
-        this->_y == rhs.get_y();
+        std::cerr << "operator de comparaison error" << std::endl;
     return (*this);
 }
 

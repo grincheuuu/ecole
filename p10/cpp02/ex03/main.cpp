@@ -24,7 +24,7 @@ int main(void)
     Point const  a (0, 0);
     Point const  b (4.5f, 4.5f);
     Point const  c (0, 5);
-    Point const  m (8.1f, 2.1f);
+    Point const  m (2, 2);
 
     int i = 0;
 
