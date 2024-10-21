@@ -20,7 +20,7 @@ void	my_minilibx_pixel_put(int x, int y, t_img *img, int color)
 	*(unsigned int *)(img->pixel_ptr + indexpixel) = color;
 }
 
-void	ft_render(t_fractal *fractal)
+void	ft_render(t_fractal *fractal, t_dest *dest)
 {
 	int	x;
 	int	y;
@@ -31,39 +31,32 @@ void	ft_render(t_fractal *fractal)
 		x = -1;
 		while (++x < WIDTH)
 		{
-			fractal->pixel_r = fractal->min_r + (double)x * fractal->dx;
-			fractal->pixel_i = fractal->min_i + (double)y * fractal->dy;
-			ft_which_fractal(fractal, x, y);
+			if (y < dest->murHaut[x])
+				my_minilibx_pixel_put(x, y, &fractal->img, RED);
+			else if (y < dest->murBas[x])
+				my_minilibx_pixel_put(x, y, &fractal->img, BLACK);
+			else
+				my_minilibx_pixel_put(x, y, &fractal->img, YELLOW);
 		}
 	}
 	mlx_put_image_to_window(fractal->mlx_co,
 		fractal->mlx_win, fractal->img.img_ptr, 0, 0);
 }
 
-void	ft_which_fractal(t_fractal *fractal, int x, int y)
+void	ft_render_deux(t_fractal *fractal)
 {
-	double	zr;
-	double	zi;
-	double	temp;
-	int		color;
-	int		n;
+	int	x;
+	int	y;
 
-	zr = 0;
-	zi = 0;
-	n = 0;
-	color = 0;
-	while (n < 1)
+	y = -1;
+	while (++y < HEIGHT)
 	{
-		if ((zr * zr + zi * zi) > 4)
+		x = -1;
+		while (++x < WIDTH)
 		{
-			color = RED;
-			my_minilibx_pixel_put(x, y, &fractal->img, color);
-			return ;
+			my_minilibx_pixel_put(x, y, &fractal->img, YELLOW);
 		}
-		temp = 2 * zr * zi + fractal->pixel_i;
-		zr = zr * zr - zi * zi + fractal->pixel_r;
-		zi = temp;
-		n++;
 	}
-	my_minilibx_pixel_put(x, y, &fractal->img, YELLOW);
+	mlx_put_image_to_window(fractal->mlx_co,
+		fractal->mlx_win, fractal->img.img_ptr, 0, 0);
 }

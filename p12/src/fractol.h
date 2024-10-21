@@ -35,7 +35,6 @@
 # define BLACK       0x00000
 # define WHITE       0xFFFFFF
 # define RED   0xFF0000
-
 # define GREEN_LIGHT	0x00CC00
 # define BLUE_CIEL       0x66FFFF
 # define YELLOW		0xFFFF00
@@ -62,6 +61,15 @@ typedef struct s_map
 	char	o;
 }	t_map;
 
+typedef struct	s_dest
+{
+	int		xp[WIDTH];
+	int		murHaut[WIDTH];
+	int		murBas[WIDTH];
+	double 	Lc[WIDTH];
+	double 	e; // angle
+}	t_dest;
+
 typedef struct s_fractal
 {
 	void	*mlx_co;
@@ -85,7 +93,8 @@ int			ft_close_all(t_fractal *fractal);
 int			julia_track(int x, int y, t_fractal *fractal);
 int			ft_strncmp(char *s1, char *s2, int n);
 int			main(int argc, char **argv);
-void		ft_render(t_fractal *fractal);
+void		ft_render(t_fractal *fractal, t_dest *dest);
+void		ft_render_deux(t_fractal *fractal);
 void		ft_init(t_fractal *fractal);
 void		ft_putstr_fd(char *s, int fd);
 void		ft_which_fractal(t_fractal *fractal, int x, int y);
@@ -101,5 +110,14 @@ char		*ft_strcat(char *dest, const char *src);
 char		*ft_strcpy(char *dest, const char *src);
 char		*get_next_line(int fd);
 int			ft_strlen(const char *s1);
+
+void		ft_search_player(char **tab, t_fractal *fractal);
+t_dest		*ft_ray_casting(char **tab, t_fractal *fractal, t_dest *dest);
+t_dest		*ft_distance(t_dest *dest, int i);
+t_dest		*ft_horizontale(t_dest *dest, int x, int y, int i, char **tab);
+t_dest		*ft_verticale(t_dest *dest, int x, int y, int i, char **tab);
+void		ft_pose_carte(t_fractal *fractal);
+char		**ft_gnl(char c);
+
 
 #endif
