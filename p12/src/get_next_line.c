@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fractol.h"
+#include "cub3d.h"
 
 char	*ft_read_and_save(int fd, char *save)
 {

@@ -1,17 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   fractol.h                                          :+:      :+:    :+:   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gschwart <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/18 13:02:34 by gschwart          #+#    #+#             */
-/*   Updated: 2023/12/18 15:50:05 by gschwart         ###   ########.fr       */
+/*   Created: 2024/10/24 15:16:35 by gschwart          #+#    #+#             */
+/*   Updated: 2024/10/24 15:16:37 by gschwart         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FRACTOL_H
-# define FRACTOL_H
+
+#ifndef CUB3D_H
+# define CUB3D_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -64,10 +65,14 @@ typedef struct s_map
 typedef struct	s_dest
 {
 	int		xp[WIDTH];
+	int		Dx[WIDTH];
+	int		Dy[WIDTH];
+	double	Px[WIDTH];
+	double	Py[WIDTH];
 	int		murHaut[WIDTH];
 	int		murBas[WIDTH];
 	double 	Lc[WIDTH];
-	double 	e; // angle
+	double 	e[WIDTH]; // angle
 }	t_dest;
 
 typedef struct s_fractal
@@ -113,7 +118,7 @@ int			ft_strlen(const char *s1);
 
 void		ft_search_player(char **tab, t_fractal *fractal);
 t_dest		*ft_ray_casting(char **tab, t_fractal *fractal, t_dest *dest);
-t_dest		*ft_distance(t_dest *dest, int i);
+t_dest		*ft_distance(t_dest *dest, int i, int x, int y);
 t_dest		*ft_horizontale(t_dest *dest, int x, int y, int i, char **tab);
 t_dest		*ft_verticale(t_dest *dest, int x, int y, int i, char **tab);
 void		ft_pose_carte(t_fractal *fractal);
