@@ -21,10 +21,25 @@ int	ft_close_all(t_fractal *fractal)
 	exit (EXIT_SUCCESS);
 }
 
+void	ft_NewImage(t_fractal *fractal)
+{
+	ft_pose_carte(fractal);
+}
+
 int	ft_key_action(int keysym, t_fractal *fractal)
 {
 	if (keysym == XK_Escape)
 		ft_close_all(fractal);
-	ft_render_deux(fractal);
+	else if (keysym == XK_Left)
+	{
+		fractal->shift_x -= (10 * M_PI / 180) * (fractal)->signe;
+		ft_NewImage(fractal);
+	}
+	else if (keysym == XK_Right)
+	{
+		fractal->shift_x += (10 * M_PI / 180) * (fractal)->signe;
+		ft_NewImage(fractal);
+	}
+	ft_NewImage(fractal);
 	return (0);
 }

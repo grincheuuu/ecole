@@ -87,18 +87,18 @@ char	*ft_strdup(const char *str)
 	return (dest);
 }
 
-char	**ft_gnl(char c)
+char	**ft_gnl(t_dest **dest)
 {
 	char	*line;
 	char	**tab;
 	int		file_fd;
 	int	i;
+	int	j;
 
 	line = NULL;
 	tab = NULL;
 	i = 0;
 	file_fd = 0;
-	(void)c;
 	file_fd = open("src/t.txt", O_RDWR | O_CREAT, 0644);
 	if (file_fd == -1)
 	{
@@ -119,6 +119,11 @@ char	**ft_gnl(char c)
 	tab = malloc((i + 1) * sizeof(char *));
 	if (tab == NULL)
 		return (NULL);
+	j = i;
+	(*dest)->longueur = i;
+	(*dest)->largeur = malloc((i + 1) * sizeof(char));
+	if ((*dest)->largeur == NULL)
+		return (NULL);
 	i = 0;
 	file_fd = open("src/t.txt", O_RDONLY, 0644);
 	if (file_fd == -1)
@@ -132,17 +137,23 @@ char	**ft_gnl(char c)
 		if (line == NULL)
 			break;
 		tab[i] = ft_strdup(line);
+		if (i + 1 < j)
+			(*dest)->largeur[i] = ft_strlen(tab[i]) - 1;
+		else
+			(*dest)->largeur[i] = ft_strlen(tab[i]);
 		i++;
 		free(line);
 	}
+	(*dest)->largeur[i] = '\0'; 
 	tab[i] = NULL;
 	free(line);
 	close(file_fd);
-	i = 0;
+/*	i = 0;
 	while(tab[i] != NULL)
 	{
-		printf("tab[i] %s\n", tab[i]);
+		printf("tab[i] %s", tab[i]);
 		i++;
 	}
+	printf("\n");*/
 	return (tab);
 }

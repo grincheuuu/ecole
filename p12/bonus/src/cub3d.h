@@ -65,35 +65,20 @@ typedef struct s_map
 typedef struct	s_dest
 {
 	int		xp[WIDTH];
-	char	O;
-	double		Lcumulelateral[WIDTH];
-	double		hcumuleHorizontale[WIDTH];
-	double		hcumule[WIDTH];
-	double		Dx[WIDTH];
-	double		Dy[WIDTH];
-//	int		h_mur[WIDTH];
-	double	Px;
-	double	Py;
+	int		Dx[WIDTH];
+	int		Dy[WIDTH];
+	double	Px[WIDTH];
+	double	Py[WIDTH];
 	int		murHaut[WIDTH];
 	int		murBas[WIDTH];
 	double 	Lc[WIDTH];
 	double 	e[WIDTH]; // angle
-	double	ra;
-	int		Ori;
-	char	signe[WIDTH];
-	int		longueur;
-	char	*largeur;
 }	t_dest;
 
 typedef struct s_fractal
 {
 	void	*mlx_co;
 	void	*mlx_win;
-	int		signe;
-	int		indice;
-	double	shift_x;
-	int		Ori;
-	int		ra;
 	t_img	img;
 	t_map	map;
 	double	pixel_r;
@@ -104,10 +89,6 @@ typedef struct s_fractal
 	double	max_r;
 	double	min_i;
 	double	max_i;
-	t_img north_texture;
-    t_img south_texture;
-    t_img east_texture;
-    t_img west_texture;
 }	t_fractal;
 
 
@@ -135,22 +116,13 @@ char		*ft_strcpy(char *dest, const char *src);
 char		*get_next_line(int fd);
 int			ft_strlen(const char *s1);
 
-void		ft_search_player(char **tab, t_dest *dest, t_fractal *fractal);
-t_dest		*ft_ray_casting(char **tab, t_dest *dest);
+void		ft_search_player(char **tab, t_fractal *fractal);
+t_dest		*ft_ray_casting(char **tab, t_fractal *fractal, t_dest *dest);
 t_dest		*ft_distance(t_dest *dest, int i, int x, int y);
-t_dest		*ft_horizontale(t_dest *dest, double x, double y, int i, char **tab);
-t_dest		*ft_verticale(t_dest *dest, double x, double y, int i, char **tab);
+t_dest		*ft_horizontale(t_dest *dest, int x, int y, int i, char **tab);
+t_dest		*ft_verticale(t_dest *dest, int x, int y, int i, char **tab);
 void		ft_pose_carte(t_fractal *fractal);
-char		**ft_gnl(t_dest **dest);
-void        ft_fre(char **tab);
-t_dest  	*ft_perpendiculaire(t_dest *dest, double x, double y, int i, char **tab);
-void		ft_signe(t_dest **dest, t_fractal **fractal);
-void 		init_textures(t_fractal *fractal);
-void 		init_img(t_fractal *fractal);
-char 		get_wall_direction(t_dest *dest, int x);
-int			get_texture_color(t_img *texture, int x, int y);
-double 		calculate_offset_in_wall(t_dest *dest, int x);
-void		ft_NewImage(t_fractal *fractal);
+char		**ft_gnl(char c);
 
 
 #endif
