@@ -1,0 +1,93 @@
+Pour comprendre comment **calculer chaque rayon** à partir de ton vecteur directionnel et du plan de caméra dans un contexte où tu veux lancer des rayons, imaginons que :
+
+- Tu as un vecteur directionnel \((dir_x, dir_y)\) qui indique où regarde le joueur.
+- Tu as un plan de caméra \((plane_x, plane_y)\) qui est **perpendiculaire** à ce vecteur directionnel.
+- Ton champ de vision (\(FOV\)) est défini comme une largeur angulaire en degrés, par exemple \(60^\circ\).
+
+### **Idée générale :**
+Chaque rayon est une interpolation linéaire entre les bords gauche et droit de l'écran, calculée à partir de la combinaison du vecteur directionnel et du plan de caméra.
+
+---
+
+### **Étapes pour calculer les rayons :**
+
+#### 1. **Définir les limites de ton champ de vision (FOV) :**
+Le **plan de caméra** est utilisé pour définir le champ de vision :
+- Le bord gauche du FOV correspond à \(dir_x - plane_x\) et \(dir_y - plane_y\).
+- Le bord droit du FOV correspond à \(dir_x + plane_x\) et \(dir_y + plane_y\).
+
+#### 2. **Diviser l'écran en colonnes :**
+Ton écran est divisé en colonnes (\(n_\text{columns}\)), chaque colonne représentant un rayon.
+
+Pour un écran de largeur \( n_\text{columns} \) :
+- Le rayon de la première colonne est dirigé vers le bord gauche du FOV.
+- Le rayon de la dernière colonne est dirigé vers le bord droit du FOV.
+- Les rayons entre ces deux bords sont interpolés.
+
+---
+
+### **Calcul du vecteur pour chaque rayon :**
+
+Pour une colonne donnée \(x\) (\(x \in [0, n_\text{columns}-1]\)) :
+1. Calcule la position relative dans l'écran (\(camera_x\)) :
+   \[
+   camera_x = 2 \times \frac{x}{n_\text{columns}} - 1
+   \]
+   - \(camera_x = -1\) pour la colonne la plus à gauche.
+   - \(camera_x = 0\) pour la colonne centrale.
+   - \(camera_x = 1\) pour la colonne la plus à droite.
+
+2. Combine le vecteur directionnel et le plan de caméra :
+   \[
+   ray\_dir_x = dir_x + plane_x \times camera_x
+   \]
+   \[
+   ray\_dir_y = dir_y + plane_y \times camera_x
+   \]
+
+Le vecteur \((ray\_dir_x, ray\_dir_y)\) indique la direction du rayon pour la colonne \(x\).
+
+---
+
+### **Exemple chiffré :**
+
+#### Situation initiale :
+- \(dir_x = 0\), \(dir_y = -1\) (regarde vers le nord).
+- \(plane_x = 0.66\), \(plane_y = 0\) (FOV de \(66^\circ\)).
+- Écran de \(n_\text{columns} = 640\).
+
+#### Rayon pour la colonne \(x = 320\) (centre de l'écran) :
+1. \(camera_x = 2 \times \frac{320}{640} - 1 = 0\).
+2. \(ray\_dir_x = dir_x + plane_x \times camera_x = 0 + 0.66 \times 0 = 0\).
+3. \(ray\_dir_y = dir_y + plane_y \times camera_x = -1 + 0 \times 0 = -1\).
+   - Ce rayon est parfaitement aligné avec la direction du joueur.
+
+#### Rayon pour la colonne \(x = 0\) (gauche) :
+1. \(camera_x = 2 \times \frac{0}{640} - 1 = -1\).
+2. \(ray\_dir_x = dir_x + plane_x \times camera_x = 0 + 0.66 \times -1 = -0.66\).
+3. \(ray\_dir_y = dir_y + plane_y \times camera_x = -1 + 0 \times -1 = -1\).
+   - Ce rayon est incliné à gauche.
+
+#### Rayon pour la colonne \(x = 639\) (droite) :
+1. \(camera_x = 2 \times \frac{639}{640} - 1 = 0.996875\).
+2. \(ray\_dir_x = dir_x + plane_x \times camera_x = 0 + 0.66 \times 0.996875 \approx 0.657\).
+3. \(ray\_dir_y = dir_y + plane_y \times camera_x = -1 + 0 \times 0.996875 = -1\).
+   - Ce rayon est incliné à droite.
+
+---
+
+### **Pourquoi ça marche ?**
+
+- Le **vecteur directionnel** (\(dir_x, dir_y\)) définit la direction centrale.
+- Le **plan de caméra** (\(plane_x, plane_y\)) étend cette direction centrale sur les côtés pour créer un cône de vision.
+- En interpolant entre ces deux extrêmes (bord gauche et bord droit du FOV), chaque rayon est correctement orienté.
+
+---
+
+### **Résumé :**
+
+1. Calcule \(camera_x\) pour chaque colonne d'écran.
+2. Combine \(dir_x\), \(dir_y\), \(plane_x\), et \(plane_y\) pour obtenir le vecteur directionnel du rayon.
+3. Utilise ce vecteur pour lancer le rayon dans le monde et détecter les intersections avec des murs.
+
+Cette méthode est efficace et évite de recalculer des angles pour chaque rayon tout en utilisant directement les propriétés géométriques des vecteurs.
