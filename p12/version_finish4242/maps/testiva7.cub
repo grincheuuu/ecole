@@ -1,0 +1,15 @@
+NO textures/wood.xpm
+EA textures/red_brick.xpm
+WE textures/grey_stone.xpm
+
+invalid_thing
+
+C 255,255,0
+F 0,0,255
+
+11111111
+100000 1
+10000001
+1000N001
+10000001
+11111111

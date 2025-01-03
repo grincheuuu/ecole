@@ -17,10 +17,42 @@ int main(void)
     try
     {
         Bureaucrat  John("John", 2);
-        std::cout << John.getName() << " " << John.getGrade() << std::endl;
+        Bureaucrat  Paul("Paul", 149);
+
+//        std::cout << John.getName() << " grade " << John.getGrade() << std::endl;
         John.incrementGrade();
-        std::cout << John.getName() << " " << John.getGrade() << std::endl;
+//        std::cout << John.getName() << " grade " << John.getGrade() << std::endl;
         John.incrementGrade();
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
+        Paul.decrementGrade();
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
+        Paul.decrementGrade();
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() <<std::endl;
+    }
+
+    try
+    {
+        Bureaucrat  Paul("Paul", 149);
+
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
+        Paul.decrementGrade();
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
+        Paul.decrementGrade();
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() <<std::endl;
+    }
+//    std::cout << "Ste " << std::endl;
+    try
+    {
+        Bureaucrat  Ste("ste", 151);
+
+//        std::cout << Ste.getName() << " grade " << Ste.getGrade() << std::endl;
+        Ste.incrementGrade();
     }
     catch (std::exception& e)
     {

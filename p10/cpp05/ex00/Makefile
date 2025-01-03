@@ -24,7 +24,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-.c.o:
+.cpp.o:
 	$(CC) $(CFLAGS) -c $< -o $@ -g
 
 clean:

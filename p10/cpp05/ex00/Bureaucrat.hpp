@@ -36,7 +36,7 @@ class Bureaucrat
         {
             const char  *what() const throw()
             {
-                return ("Grade is too high!");
+                return ("Bureaucrat::GradeTooHighException");
             }
         };
 
@@ -44,7 +44,7 @@ class Bureaucrat
         {
             const char *what() const throw ()
             {
-                return ("grade is too low!");
+                return ("Bureaucrat::GradeTooLowException");
             }
         };
 

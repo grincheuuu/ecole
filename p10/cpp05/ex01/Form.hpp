@@ -15,13 +15,13 @@
 # include <iostream>
 # include <string>
 # include <stdexcept>
+# include "Bureaucrat.hpp"
 
 class Bureaucrat;
 
 class   Form
 {
     public:
-        Form(void);
         Form(std::string name, int minGradeSignid, int minGradeExecute);
         Form(Form const & src);
         ~Form(void);
@@ -33,22 +33,18 @@ class   Form
         int const           getMinGradeSignid(void) const;
         int const           getMinGradeExecut(void) const;
 
-        void                beSigned(Bureaucrat a) const;
+        void                beSigned(Bureaucrat const & a);
 
         class GradeTooHighException : public std::exception
         {
-            const char  *what() const throw()
-            {
-                return ("Form::Grade is too high!");
-            }
+            public:
+                virtual const char   *what() const throw();
         };
 
         class GradeTooLowException : public std::exception
         {
-            const char *what() const throw ()
-            {
-                return ("Form::Grade is too low!");
-            }
+            public:
+                virtual const char  *what() const throw();
         };
 
     private:
