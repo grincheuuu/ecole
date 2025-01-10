@@ -15,7 +15,7 @@ CFLAGS = -Wall -Wextra -Werror -g -std=c++98
 RM = rm -rf
 NAME = aout
 
-SRCS = Bureaucrat.cpp main.cpp Form.cpp
+SRCS = Bureaucrat.cpp main.cpp
 
 OBJS = $(SRCS:.cpp=.o)
 

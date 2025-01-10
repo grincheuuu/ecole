@@ -12,81 +12,64 @@
 
 #include "Form.hpp"
 
-Form::Form(std::string name, int minGradeSignid, int minGradeExecute) : _signid(0), _name(name), _minGradeSignid(minGradeSignid), _minGradeExecut(minGradeExecute)
+Form::Form(void)
 {
-    if (minGradeSignid > 150)
-        throw GradeTooLowException();
-    else if (minGradeSignid < 1)
-        throw GradeTooHighException();
-    if (minGradeExecute > 150)
-        throw GradeTooLowException();
-    else if (minGradeExecute < 1)
-        throw GradeTooHighException();
     return;
 }
 
-Form::Form(Form const & src) :  _name(src._name), _minGradeSignid(src._minGradeSignid), _minGradeExecut(src._minGradeExecut)
+Form::Form(std::string name, int minGradeSigned, int minGradeExecute)
 {
-    *this = src;
     return;
+}
+
+Form::Form(Form const & src)
+{
+
 }
 
 Form::~Form(void)
 {
-    return;
+
 }
 
 Form &  Form::operator=(Form const & rhs)
 {
-    if (this != &rhs)
-    {
-        std::cout << "constructeur copy error" << std::endl;
-    }
-    return (*this);
+
 }
 
 std::string const   Form::getName(void) const
 {
-    return (this->_name);
+
 }
 
-bool                Form::getSignid(void) const
+bool                Form::getSigned(void) const
 {
-    return (this->_signid);
+
 }
 
-int const           Form::getMinGradeSignid(void) const
+int const           Form::getMinGradeSigned(void) const
 {
-    return (this->_minGradeSignid);
+
 }
 
 int const           Form::getMinGradeExecut(void) const
 {
-    return (this->_minGradeExecut);
+
 }
 
 void                Form::beSigned(Bureaucrat const & a)
 {
-    if (a.getGrade() <= _minGradeSignid)
-        this->_signid = 1;
-    else
-        throw GradeTooLowException();
-    return;
+
 }
 
-const char* Form::GradeTooHighException::what(void) const throw ()
+class GradeTooHighException : public std::exception
 {
-    return ("Form::Grade is too high!");
+    public:
+        virtual const char * what() const throw ();
 }
 
-const char* Form::GradeTooLowException::what(void) const throw ()
+class GradeTooLowException : public std::exception
 {
-    return ("Form::GradeTooLowException");
-}
-
-std::ostream&   operator<<(std::ostream & o, Form const & rhs)
-{
-    o << "Form Name: " << rhs.getName() << " it is signed: " << rhs.getSignid() << " minGrade sign: ";
-    o << rhs.getMinGradeSignid() << " minGradeExecute: " << rhs.getMinGradeExecut() << std::endl;
-    return (o);
+    public:
+        virtual const char * what() const throw ();
 }

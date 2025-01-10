@@ -16,27 +16,17 @@ int main(void)
 {
     try
     {
-        Bureaucrat  John("john", 2);
-        Bureaucrat  Paul("paul", 149);
+        Bureaucrat  John("John", 2);
+        Bureaucrat  Paul("Paul", 149);
 
-        std::cout << John.getName() << ", bureaucrat grade " << John << std::endl;
+//        std::cout << John.getName() << " grade " << John.getGrade() << std::endl;
         John.incrementGrade();
-        std::cout << John.getName() << ", bureaucrat grade " << John << std::endl;
-//        John.incrementGrade();
-        std::cout << John.getName() << ", bureaucrat grade " << John << std::endl;
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
+//        std::cout << John.getName() << " grade " << John.getGrade() << std::endl;
+        John.incrementGrade();
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
         Paul.decrementGrade();
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
         Paul.decrementGrade();
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
-    }
-    catch(Bureaucrat::GradeTooHighException & e)
-    {
-        std::cerr << e.what() <<std::endl;
-    }
-    catch(Bureaucrat::GradeTooLowException & e)
-    {
-        std::cerr << e.what() <<std::endl;
     }
     catch (std::exception& e)
     {
@@ -45,26 +35,28 @@ int main(void)
 
     try
     {
-        Bureaucrat  Paul("Paul", 180);
+        Bureaucrat  Paul("Paul", 149);
 
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
         Paul.decrementGrade();
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
+//        std::cout << Paul.getName() << " grade " << Paul.getGrade() << std::endl;
         Paul.decrementGrade();
-        std::cout << Paul.getName() << ", bureaucrat grade " << Paul << std::endl;
-    }
-    catch(Bureaucrat::GradeTooHighException & e)
-    {
-        std::cerr << e.what() <<std::endl;
-    }
-    catch(Bureaucrat::GradeTooLowException & e)
-    {
-        std::cerr << e.what() <<std::endl;
     }
     catch (std::exception& e)
     {
         std::cout << e.what() <<std::endl;
     }
+//    std::cout << "Ste " << std::endl;
+    try
+    {
+        Bureaucrat  Ste("ste", 151);
 
+//        std::cout << Ste.getName() << " grade " << Ste.getGrade() << std::endl;
+        Ste.incrementGrade();
+    }
+    catch (std::exception& e)
+    {
+        std::cout << e.what() <<std::endl;
+    }
     return (0);
 }
