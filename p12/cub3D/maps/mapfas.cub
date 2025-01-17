@@ -1,0 +1,18 @@
+
+        EA textures/red_brick.xpm              
+NO       textures/wood.xpm
+SO         textures/eagle.xpm
+        WE textures/grey_stone.xpm
+
+      
+      
+      
+C        255,255,0
+F 0,0  ,255
+
+11111111
+10000001
+10000001
+1000N001
+10000001
+11111111
