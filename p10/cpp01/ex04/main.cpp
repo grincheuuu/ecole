@@ -13,7 +13,6 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <fstream>
 
 int main(int argc, char **argv)
 {
