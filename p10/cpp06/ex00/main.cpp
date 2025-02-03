@@ -16,5 +16,7 @@ int main(int argc, char **argv)
 {
     if (argc == 2)
         ScalarConverter::convert(argv[1]);
+    else
+        std::cout << "the programme need one parameter : char, int, float, double, ..." << std::endl;
     return (0);
 }

@@ -15,14 +15,21 @@
 #include <iostream>
 #include <string.h>
 #include <cctype>
+#include <cstdlib>
+#include <stdlib.h>
+#include <climits>
+#include <cfloat>
+#include <iomanip>
 
 class ScalarConverter
 {
-    public:
+    private:
         ScalarConverter(void);
         ScalarConverter(ScalarConverter const & src);
         ~ScalarConverter(void);
 
-        static void                convert(std::string type);
         ScalarConverter &   operator=(ScalarConverter const & rhs);
+
+    public:
+        static void                convert(std::string const type);
 };
