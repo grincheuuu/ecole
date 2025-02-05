@@ -53,15 +53,17 @@ void    ft_int(std::string const type) // danger int max int min
     }
 
     float   c = static_cast<float>(n);
-    std::cout << "float: " << c << ".0f" << std::endl;
+    std::cout << "float: " << std::fixed << std::setprecision(1) << c << "f" << std::endl;
     double  d = static_cast<double>(n);
-    std::cout << "double: " << d << ".0" << std::endl;
+    std::cout << "double: "<< std::fixed << std::setprecision(1) << d << std::endl;
 
 }
 
 void    ft_float(std::string const type) // danger int max int min
 {
-    float c = atof(type.c_str());
+    char *  pend;
+    float    c = strtof(type.c_str(), &pend);
+//    float c = atof(type.c_str());
 
     if (c > 31 && c < 127)
     {
@@ -81,7 +83,7 @@ void    ft_float(std::string const type) // danger int max int min
         std::cout << "int: " << b << std::endl;
     }
     std::cout << "float: " << std::fixed << std::setprecision(1) << c << "f" << std::endl;
-    std::cout << "double: " << d << std::endl;
+    std::cout << "double: " << std::fixed << std::setprecision(1) << d << std::endl;
 
 }
 

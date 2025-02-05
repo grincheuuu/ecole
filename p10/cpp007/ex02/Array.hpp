@@ -14,38 +14,80 @@
 
 # include <iostream>
 # include <stdexcept>
+# include <stdlib.h>
+# include <time.h>
 
 template < typename T >
 class Array
 {
     public:
-        Array(void)
+        Array(void) : _i(0)
         {
-            _A = new tab[];
+            _A = new T[0];
             return;
         }
-        Array(unsigned int i)
+        Array(unsigned int i) : _i(i)
         {
-            _A = new tab[i];
+            _A = new T[i];
             return;
         }
-        Array(Array const & src)
+        Array(Array const & src) : _i(src._i), _A(new T[src._i])
         {
+            for (unsigned int i = 0; i < _i; i++)
+            {
+                _A[i] = src._A[i]; 
+            }
+            *this = src;
             return;
         }
-        ~Array(void);
+        ~Array(void)
+        {
+            delete [] _A;
+            _A = 0;
+        }
 
-        Array &     opreator=(Array const & rhs);
+        Array < T > &     operator=(Array < T > const & rhs)
+        {
+            if (this->_i != rhs._i)
+                this->_i = rhs._i;
+            return *this;
+        }
 
-        size_t      size(void) const;
+        std::size_t      size(void) const
+        {
+            return (_i);
+        }
 
         class ArrayOutOfBounds : public std::exception
         {
             public:
-                virtual const char * what () const throw ();
+                virtual const char * what () const throw ()
+                {
+                    return "index is out of bounds Exception";
+                }
         };
 
+        T &     operator[](const unsigned int location)
+        {
+            if (location < 0 || location >= _i)
+                throw ArrayOutOfBounds();
+            else
+                return _A[location];
+        }
+
+//        T &     operator[](const int location) throw (const char *); 
+
     private:
-        unsigned int     _i;
+        unsigned int              _i;
         T *              _A;
 };
+
+/*
+template <class T> T &     Array<T>::operator[](const int location) throw (const char *)
+ {
+    if (location < 0 || location >= _i)
+        throw "invalid array access";
+    else
+        return _A[location];
+ }
+ */
