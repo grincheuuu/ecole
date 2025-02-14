@@ -34,9 +34,7 @@ class Array
         Array(Array const & src) : _i(src._i), _A(new T[src._i])
         {
             for (unsigned int i = 0; i < _i; i++)
-            {
-                _A[i] = src._A[i]; 
-            }
+                _A[i] = src._A[i];
             *this = src;
             return;
         }
@@ -48,8 +46,14 @@ class Array
 
         Array < T > &     operator=(Array < T > const & rhs)
         {
-            if (this->_i != rhs._i)
+            if (this != &rhs)
+            {
                 this->_i = rhs._i;
+                delete [] _A;
+                _A = new T[rhs._i];
+                for (unsigned int i = 0; i < rhs._i; i++)
+                    _A[i] = rhs._A[i];
+            }
             return *this;
         }
 
@@ -79,7 +83,7 @@ class Array
 
     private:
         unsigned int              _i;
-        T *              _A;
+        T *                       _A;
 };
 
 /*
