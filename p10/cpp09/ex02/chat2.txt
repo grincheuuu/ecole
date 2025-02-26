@@ -1,0 +1,97 @@
+Super ! Maintenant que la **première liste** est triée grâce à **Merge Sort**, on peut attaquer l’**insertion des grands éléments** en utilisant **Jacobstahl + Dichotomie**.
+
+---
+
+## **📌 Étape suivante : Insertion avec Jacobstahl + Dichotomie**
+### **1️⃣ Rappel du processus**
+- La **deuxième liste** contient les **grands éléments** non triés.
+- On veut **les insérer** un par un dans la première liste.
+- L’ordre d’insertion suit la **suite de Jacobstahl** *(1, 3, 5, 11...)*.
+- On utilise une **recherche dichotomique** pour trouver la position d’insertion.
+
+---
+
+## **📌 2️⃣ Générer la suite de Jacobstahl**
+La **suite de Jacobstahl** est définie comme :
+\[
+J(n) = J(n-1) + 2J(n-2)
+\]
+Avec \( J(0) = 0 \) et \( J(1) = 1 \).
+
+👉 En C++, on peut la générer comme ceci :
+
+```cpp
+std::vector<int> generateJacobstahl(int maxSize) {
+    std::vector<int> jacob = {0, 1};
+    while (true) {
+        int next = jacob[jacob.size() - 1] + 2 * jacob[jacob.size() - 2];
+        if (next >= maxSize)
+            break;
+        jacob.push_back(next);
+    }
+    return jacob;
+}
+```
+✅ Cette fonction génère les indices d’insertion.
+
+---
+
+## **📌 3️⃣ Insertion avec la Recherche Dichotomique**
+La **recherche dichotomique** (*Binary Search*) est idéale pour **trouver la bonne position d’insertion** dans la liste triée.
+
+```cpp
+int binarySearchInsert(const std::vector<unsigned int>& sortedList, unsigned int value) {
+    int left = 0, right = sortedList.size();
+    while (left < right) {
+        int mid = left + (right - left) / 2;
+        if (sortedList[mid] < value)
+            left = mid + 1;
+        else
+            right = mid;
+    }
+    return left;  // Retourne l'indice où insérer "value"
+}
+```
+
+✅ On utilise cette fonction pour savoir **où insérer chaque grand élément**.
+
+---
+
+## **📌 4️⃣ Fusionner avec Jacobstahl**
+Enfin, on va **insérer les grands éléments** en respectant **l’ordre de Jacobstahl**.
+
+```cpp
+void insertWithJacobstahl(std::vector<unsigned int>& sortedList, std::vector<unsigned int>& bigNumbers) {
+    std::vector<int> jacob = generateJacobstahl(bigNumbers.size());
+    
+    for (size_t i = 0; i < jacob.size(); i++) {
+        if (jacob[i] >= bigNumbers.size()) break;
+        unsigned int value = bigNumbers[jacob[i]];
+        int pos = binarySearchInsert(sortedList, value);
+        sortedList.insert(sortedList.begin() + pos, value);
+    }
+}
+```
+
+---
+
+## **📌 5️⃣ Mise en application finale**
+Après avoir trié la première liste avec `mergeSort()`, on peut **fusionner la deuxième liste** avec :
+
+```cpp
+mergeSort(maListeTriee, 0, maListeTriee.size() - 1);
+insertWithJacobstahl(maListeTriee, maListeDesGrands);
+```
+
+---
+
+## **📌 Conclusion**
+🎯 **On a maintenant une fusion optimisée !**  
+✅ **Tri initial** avec Merge Sort.  
+✅ **Insertion intelligente** des grands éléments.  
+✅ **Ordre d’insertion selon Jacobstahl** pour optimiser l’insertion.  
+✅ **Position trouvée efficacement** grâce à la recherche dichotomique.
+
+---
+
+🔥 Tu peux tester et me dire si ça fonctionne comme tu veux ! 😊
