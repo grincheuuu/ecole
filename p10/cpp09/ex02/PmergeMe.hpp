@@ -35,6 +35,10 @@ class PmergeMe
         static void    ft_sort_un(std::vector<unsigned int> & vi);
         static void    ft_sort_suite(std::vector<unsigned int> & vi);
         static void    ft_recursive_un(std::vector<unsigned int> & vi, unsigned int b);
+        static void    ft_merge(std::vector<unsigned int> & vi, std::vector<unsigned int> & left, std::vector<unsigned int> & right);
+        static void    ft_last(std::vector<unsigned int> & vi, std::vector<unsigned int> & tab);
+        static void    ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int);
+        static int     ft_jacobstahl(int);
 
 };
 

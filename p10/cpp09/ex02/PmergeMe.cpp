@@ -49,65 +49,195 @@ int     PmergeMe::ft_unsigned_int(std::string str)
     return (1);
 }
 
+/*
 void     PmergeMe::ft_recursive_un(std::vector<unsigned int> & vi, unsigned int b)
 {
     std::vector<unsigned int>::iterator     it = vi.begin();
-    unsigned int     i;
-    int     t = 0;
-    int     v = 0;
-    unsigned int     n;
-    b++;
+    unsigned int     t = 0;
+    unsigned int     v = 0;
+    unsigned int     n = *it;
     while (it != vi.end())
     {
         unsigned int    z = 0;
         std::vector<unsigned int>::iterator w = it;
+        
         while (z < ((b * 4) / 2))
         {
-            for (unsigned int f = 0; f < z; f++)
-                w++;
-            n = *w;
-            v = t;
-            i = 0;
-            for (unsigned int j = z; j < ((b * 4) / 2); j++)
-                w++;
-            while (w != vi.end() && i < (b * 4) && n > *w)
+            t = 0;
+            while (w != vi.end() && t < z)
             {
+                w++;
+                t++;
+                std::cout << " t " << t << std::endl;
+                n = *w;
+            }
+            std::vector<unsigned int>::iterator e = w;
+            v = t;
+//            std::cout << "b " << b << " n " << n << " v " << v << " i " << i << std::endl;
+            while (w != vi.end() && t < (b * 4) / 2)
+            {
+                w++;
+                t++;
+//                std::cout << " t " << t;
+            }
+            while (w != vi.end() && t < (b * 4) && n < *w)
+            {
+//                std::cout << " w " << *w << " n " << n << "   ";
                 w++;
                 if (w == vi.end())
                     return;
-                i++;
                 t++;
             }
-            if (std::max(*w, n) == n)
-                std::swap(vi[t - 1], vi[v]);
+//            std::cout << " t " << t << " v " << v << " t - 1 " << (t - 1) << "vi t-1 " << vi[t - 1] << " vi v " << vi[v] << std::endl << std::endl;
+            if (w != vi.end() && (v != (t)) && (std::max(*w, n) == n))
+            {
+//                std::cout << " swap " << *w << " " << vi[t] << " n " << n << " " << vi[v] << std::endl << std::endl;
+                unsigned int    tt = *w;
+                if (w != vi.end() && std::max(*it, n) == n)
+                {
+                    w = vi.erase(w);
+                    (void)e;                 
+                    vi.insert(vi.begin(), tt);
+                }
+            }
             z++;
         }
         it = w;
     }
-    if ((b * 4) > vi.size())
+    std::cout << "b * 4 " << (b * 4) << " vi size " << vi.size() << std::endl;
+    if ((b * 4) >= vi.size())
         return;
-    ft_recursive_un(vi, b);  
+    b++;
+    ft_recursive_un(vi, b);
     return;
+}*/
+
+void    PmergeMe::ft_merge(std::vector<unsigned int> & vi, std::vector<unsigned int> & left, std::vector<unsigned int> & right)
+{
+    size_t      i = 0;
+    size_t      j = 0;
+    while (i < left.size() && j < right.size())
+    {
+        if (left[i] > right[j])
+        {
+            vi[i + j] = right[j];
+            j++;
+        }
+        else
+        {
+            vi[i + j] = left[i];
+            i++;
+        }
+    }
+    while (i < left.size())
+    {
+        vi[i + j] = left[i];
+        i++;
+    }
+    while (j < right.size())
+    {
+        vi[i + j] = right[j];
+        j++;
+    }
+}
+
+void     PmergeMe::ft_recursive_un(std::vector<unsigned int> & vi, unsigned int b)
+{
+    if (vi.size() <= 1)
+        return;
+    size_t          mid = vi.size() / 2;
+    std::vector<unsigned int>   left(vi.begin(), vi.begin() + mid);
+    std::vector<unsigned int>   right(vi.begin() + mid, vi.end());
+
+
+    ft_recursive_un(left, b);
+    ft_recursive_un(right, b);
+
+    ft_merge(vi, left, right);
+}
+
+int     PmergeMe::ft_jacobstahl(int n)
+{
+    if (n ==0 || n == 1)
+        return (0);
+    std::vector<unsigned int>   temp(1, 0);
+    temp.push_back(1);
+    int     i = 2;
+    int     nb = 1;
+    while (n > nb)
+    {
+        nb = temp[i - 2] * 2 + temp[i - 1];
+        if (n == nb)
+            return (0);
+        temp.push_back(nb);
+        i++;
+    }
+    return (1);
+}
+
+void    PmergeMe::ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i)
+{
+    size_t      mid = vi.size() / 2;
+    while (mid > 2 && vi[mid] != i)
+    {
+        if (i > vi[mid])
+        {
+            mid += mid / 2;
+            std::cout << " + " << mid;
+        }
+        else
+        {
+            mid -= mid / 2;
+            std::cout << " - " << mid;
+        }
+    }
+    vi.insert(vi.begin() + mid, i);
+    std::cout << " mid " << mid << " vi " << vi[mid] << " i " << i << std::endl;
+    return;
+}
+
+void    PmergeMe::ft_last(std::vector<unsigned int> & vi, std::vector<unsigned int> & tab)
+{
+    std::vector<unsigned int>   temp;
+    int i = 0;
+    for (std::vector<unsigned int>::iterator it = tab.begin(); it != tab.end(); it++)
+    {
+        if (ft_jacobstahl(i) == 0)
+        {
+            ft_binary_insertion(vi, *it);
+        }
+        else
+            temp.push_back(*it);
+        i++;
+    }
+    for (std::vector<unsigned int>::iterator it2 = temp.begin(); it2 != temp.end(); it2++)
+    {
+        ft_binary_insertion(vi, *it2);
+    }
 }
 
 void    PmergeMe::ft_sort_suite(std::vector<unsigned int> & vi)
 {
-/*    std::vector<unsigned int>   deux;
+    if (vi.size() <= 1)
+        return;
+    
+    std::vector<unsigned int>   tab;
     int     i = 0;
 
     for (std::vector<unsigned int>::iterator it = vi.begin(); it != vi.end();)
     {
-        if (i % 2 == 0)
+        if (i % 2 != 0)
         {
-            deux.push_back(*it);
+            tab.push_back(*it);
             it = vi.erase(it);
         }
         else
             ++it;
-        i++;       
-    }*/
+        i++;
+    }
     unsigned int    b = 1;
     PmergeMe::ft_recursive_un(vi, b);
+    PmergeMe::ft_last(vi, tab);
 }
 
 void    PmergeMe::ft_sort_un(std::vector<unsigned int> & vi)
@@ -129,12 +259,17 @@ void    PmergeMe::ft_sort_un(std::vector<unsigned int> & vi)
         i++;
         it++;
     }
+/*    for (std::vector<unsigned int>::iterator it = vi.begin(); it != vi.end(); it++)
+    {
+        std::cout << *it << " "; 
+    }
+    std::cout << std::endl;*/
+    ft_sort_suite(vi);
     for (std::vector<unsigned int>::iterator it = vi.begin(); it != vi.end(); it++)
     {
         std::cout << *it << " "; 
     }
     std::cout << std::endl;
-    ft_sort_suite(vi);
 }
 
 std::ostream &      operator<<(std::ostream & o, PmergeMe const & rhs)
