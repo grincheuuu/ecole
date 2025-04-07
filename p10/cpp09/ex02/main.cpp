@@ -13,11 +13,13 @@ int     main(int argc, char **argv)
         if (PmergeMe::ft_unsigned_int(argv[i]) == 1)
         {
             ti.clear();
+            std::cout << "echec" << std::endl;
             return (1);
         }
         ti.push_back(strtoul(argv[i], NULL, 0));
     }
-    PmergeMe::ft_sort_un(ti);
-//    ti.clear();
+    PmergeMe        go;
+    go.ft_sort_un(ti);
+    ti.clear();
     return (0);
 }
