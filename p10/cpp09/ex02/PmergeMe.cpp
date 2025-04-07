@@ -49,69 +49,6 @@ int     PmergeMe::ft_unsigned_int(std::string str)
     return (1);
 }
 
-/*
-void     PmergeMe::ft_recursive_un(std::vector<unsigned int> & vi, unsigned int b)
-{
-    std::vector<unsigned int>::iterator     it = vi.begin();
-    unsigned int     t = 0;
-    unsigned int     v = 0;
-    unsigned int     n = *it;
-    while (it != vi.end())
-    {
-        unsigned int    z = 0;
-        std::vector<unsigned int>::iterator w = it;
-        
-        while (z < ((b * 4) / 2))
-        {
-            t = 0;
-            while (w != vi.end() && t < z)
-            {
-                w++;
-                t++;
-                std::cout << " t " << t << std::endl;
-                n = *w;
-            }
-            std::vector<unsigned int>::iterator e = w;
-            v = t;
-//            std::cout << "b " << b << " n " << n << " v " << v << " i " << i << std::endl;
-            while (w != vi.end() && t < (b * 4) / 2)
-            {
-                w++;
-                t++;
-//                std::cout << " t " << t;
-            }
-            while (w != vi.end() && t < (b * 4) && n < *w)
-            {
-//                std::cout << " w " << *w << " n " << n << "   ";
-                w++;
-                if (w == vi.end())
-                    return;
-                t++;
-            }
-//            std::cout << " t " << t << " v " << v << " t - 1 " << (t - 1) << "vi t-1 " << vi[t - 1] << " vi v " << vi[v] << std::endl << std::endl;
-            if (w != vi.end() && (v != (t)) && (std::max(*w, n) == n))
-            {
-//                std::cout << " swap " << *w << " " << vi[t] << " n " << n << " " << vi[v] << std::endl << std::endl;
-                unsigned int    tt = *w;
-                if (w != vi.end() && std::max(*it, n) == n)
-                {
-                    w = vi.erase(w);
-                    (void)e;                 
-                    vi.insert(vi.begin(), tt);
-                }
-            }
-            z++;
-        }
-        it = w;
-    }
-    std::cout << "b * 4 " << (b * 4) << " vi size " << vi.size() << std::endl;
-    if ((b * 4) >= vi.size())
-        return;
-    b++;
-    ft_recursive_un(vi, b);
-    return;
-}*/
-
 void    PmergeMe::ft_merge(std::vector<unsigned int> & vi, std::vector<unsigned int> & left, std::vector<unsigned int> & right)
 {
     size_t      i = 0;
@@ -198,85 +135,60 @@ int     PmergeMe::ft_jacobstahl_compare(unsigned int n)
     return (1);
 }
 
-void    PmergeMe::ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i, size_t begin, size_t end)
+void    PmergeMe::ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i)
 {
-    size_t      mid = (end + begin) / 2;
     std::cout << "i " << i << std::endl;
-    std::cout << " mid " << mid << " vi " << vi[mid] << " top " << end << " begin " << begin << " i " << i << std::endl;
-    if (i < vi[0])
-    {
-        vi.insert(vi.begin(), i);
-        return;
-    }
-    else if (i > vi[end])
+    if (vi.empty())
     {
         vi.push_back(i);
         return;
     }
-    if (i == vi[mid])
+    if (i < vi.front())
     {
-        vi.insert(vi.begin() + mid, i);
+        vi.insert(vi.begin(), i);
         return;
     }
-    else if ((i < vi[mid] && i > vi[mid - 1]))
+    else if (i > vi.back())
     {
-        vi.insert(vi.begin() + mid - 1, i);
+        vi.push_back(i);
         return;
     }
-    else if ((i > vi[mid] && i < vi[mid + 1]))
-    {
-        vi.insert(vi.begin() + mid + 1, i);
-        return;
-    }
-
-    if (i < vi[mid])
-    {
-        std::cout << "yoho " << i << std::endl;
-        ft_binary_insertion(vi, i, begin, mid);
-    }
-    else
-    {
-        std::cout << "dell " << i << std::endl;
-        ft_binary_insertion(vi, i, mid, end);
-    }
-    return;
-}
-/*
-void    PmergeMe::ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i)
-{
-    size_t      mid = vi.size() / 2;
     size_t      end = vi.size();
     size_t      begin = 0;
-    if (i == vi[mid])
+    while(begin < end)
     {
-        vi.insert(vi.begin() + mid, i);
-        return;
-    }
-    if (i < vi[mid])
-    {
-        mid = 
-    }
-    else
-    {
-
-    }
-    while (mid > 2 && vi[mid] != i)
-    {
-        if (i > vi[mid])
+        size_t  mid = (end + begin) / 2;
+        std::cout << " vimid " << vi[mid] << " mid " << mid << " top " << end << " begin " << begin << std::endl;
+        if(i == vi[mid])
         {
-            mid += mid / 2;
-            std::cout << " + " << mid;
+            vi.insert(vi.begin() + mid, i);
+            std::cout << "youpi" << std::endl;
+            return;
+        }
+        else if (i < vi[mid])
+        {
+            if (mid > 0 && (i < vi[mid] && i > vi[mid - 1]))
+            {
+                vi.insert(vi.begin() + mid - 1, i);
+                std::cout << "youhou" << std::endl;
+                return;
+            }
+            end = mid;
         }
         else
         {
-            mid -= mid / 2;
-            std::cout << " - " << mid;
+            if (mid < end && (i > vi[mid] && i < vi[mid + 1]))
+            {
+                vi.insert(vi.begin() + mid + 1, i);
+                std::cout << "boubou" << std::endl;
+                return;
+            }
+            begin = mid;
         }
     }
-    vi.insert(vi.begin() + mid, i);
-//    std::cout << " mid " << mid << " vi " << vi[mid] << " i " << i << std::endl;
+    vi.insert(vi.begin() + begin, i);
     return;
-}*/
+}
 
 void    PmergeMe::ft_last(std::vector<unsigned int> & vi, std::vector<unsigned int> & tab)
 {
@@ -292,7 +204,7 @@ void    PmergeMe::ft_last(std::vector<unsigned int> & vi, std::vector<unsigned i
     {
         if (ft_jacobstahl_compare(*it) == 0)
         {
-            ft_binary_insertion(vi, *it, 0, vi.size());
+            ft_binary_insertion(vi, *it);
         }
         else
             temp.push_back(*it);
@@ -300,7 +212,7 @@ void    PmergeMe::ft_last(std::vector<unsigned int> & vi, std::vector<unsigned i
     }
     for (std::vector<unsigned int>::iterator it2 = temp.begin(); it2 != temp.end(); it2++)
     {
-        ft_binary_insertion(vi, *it2, 0, vi.size());
+        ft_binary_insertion(vi, *it2);
     }
 }
 

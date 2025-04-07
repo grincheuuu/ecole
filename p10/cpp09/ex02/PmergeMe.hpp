@@ -34,7 +34,7 @@ class PmergeMe
         void    ft_recursive_un(std::vector<unsigned int> & vi, unsigned int b);
         void    ft_merge(std::vector<unsigned int> & vi, std::vector<unsigned int> & left, std::vector<unsigned int> & right);
         void    ft_last(std::vector<unsigned int> & vi, std::vector<unsigned int> & tab);
-        void    ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i, size_t begin, size_t end);
+        void    ft_binary_insertion(std::vector<unsigned int> & vi, unsigned int i);
         void    ft_jacobstahl(unsigned int);
         int     ft_jacobstahl_compare(unsigned int n);
     
