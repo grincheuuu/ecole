@@ -26,14 +26,14 @@
 class BitCoinExchange
 {
     public:
-        static int   isInt(std::string ligne);
-        static int     isFloat(std::string ligne);
-        static int     ft_date(std::string ligne);
-        static int     ft_date_deux(std::string ligne);
-        static int     ft_pars_ligne(std::string ligne);
+        static int                              isInt(std::string ligne);
+        static int                              isFloat(std::string ligne);
+        static int                              ft_date(std::string ligne);
+        static int                              ft_date_deux(std::string ligne);
+        static int                              ft_pars_ligne(std::string ligne);
         static std::map<std::string, double>    ft_csv(std::string str);
-        static std::string     ft_to_string(int str);
-        static void    ft_compare(std::multimap<std::string, double> tab, std::map<std::string, double> csv);
+        static std::string                      ft_to_string(int str);
+        static void                             ft_compare(std::multimap<std::string, double> tab, std::map<std::string, double> csv);
 
     private:
         BitCoinExchange(void);

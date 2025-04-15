@@ -15,8 +15,6 @@
 
 int     main(int argc, char **argv)
 {
-    std::multimap<std::string, double>   tab;
-    std::map<std::string, double>   csv;
     if (argc != 2)
     {
         std::cout << "this program take one file on parameter" << std::endl;
@@ -28,6 +26,8 @@ int     main(int argc, char **argv)
         std::cout << "open file in lecture error" << std::endl;
         return (1);
     }
+    std::multimap<std::string, double>   tab;
+    std::map<std::string, double>        csv;
     std::string     ligne;
     std::getline(ifs, ligne);
     while (std::getline(ifs, ligne))

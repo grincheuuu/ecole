@@ -2,24 +2,19 @@
 
 int     main(int argc, char **argv)
 {
-    std::vector<unsigned int>   ti;
     if (argc == 1)
     {
         std::cout << "Error" << std::endl;
         return (1);
     }
-    for (int i = 1; i < argc; i++)
-    {
-        if (PmergeMe::ft_unsigned_int(argv[i]) == 1)
-        {
-            ti.clear();
-            std::cout << "echec" << std::endl;
-            return (1);
-        }
-        ti.push_back(strtoul(argv[i], NULL, 0));
-    }
     PmergeMe        go;
-    go.ft_sort_un(ti);
-    ti.clear();
+    try
+    {
+        go.ft_sort(argv, argc);
+    }
+    catch (PmergeMe::echecException & e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
     return (0);
 }

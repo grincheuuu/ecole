@@ -37,9 +37,9 @@ RPN &       RPN::operator=(RPN const & rhs)
 
 void    RPN::ft_calcul(std::queue<int> nb, std::queue<char> chr)
 {
-    int     stock = nb.front();
+    double     stock = static_cast<double>(nb.front());
     nb.pop();
-    int     n = nb.front();
+    double     n = static_cast<double>(nb.front());
     char    ct = chr.front();
     while(!nb.empty())
     {
@@ -75,7 +75,7 @@ void    RPN::ft_calcul(std::queue<int> nb, std::queue<char> chr)
             ct = chr.front();
         }
         nb.pop();
-        n = nb.front();
+        n = static_cast<double>(nb.front());
     }
     std::cout << stock << std::endl;
 }
