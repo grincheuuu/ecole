@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Webserv</title>
+    </head>
+    <body>
+        <h1>Bienvenue sur Webserv</h1>
+        <ul>
+            <li><a href="/static/test.html">Test fichiers statiques</a></li>
+            <li><a href="/static/">Dossier </a></li>
+            <!-- <li><a href="/static/">Test fichiers statiques</a></li> -->
+
+            <li><a href="/static/t2_CGI.html">get t2</a></li>
+
+            <li><a href="/static/post_CGI.html">post</a></li>
+
+            <li><a href="/static/delete_CGI.html">delete</a></li>
+ 
+            <li><a href="/static/televerser_CGI.html">televersement fichier</a></li>
+
+            <li><a href="/errors/404.html">Test erreur 404</a></li>
+
+            <p></p>
+
+            <li><a href="/cgi/test.py">Test CGI</a></li>
+
+            <form action="/cgi/post_CGI.py" method="POST">
+                <label for="name">Nom :</label>
+                <input type="text" id="name" name="name">
+                <input type="submit" value="Envoyer">
+            </form>
+
+            <button id="deleteButton">Supprimer</button>
+            <script>
+                document.getElementById("deleteButton").addEventListener("click", function() {
+                    fetch("/delete/resource", {
+                        method: "DELETE",
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        alert(data);
+                    })
+                    .catch(error => {
+                        console.error("Erreur:", error);
+                    });
+                });
+            </script>
+
+            <li><a href="/cgi/redirects.py">Test Redirections</a></li>
+        </ul>
+    </body>
+</html>

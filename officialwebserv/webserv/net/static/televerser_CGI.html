@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+ <html lang="fr">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Webserv</title>
+     </head>
+     <body>
+         <p><strong><font size="+10"><center>Televerser fichier</center></font></strong></p>
+         <form action="/cgi/televerser.py" method="POST" enctype="multipart/form-data">
+             <div>
+                 <label for="file">Sélectionner le fichier a envoyer</label>
+                 <input 
+                    type="file"
+                    name="file"/>
+             </div>
+             <div>
+                 <button type="submit">Envoyer</button>
+             </div>
+         </form>
+     </body>
+ </html>
