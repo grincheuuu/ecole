@@ -1,6 +1,7 @@
 import sys
 
 def ft_parsing():
+    """ma doc fonction parsing, gestion des erreurs"""
     if len(sys.argv) == 1 or sys.argv == "None":
         print("need a string as parameter")
         sys.exit(1)
@@ -8,7 +9,10 @@ def ft_parsing():
         print("AssertionError: bad number of argument")
         sys.exit(1)
 
+#print(ft_parsing.__doc__)
+
 def ft_print():
+    """doc fonction"""
     print(f"The text contains {len(sys.argv[1])} characters:")
     up = 0
     low = 0
