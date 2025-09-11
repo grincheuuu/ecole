@@ -1,0 +1,23 @@
+10
+##start
+a 23 3
+b 16 7
+c 16 3
+d 16 5
+e 9 3
+f 1 5
+g 4 8
+##end
+0 9 5
+0-d
+0-f
+a-c
+d-c
+e-b
+c-f
+d-b
+a-b
+g-f
+g-b
+g-d
+e-c
