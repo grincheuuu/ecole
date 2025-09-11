@@ -1,0 +1,36 @@
+
+p,
+h2 {
+    color: blue;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: justify;
+}
+
+h1 {
+    font-size: 3em;
+    text-align: center;
+}
+
+.ma-classe {
+    color: orange;
+}
+
+.ma-classe-2 {
+    color: yellow;
+    font-style: oblique;
+    font-weight: 700;
+}
+
+.ma-classe-3 {
+    color: white;
+    padding: 900px;
+    text-align: center;
+    background-image: url("i1.jpg");
+    background-position: center;
+    background-size: cover;
+    opacity: 0.75;
+}
+
+body {
+    background-color: #8f8d5a;
+}

@@ -1,0 +1,60 @@
+test redis:
+
+docker exec -it redis redis-cli ping
+reponse attendu => pong
+
+in container redis:
+
+docker exec -it redis redis-cli
+reponse : > info keyspace
+si key > 0, redis stocke des objets
+
+redis activation:
+docker exec wordpress wp redis enable --path=/var/www/html --allow-root
+
+desactiver redis:
+docker exec wordpress wp redis disable --path=/var/www/html --allow-root
+
+in container wordpress:
+WP-CLI (WordPress Command Line Interface)
+
+docker exec wordpress wp redis status --path=/var/www/html --allow-root
+
+mariadb:
+
+connexion a une base de donnee specifique:
+docker exec -it mariadb mysql -u ${MYSQL_USER} -p${MYSQL_PASSWORD} ${MYSQL_DATABASE}
+
+connexion en root:
+docker exec -it mariadb mysql -u root -p
+
+connexion user:
+docker exec -it mariadb mysql -u guillaume -pN2DXLdjN2RTLCHo
+
+SHOW TABLES;
+
+Et là tu peux voir les utilisateurs comme ci-dessus :
+> SELECT User, Host FROM mysql.user;
+> SHOW DATABASES;
+
+docker exec -it mariadb mariadb -u guillaume -pN2DXLdjN2RTLCHo
+
+ftp:
+
+docker ps | grep ftp
+
+docker exec -it ftp bash
+ps aux | grep vsftpd
+
+installer un client lftp:
+
+sudo apt update
+sudo apt install -y lftp
+
+lftp --version
+
+lftp -u ftpuser ftp://localhost:21
+>ftp_pass
+
+
+sudo netstat -tulpn | grep :21
