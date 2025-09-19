@@ -1,5 +1,6 @@
 import sys
 
+
 def ft_parsing():
     """ma doc fonction parsing, gestion des erreurs"""
     if len(sys.argv) == 1 or sys.argv == "None":
@@ -9,7 +10,6 @@ def ft_parsing():
         print("AssertionError: bad number of argument")
         sys.exit(1)
 
-#print(ft_parsing.__doc__)
 
 def ft_print():
     """doc fonction"""
@@ -36,10 +36,12 @@ def ft_print():
     print(f"{space} spaces")
     print(f"{nb} digits")
 
+
 def main() -> int:
     ft_parsing()
     ft_print()
     return 0
+
 
 if __name__ == '__main__':
     sys.exit(main())

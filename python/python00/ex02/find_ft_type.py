@@ -1,11 +1,12 @@
 ft_list = ["Hello", "tata!"]
 ft_tuple = ("Hello", "toto!")
 ft_set = {"Hello", "tutu!"}
-ft_dict = {"Hello" : "titi!"}
+ft_dict = {"Hello": "titi!"}
 
-#object: any est une annotation de type pour dire que object
+# object: any est une annotation de type pour dire que object
 #  peut être de n’importe quel type.
-#-> int veut dire : "cette fonction retourne un int".
+#  -> int veut dire : "cette fonction retourne un int".
+
 
 def all_thing_is_obj(object: any) -> int:
     if type(object) is list:

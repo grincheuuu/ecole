@@ -14,11 +14,13 @@ def NULL_not_found(object: any) -> int:
         return 1
     return 0
 
+
 Nothing = None
 Garlic = float("NaN")
 Zero = 0
 Empty = ''
-Fake = False 
+Fake = False
+
 
 NULL_not_found(Nothing)
 NULL_not_found(Garlic)
