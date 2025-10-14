@@ -1,0 +1,149 @@
+Parfait 👍 J’ai parcouru ton PDF. Voici une **traduction complète en français** du sujet `malloc.pdf` :
+
+---
+
+# Un projet plutôt UNIX
+
+## malloc
+
+**Résumé** : Ce projet consiste à implémenter un mécanisme d’allocation dynamique de mémoire.
+
+**Version** : 4.1
+
+---
+
+## Chapitre II — Instructions générales
+
+* Ce projet sera **corrigé uniquement par des humains**. Vous êtes libre d’organiser vos fichiers, mais vous devez respecter les règles suivantes :
+
+  * La bibliothèque doit s’appeler **libft_malloc_$HOSTTYPE.so**.
+  * Un **Makefile** (ou équivalent) doit compiler le projet et ne recompiler/re-lier que si nécessaire.
+  * Le Makefile doit vérifier la variable d’environnement `$HOSTTYPE`. Si elle est vide ou inexistante, elle doit être définie comme suit :
+
+    ```make
+    ifeq ($(HOSTTYPE),)
+    HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+    endif
+    ```
+  * Le Makefile doit créer un **lien symbolique** `libft_malloc.so` pointant vers `libft_malloc_$HOSTTYPE.so`.
+    Exemple :
+
+    ```
+    libft_malloc.so -> libft_malloc_intel-mac.so
+    ```
+  * Si vous êtes malin, utilisez votre bibliothèque `libft` pour construire votre malloc. Soumettez également votre dossier `libft` avec son propre Makefile à la racine.
+
+* Vous avez droit à **une variable globale** pour gérer vos allocations et une autre pour la sécurité des threads.
+
+* Le code doit être propre. Même sans norme stricte, un code "moche" = note **0**.
+
+* Vous devez gérer les erreurs avec soin. Aucune de vos fonctions ne doit mener à un **comportement indéfini** ou à un **segfault**.
+
+* Fonctions autorisées dans la partie obligatoire :
+
+  * `mmap(2)`
+  * `munmap(2)`
+  * `getpagesize` (OSX) ou `sysconf(_SC_PAGESIZE)` (Linux)
+  * `getrlimit(2)`
+  * Fonctions de votre libft (ex: `write(2)`)
+  * Fonctions de la bibliothèque `libpthread`
+
+* Pour le **bonus**, vous pouvez utiliser d’autres fonctions si vous les justifiez lors de votre soutenance.
+
+---
+
+## Chapitre III — Partie obligatoire
+
+Ce mini-projet consiste à écrire une bibliothèque de gestion dynamique de mémoire.
+Vous devez **réimplémenter** les fonctions de la libc :
+
+```c
+#include <stdlib.h>
+
+void free(void *ptr);
+void *malloc(size_t size);
+void *realloc(void *ptr, size_t size);
+```
+
+* `malloc(size)` : alloue `size` octets et retourne un pointeur.
+* `realloc(ptr, size)` : redimensionne la zone pointée par `ptr`. Si impossible, alloue une nouvelle zone, copie les données, libère l’ancienne et retourne le nouveau pointeur.
+* `free(ptr)` : libère la mémoire pointée par `ptr`. Si `ptr == NULL`, ne fait rien.
+* En cas d’erreur, `malloc()` et `realloc()` retournent **NULL**.
+
+⚠️ **Important** :
+
+* Vous devez utiliser `mmap()` et `munmap()` pour demander/rendre la mémoire au système.
+* Vous ne pouvez pas utiliser `malloc` de la libc pour gérer vos allocations internes.
+* Il faut limiter les appels à `mmap()` et `munmap()` → donc **pré-allouer** des zones pour les petites/moyennes allocations.
+* Chaque zone doit contenir au moins **100 allocations**.
+
+Organisation typique :
+
+* `TINY` : petites allocations (1 → n octets).
+* `SMALL` : moyennes allocations (n+1 → m octets).
+* `LARGE` : grandes allocations (> m octets), chaque zone étant indépendante via `mmap()`.
+
+👉 À vous de définir n, m, N et M pour optimiser le compromis **performance/mémoire**.
+
+Vous devez aussi écrire une fonction de debug :
+
+```c
+void show_alloc_mem();
+```
+
+Exemple d’affichage :
+
+```
+TINY : 0xA0000
+0xA0020 - 0xA004A : 42 bytes
+0xA006A - 0xA00BE : 84 bytes
+SMALL : 0xAD000
+0xAD020 - 0xADEAD : 3725 bytes
+LARGE : 0xB0000
+0xB0020 - 0xBBEEF : 48847 bytes
+Total : 52698 bytes
+```
+
+⚠️ Votre malloc doit **aligner la mémoire**.
+
+---
+
+## Chapitre IV — Partie bonus
+
+* Rendre le malloc **thread-safe** (multi-thread).
+* Ajouter des fonctions supplémentaires, comme :
+
+  * gestion de variables d’environnement de debug (`MALLOC_DEBUG` etc.)
+  * `show_alloc_mem_ex()` avec plus de détails (historique, hex dump…).
+  * déf fragmentation de la mémoire libérée.
+
+👉 Les bonus **ne seront évalués que si la partie obligatoire est parfaite**.
+
+---
+
+## Chapitre V — Rendu et évaluation
+
+* Rendez votre projet dans votre dépôt Git habituel.
+* Seul le contenu du dépôt sera évalué lors de la soutenance.
+
+---
+
+## Chapitre VI — Petit moment d’humour
+
+Avant, le projet `malloc` devait être réalisé avec `brk(2)` et `sbrk(2)` au lieu de `mmap(2)`/`munmap(2)`.
+
+Exemple de `man brk` (Mac OS X) :
+
+```c
+void *brk(void *x)
+{
+    errno = ENOMEM;
+    return((void *)-1);
+}
+```
+
+---
+
+👉 Voilà la traduction complète.
+
+Veux-tu que je te prépare une **version PDF traduite en français** (mise en page identique) ou juste garder ce texte ici ?

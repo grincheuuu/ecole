@@ -1,0 +1,136 @@
+Oui — tout est normal et je t'explique en détail ce que font ces deux lignes et pourquoi tu vois le message `make[1]: Leaving directory '/home/gschwart/malloc/libft'`.
+
+Je réponds point par point en français clair.
+
+---
+
+## 1) Le message `make[1]: Leaving directory '.../libft'`
+
+Quand ton `Makefile` exécute une commande `make -C ./libft` (ou `$(MAKE) -C libft`) il lance un *sous-make* dans le répertoire `libft`. GNU `make` affiche automatiquement des messages du type :
+
+```
+make[1]: Entering directory '/chemin/.../libft'
+... (la sous-make fait son travail) ...
+make[1]: Leaving directory '/chemin/.../libft'
+```
+
+C’est normal — ça signifie juste que le make récursif est entré dans `./libft`, a exécuté la cible, puis est reparti. Ce n’est pas une erreur.
+Si tu veux **masquer** ces lignes, tu peux :
+
+* Lancer `make` avec l'option `--no-print-directory` :
+
+  ```bash
+  make --no-print-directory
+  ```
+* Ou ajouter en haut de ton Makefile :
+
+  ```make
+  MAKEFLAGS += --no-print-directory
+  ```
+
+  (ou `MAKEFLAGS += -s` pour silencieux, mais ça cache aussi d'autres sorties).
+
+---
+
+## 2) Explication de la première ligne
+
+```make
+$(NAME): $(OBJ)
+	$(CC) -shared -o $(NAME) $(OBJ) $(LIBFT)
+```
+
+**Ce que ça veut dire :**
+
+* `$(NAME): $(OBJ)`
+  règle `$(NAME)` dépend des fichiers-listés dans `$(OBJ)` (typiquement `ft_malloc.o main.o`, etc.). Si un `.o` est plus récent, la cible sera reconstruite.
+
+* `$(CC) -shared -o $(NAME) $(OBJ) $(LIBFT)`
+  commande exécutée pour construire la cible :
+
+  * `$(CC)` : le compilateur/linker, souvent `cc` ou `gcc`.
+  * `-shared` : demande au compilateur de produire une **bibliothèque partagée** (fichier `.so`) au lieu d'un exécutable.
+  * `-o $(NAME)` : nom du fichier de sortie (ex. `libft_malloc_x86_64_Linux.so`).
+  * `$(OBJ)` : les fichiers objet (`.o`) à lier dans la bibliothèque.
+  * `$(LIBFT)` : archive statique (`.a`) que tu veux lier dedans si besoin.
+
+**Remarques importantes / bonnes pratiques :**
+
+* Pour créer une `.so` contenant du code qui vient de fichiers `.o` et éventuellement de `libft.a`, il faut que tous les objets (tes `.o` et les objets de `libft.a` utilisés) aient été compilés avec l'option `-fPIC` (Position Independent Code). Tu l'avais déjà dans `CCFLAGS`, donc c'est bon si `libft` a été compilé aussi avec `-fPIC`. Sinon, liaison possible mais tu risques des erreurs de relocation ou warnings.
+* L'ordre des arguments lors du linking compte parfois (les archives `.a` sont traitées de gauche à droite par l'éditeur de liens) ; généralement `$(OBJ) $(LIBFT)` fonctionne si des symboles de `LIBFT` sont référencés par `$(OBJ)`.
+
+---
+
+## 3) Explication de la deuxième ligne (règle modèle)
+
+```make
+%.o : %.c
+	$(CC) $(CCFLAGS) -I. -c $< -o $@
+```
+
+C'est une **règle générique (pattern rule)** qui dit : *pour construire `foo.o` à partir de `foo.c`*.
+
+* `%.o : %.c`
+  signifie : pour tout fichier `.c`, on sait comment produire le `.o` correspondant.
+
+* La commande :
+
+  * `$(CC)` : compilateur (`cc`/`gcc`).
+  * `$(CCFLAGS)` : tes options de compilation (ex. `-Wall -Wextra -Werror -fPIC -g`).
+  * `-I.` : ajoute le répertoire courant (`.`) dans la liste des include directories ; utile si ton header `libft_malloc.h` est dans le répertoire courant.
+  * `-c` : **compilateur uniquement** — produit un fichier `.o` sans linker / sans chercher `main`.
+  * `$<` : **variable automatique** de Make → le *premier* prérequis de la règle (ici, le fichier `.c`), ex `foo.c`.
+  * `-o $@` : `-o` suivi de `$@` (le nom de la cible), ici `foo.o`.
+
+Donc, pour `ft_malloc.o` ça devient concrètement :
+
+```bash
+cc -Wall -Wextra -Werror -fPIC -g -I. -c ft_malloc.c -o ft_malloc.o
+```
+
+---
+
+## 4) Pourquoi tu voyais `undefined reference to main` avant
+
+Dans une version précédente de ton Makefile tu avais (je simplifie) :
+
+```make
+$(NAME): $(OBJ)
+	$(CC) -shared -o $(NAME) $(OBJ)
+	$(CC) -o $(LIBFT)    # <-- ça créait un exécutable à partir des mêmes .o -> cherche main
+```
+
+La deuxième ligne `$(CC) -o $(LIBFT)` tentait de créer un exécutable (sans donner de sources), `cc` a pris les `.o` (ou cherché `main`) et a échoué avec `undefined reference to main`. Ce n’était pas la bonne façon d’appeler `make` dans `./libft`. C’est pour ça on utilise `make -C ./libft` (ou `$(MAKE) -C libft`) pour lancer le Makefile de `libft`.
+
+---
+
+## 5) Conseils pratiques / améliorations
+
+* Utilise `$(MAKE)` au lieu de `make` pour appeler un sous-make (respecte les variables d’environnement `MAKEFLAGS`) :
+
+  ```make
+  $(LIBFT):
+  	$(MAKE) -C libft
+  ```
+* Si tu veux vraiment une sortie silencieuse (sans « Entering/Leaving directory ») ajoute en tête :
+
+  ```make
+  MAKEFLAGS += --no-print-directory
+  ```
+* Assure-toi que la **libft** est compilée avec `-fPIC` si tu veux lier ses objets dans une `.so`. Si `libft` n’est pas compilée avec `-fPIC`, tu peux soit :
+
+  * recompiler libft avec `CFLAGS += -fPIC`, soit
+  * lier dynamiquement à l’exécutable final (ne pas intégrer `libft.a` dans la .so).
+* Pour la portabilité, ton linking pourrait être :
+
+  ```make
+  $(CC) -shared -fPIC -o $(NAME) $(OBJ) $(LIBFT)
+  ```
+
+---
+
+Si tu veux, je peux :
+
+* Relire ton Makefile complet actuel et proposer une version finale propre (avec `all`, `clean`, `fclean`, `re`, `$(LIBFT)` correctement défini).
+* Te montrer comment ajouter une règle `test` qui compile un petit exécutable lié à ta `.so` pour tester le comportement.
+
+Tu veux que je corrige/formatte le Makefile complet que tu as maintenant et que je te donne la version finale ?
