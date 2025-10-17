@@ -5,6 +5,7 @@
  #include "./libft/libft.h"
  #include <unistd.h>
  #include <sys/mman.h>
+ #include <string.h>
 
 typedef struct  s_block
 {
