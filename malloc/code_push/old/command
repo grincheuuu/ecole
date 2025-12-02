@@ -1,0 +1,200 @@
+export LD_LIBRARY_PATH=.
+
+LD_PRELOAD=./libft_malloc_x86_64_Linux.so
+
+Library compilation
+
+First we will check that the compilation of the library does
+generate the requested files by modifying HOSTTYPE:
+
+$> export HOSTTYPE=Testing
+$> make re
+********
+$> ln -s libft_malloc_Testing.so libft_malloc.so
+$> ls -l libft_malloc.so
+lrwxrwxrwx 1 ** ** ** ** ** ** libft_malloc.so -> libft_malloc_Testing.so
+$>
+
+The Makefile does use HOSTTYPE to define the name of the library
+(libft_malloc_$HOSSTYPE.so) and does create a symbolic link
+libft_malloc.so pointing towards libft_malloc_$HOSSTYPE.so ?
+
+If that's not the case, the defense stops.
+
+Yes No
+Functions export
+
+Check with nm that the library does export the functions malloc,
+free, realloc and show_alloc_mem.
+
+$> nm -g libft_malloc.so
+0000000000000000 T _free
+0000000000000000 T _malloc 
+0000000000000000 T _realloc 
+0000000000000000 T_show_alloc_mem 
+                 U _mmap 
+                 U _munmap 
+                 U _getpagesize (getpagesize under OSX or sysconf(_SC_PAGESIZE) under linux)
+                 U _write  
+$>
+
+The functions exported by the library are marked with a T, the
+used one with a U (adresses have been replaced by 0, they change
+from one library to the next, same as the order of the lines).
+
+If the functions are not exported, defense stops.
+
+Yes No
+Feature's testing
+
+Please find the attached (MacOS X or Linux) script that will only modifiy the environment variables while you run a test program.
+Malloc test
+
+We are first going to make a first test program that does not
+use malloc, so that we have a base to compare to.
+
+Use test0.c file attached in the scale
+WARNING: If you are using a linux vm, make sure that you are using the
+time binary that you can get with apt (sudo apt install time), else
+you won't have access to the -v option.
+
+
+LINUX:
+
+  $> gcc -o test0 test0.c && /usr/bin/time -v ./test0
+
+We will then add a malloc and write in each allocation to make
+sure that the memory page is allocated in physical memory by
+MMU. The system will only really allocate the memory of a page
+if you write in it, so even if we do a bigger mmap than the
+malloc request it won't modify the "page reclaims".
+
+For Linux => Major, Minor
+
+For Mac OS X => page reclaims, page faults
+
+Using the test1.c file given as attachment, run the following tests
+
+
+LINUX:
+
+  $> gcc -o test1 test1.c && /usr/bin/time -v ./test1
+
+Our test1 program requested 1024 times 1024 bytes, so 1Mbyte. We
+can therefore check by doing the difference with the test0
+program:
+
+    either between the "maximum resident set size" lines, we obtain a little more than 1Mbyte
+    or between the page reclaims lines that we will multiply by the value of getpagesize(3) under OSX or sysconf(_SC_PAGESIZE) under linux.
+
+Let's test now both programs with our library:
+
+LINUX:
+
+$>chmod 777 run_linux.sh
+
+$>./run_linux.sh /usr/bin/time -v ./test0
+  ********    
+  Major (requiring I/O) page faults: 0
+  Minor (reclaiming a frame) page faults: 64
+  ********
+
+$>./run_linux.sh /usr/bin/time -v ./test1
+  ********    
+  Major (requiring I/O) page faults: 0
+  Minor (reclaiming a frame) page faults: 323
+  ********
+
+Count the number of pages used in addition to the real malloc and adjust the score accordingly:
+
+    less pages than the real malloc, allocated memory is insufficiant: 0
+    181 pages and over, malloc works but the overhead is very too big: 1
+    between 91 pages and 180 pages, malloc works but the overhead is too big: 2
+    between 51 pages and 90 pages, malloc works but the overhead is very big: 3
+    between 21 pages and 50 pages than real malloc, malloc works but the overhead is big: 4
+    between 0 pages and 20 pages than real malloc, malloc works and the overhead is fine: 5
+
+Rate it from 0 (failed) through 5 (excellent)
+Pre-allocated zones
+
+Check inside the source code that the pre-allocated zones for
+the different malloc sizes allow to store at least 100 times the
+maximum size for this type of zone. Check also that the size of
+the zones is a multiple of getpagesize() under OSX or
+sysconf(_SC_PAGESIZE) under linux.
+
+If one of these points is missing, click NO.
+
+Yes No
+Tests of free
+
+We will simply add a free to our test program:
+
+$> cat test2.c 
+
+We will compare the number of "page reclaims / page faults" to those in test0
+and test1. If there are as many or more "page reclaims" than
+test1, the free doesn't work.
+
+LINUX:
+
+  $> gcc -o test2 test2.c && ./run_linux.sh /usr/bin/time -v ./test2
+
+Does the free function? (less "page reclaims / page faults" than test1)
+
+Yes No
+Quality of the free function
+
+Run test0 and test2. Test2 should not have more than 10 page reclaims
+compared to test0.
+
+Yes No
+Realloc test
+
+Using test3.c file given as attachment, test the following:
+
+MAC:
+
+$> gcc -o test3 test3.c -L. -lft_malloc && ./run_mac.sh ./test3
+Hello world!
+Hello world!
+$>
+
+LINUX:
+
+$> gcc -o test3 test3.c -L. -lft_malloc && ./run_linux.sh ./test3
+Hello world!
+Hello world!
+$>
+
+The test must print out "Hello world!" two times.
+
+Does it work as expected?
+
+Yes No
+Show_alloc_mem test
+
+Using test4.c file given as attachment, test the following:
+
+LINUX:
+
+$> gcc -o test4 test4.c -L. -lft_malloc && ./run_linux.sh ./test4
+$>
+
+Does the display corresponds the subject and the TINY/SMALL/LARGE
+allocation of the project?
+
+Yes No
+Alignement test
+
+Using test5.c file given as attachment, test the following:
+
+LINUX:
+
+$> gcc -o test5 test5.c -L. -lft_malloc && ./run_linux.sh ./test5
+$>
+
+You have no alignment errors.
+
+Yes No
+

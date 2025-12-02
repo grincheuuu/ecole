@@ -1,0 +1,130 @@
+Parfait 👌 tu es très proche de la bonne solution !
+Je vais t’expliquer les erreurs puis corriger ton code.
+
+---
+
+### ⚠️ Problèmes dans ton code
+
+1. **`sys.argv[1].split`** → tu as oublié les `()` → il faut écrire `sys.argv[1].split()` pour obtenir la liste de mots.
+   Sinon tu manipules juste la fonction elle-même.
+
+2. **`sys.argv[2]` est une string** → dans `len(listee) >= sys.argv[2]`, tu compares un `int` avec une `str`, ça plante. Il faut convertir `sys.argv[2]` en `int`.
+
+3. **Vérifications (`ft_test_arg`)** :
+
+   * `assert int(sys.argv[2])` ne fait pas ce que tu penses : ça plante si `sys.argv[2]` n’est pas un nombre, mais ça échoue aussi si l’argument vaut `"0"` (car `int("0") == 0` → assertion échoue).
+     👉 mieux vaut utiliser `int()` dans un `try/except` directement.
+   * Tu n’as pas harmonisé le message d’erreur : le sujet veut **toujours `AssertionError: the arguments are bad`**.
+
+4. Tu importes ton module `ft_filter`, donc tu dois l’utiliser avec `ft_filter.ft_filter` (ou alors importer directement la fonction).
+
+---
+
+### ✅ Correction de ton code
+
+```python
+import sys
+import ft_filter
+
+def ft_test_str(arg):
+    """Vérifie que la chaîne ne contient que alphanum ou espaces"""
+    for x in arg:
+        if not (x.isalnum() or x == " "):
+            return False
+    return True
+
+def main() -> int:
+    try:
+        # Vérifier le nombre d'arguments
+        assert len(sys.argv) == 3, "the arguments are bad"
+
+        s = sys.argv[1]
+        n = int(sys.argv[2])  # essaie de convertir, sinon ValueError
+
+        # Vérifier que la chaîne est valide
+        assert ft_test_str(s), "the arguments are bad"
+
+    except (AssertionError, ValueError):
+        print("AssertionError: the arguments are bad")
+        return 1
+
+    # Séparer la string en mots
+    words = s.split()
+
+    # Filtrer avec ft_filter et une lambda
+    result = ft_filter.ft_filter(lambda w: len(w) > n, words)
+
+    # Afficher en liste
+    print(list(result))
+    return 0
+
+if __name__ == "__main__":
+    sys.exit(main())
+```
+
+---
+
+### 📌 Exemple d’exécution
+
+```
+$ python filterstring.py 'Hello the World' 4
+['Hello', 'World']
+
+$ python filterstring.py 'Hello the World' 99
+[]
+
+$ python filterstring.py 3 'Hello the World'
+AssertionError: the arguments are bad
+
+$ python filterstring.py
+AssertionError: the arguments are bad
+```
+
+---
+
+Veux-tu que je t’explique **pas à pas** ce qui se passe quand on appelle `ft_filter.ft_filter(lambda w: len(w) > n, words)` ?
+
+Bonne question 👍
+
+Si tu as écrit dans ton fichier **`filterstring.py`** :
+
+```python
+import ft_filter
+```
+
+👉 alors `ft_filter` correspond au **module entier** (le fichier `ft_filter.py`).
+
+Donc pour appeler la fonction définie dedans, tu dois préciser son nom complet :
+
+```python
+ft_filter.ft_filter(...)
+```
+
+---
+
+### Alternative
+
+Si tu veux éviter cette redondance, tu peux importer **directement la fonction** :
+
+```python
+from ft_filter import ft_filter
+```
+
+Et ensuite tu peux l’appeler comme ça :
+
+```python
+result = ft_filter(lambda w: len(w) > n, words)
+```
+
+---
+
+⚡ Résumé :
+
+* `import ft_filter` → tu appelles avec `ft_filter.ft_filter(...)` (module + fonction).
+* `from ft_filter import ft_filter` → tu appelles directement `ft_filter(...)`.
+
+---
+
+Tu veux que je t’adapte ton `filterstring.py` en version plus courte (avec `from ... import ...`) ?
+
+

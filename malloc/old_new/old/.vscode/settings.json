@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "libft.h": "c",
+        "libft_malloc.h": "c"
+    }
+}
