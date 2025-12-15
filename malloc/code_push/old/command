@@ -2,6 +2,11 @@ export LD_LIBRARY_PATH=.
 
 LD_PRELOAD=./libft_malloc_x86_64_Linux.so
 
+test next.c
+
+gcc -o aout next.c -L. -lft_malloc && ./run_linux.sh ./aout
+
+
 Library compilation
 
 First we will check that the compilation of the library does

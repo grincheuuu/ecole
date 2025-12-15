@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 
-//#include "libft_malloc.h"
+#include "libft_malloc.h"
 
 static int	ft_limit(int n, int fd)
 {
@@ -90,55 +90,47 @@ void print(char *s)
 
 int main(void)
 {
-//    char    *str;
-//    char    larg[100];
-//	char	**tab;
-//	char	**tab2;
+    char    *str;
+    char    *larg;
+	char	**tab;
+	char	**tab2;
 	char    *str2;
-//	char	*str3;
-//	char	c;
+	char	*str3;
+	char	c;
 
-/*    for (int i = 0; i < 99; i++)
+	str = malloc(1);
+	free(str);
+//	print_space();
+	larg = malloc(100 * sizeof(char));
+    for (int i = 0; i < 99; i++)
         larg[i] = 'q';
     larg[99] = '\0';
+//	print_char();
 	tab = malloc(201 * sizeof(char *));
 	if (tab == NULL)
 		return 1;
     for (int j = 0; j < 200; j++)
         tab[j] = ft_strdup(larg);
+//	print_space();
+//	print_char();
 	tab[200] = NULL;
 	for (int j = 0; tab[j] != NULL; j++)
-	{
 		free(tab[j]);
-	}
 	free(tab);
-	char	*ko[41];
-	for (int i = 0; i < 40; i++)
+	free(larg);
+//	print_space();
+	char	**ko;
+	ko = malloc(10 * sizeof(char *));
+	for (int i = 0; i < 9; i++)
 		ko[i] = strdup("kokokokoffffffffffffffggggggggggggggggko");
-	ko[40] = NULL;
+	ko[10] = NULL;
 	for (int i = 0; ko[i] != NULL; i++)
 		free(ko[i]);
 	str  = ft_strdup("hello word");
-	free(str);
-	str = NULL;*/
-	str2 = malloc(1001);
-	for (int i = 0; i < 1000; i++)
-        str2[i] = 'q';
-	str2[1000] = '\0';
-	char **bb2;
-	bb2 = malloc((101) * sizeof(char *));
-	if (bb2 == NULL)
-	{
-		write(1, "error\n", 6);
-		return 1;
-	}
-	for (int k = 0; k < 100; k++)
-		bb2[k] = ft_strdup(str2);
-	bb2[100] = NULL;
-//	print_space();
-	for (int k = 0; bb2[k] != NULL; k++)
-		free(bb2[k]);
-	free(str2);
+	str2 = realloc(str, 30000);
+    for (int i = 0; i < 999; i++)
+        str2[i] = 'Z';
+//	print_char();
 //	print_space();
 /*	free(bb2);
 	show_alloc_mem();

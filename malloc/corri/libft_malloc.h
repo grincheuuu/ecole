@@ -11,8 +11,15 @@
  #include <errno.h>
  #include <stdbool.h>
  #include <stdint.h>
+ #include <pthread.h>
 
 #define BLOCK_HEADER ft_align(sizeof(t_block))
+#define NC "\033[0m" //reset
+#define YELLOW "\033[33m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define BLUE "\033[34m"
+#define ORANGE "\033[93m"
 
 typedef struct  s_block
 {
@@ -29,6 +36,13 @@ typedef struct  s_alloue
     t_block *large;
     size_t  tiny_stock;
     size_t  small_stock;
+    pthread_mutex_t    tiny_mutex;
+    pthread_mutex_t    small_mutex;
+    pthread_mutex_t    large_mutex;
+    pthread_mutex_t    tiny_stock_mutex;
+    pthread_mutex_t    small_stock_mutex;
+    int MALLOC_VERBOSE;
+    int MALLOC_NO_DEFRAGMENT;
 }   t_alloue;
 
 extern t_alloue stock;
@@ -51,16 +65,25 @@ void print_space(void);
 size_t *ft_specific_stock(t_block *point);
 void    *ft_new_alloc(size_t size, void *ptr, size_t size_alloue);
 t_block    *create_block_page(size_t page_size, size_t *in_stock);
-void    *ft_first_allocate_block(t_block *temp, size_t len_zone, size_t *in_stock);
-void    *ft_split_block(t_block *temp, size_t len_zone, size_t *in_stock);
-void    *ft_generate_pointer(t_block **liste, size_t len_zone, size_t page, size_t *in_stock);
+void    *ft_generate_pointer(t_block **liste, size_t len_zone, size_t page, size_t *in_stock,
+    pthread_mutex_t *mutex1, pthread_mutex_t *mutex_stock);
 t_block    *create_block_large(size_t page_size);
-void    *ft_generate_large(t_block **start, size_t len);
+void    *ft_generate_large(t_block **start, size_t len, pthread_mutex_t *large_mutex);
 void    ft_show(t_block *liste);
 t_block *ft_block(t_block *suspens, void *ptr);
 t_block *ft_find_block(void *ptr);
 size_t  ft_gen_len(size_t len);
 void    ft_free_large(void *ptr, t_block **large);
 void    ft_free_tiny_small(void *ptr, t_block **large, size_t len_page);
+void    *ft_end_generate(pthread_mutex_t *mutex1, pthread_mutex_t *mutex_stock);
+void    *ft_first_allocate_block(t_block *temp, size_t len_zone, size_t *in_stock,
+    pthread_mutex_t *mutex1, pthread_mutex_t *mutex_stock);
+void    *ft_split_block(t_block *temp, size_t len_zone, size_t *in_stock,
+    pthread_mutex_t *mutex1, pthread_mutex_t *mutex_stock);
+void    ft_Verbose(char action, char *zone, size_t len_zone);
+void ft_print_char_deux(t_block *liste, size_t len);
+void print_char(void);
+void ft_verouille_mutex(void);
+void ft_deverouille_mutex(void);
 
 #endif

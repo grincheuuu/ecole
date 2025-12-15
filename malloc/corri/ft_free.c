@@ -27,6 +27,40 @@ int ft_free_page(t_block *page, size_t lenn, bool i)
     }
     return (1); // succes
 }
+/*
+// Change le type de retour en int (1 si unmap réussi, 0 sinon)
+int ft_free_page(t_block *page, size_t lenn, bool i)
+{
+    t_block *temp;
+    size_t  len = lenn;
+
+    if (page == NULL)
+        return (0);
+    
+    // CORRECTION 1 : Vérifier si le premier bloc est occupé !
+    if (page->occupe == 1)
+        return (0);
+
+    if (i == 1)
+        len = page->size + BLOCK_HEADER;
+
+    temp = page->next;
+    while (temp != NULL)
+    {
+        if (temp->occupe == 1)
+            return (0); // On retourne 0, on ne détruit rien
+        if (temp->debut_page == 1)
+            break;
+        temp = temp->next;
+    }
+
+    if (munmap((void *)page, len) == -1)
+    {
+        ft_putstr_fd("munmap failed\n", 2); // Message court
+        return (0);
+    }
+    return (1); // Succès
+}*/
 
 void    ft_free_first(t_block **page_point, size_t len, bool i)
 {
