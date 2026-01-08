@@ -1,0 +1,22 @@
+Tower says: Baloon#B1(1) registered to weather tower.
+Tower says: JetPlane#J1(2) registered to weather tower.
+Tower says: Helicopter#H1(3) registered to weather tower.
+Tower says: Helicopter#H4(4) registered to weather tower.
+Baloon#B1(1): Let's enjoy the good weather and take some pics.
+JetPlane#J1(2): It's raining. Better watch out for lightings.
+Helicopter#H1(3): This is hot.
+Helicopter#H4(4): My rotor is going to freeze!
+Baloon#B1(1): Damn you rain! You messed up my baloon.
+JetPlane#J1(2): OMG! Winter is coming!
+Helicopter#H1(3): This is hot.
+Helicopter#H4(4): My rotor is going to freeze!
+Baloon#B1(1): It's snowing. We're gonna crash.
+JetPlane#J1(2): It's raining. Better watch out for lightings.
+Helicopter#H1(3): This is hot.
+Helicopter#H4(4): My rotor is going to freeze!
+Baloon#B1(1): Damn you rain! You messed up my baloon.
+Baloon#B1(1) landing.
+Tower says: Baloon#B1(1) unregistered from weather tower.
+JetPlane#J1(2): OMG! Winter is coming!
+Helicopter#H1(3): This is hot.
+Helicopter#H4(4): My rotor is going to freeze!

@@ -1,0 +1,226 @@
+# 📘 Avaj Launcher — Traduction & explication en français
+
+## 📌 Informations générales
+
+**Résumé**
+Ce projet est une **introduction au monde Java à 42**.
+
+* Version : 5
+* Objectif : créer un **simulateur d’aéronefs** basé sur un **diagramme UML**
+* Langage : **Java**
+* Paradigme : **Programmation orientée objet (POO)**
+
+---
+
+## 🧠 Chapitre I — Introduction
+
+Ce projet est le **premier d’une série de 4 projets Java**.
+Il introduit :
+
+* la **conception logicielle**
+* les **diagrammes UML**
+* les **design patterns orientés objet**
+* la façon de **penser un programme avant d’écrire du code**
+
+👉 Le but n’est **pas seulement d’écrire du Java**, mais d’écrire **du bon Java orienté objet**.
+
+---
+
+## 🎯 Chapitre II — Objectifs
+
+L’aéroport de **Francfort** rencontre des problèmes à cause des **changements fréquents de météo**, ce qui crée des embouteillages sur les pistes.
+
+👉 Ils veulent donc :
+
+* simuler différents scénarios météo
+* observer quels scénarios posent le plus de problèmes
+
+Tu dois donc développer un **simulateur** permettant d’analyser ces situations.
+
+Le chef de projet te fournit :
+
+* 📐 un **diagramme UML**
+* 🧩 des **design patterns obligatoires**
+
+Tu dois maîtriser :
+
+* la lecture d’un **diagramme de classes**
+* les patterns :
+
+  * **Observer**
+  * **Singleton**
+  * **Factory**
+* les bases du langage **Java**
+
+---
+
+## ⚙️ Chapitre III — Instructions générales
+
+* Tu peux utiliser Java jusqu’à la **dernière version LTS**
+* ❌ Aucune bibliothèque externe
+* ❌ Pas d’IDE obligatoire (même déconseillé au début)
+* ❌ Pas de package par défaut
+* ✔️ Utilise des **packages propres** (naming Java)
+* ❌ Ne pas commit les `.class`
+* Compilation à la main :
+
+```bash
+find * -name "*.java" > sources.txt
+javac @sources.txt
+```
+
+---
+
+## 🛩️ Chapitre IV — Partie obligatoire
+
+### IV.1 — Comportement du programme
+
+* Le programme prend **un seul argument** :
+
+  * un fichier texte décrivant le scénario
+* Il génère un fichier `simulation.txt` avec le résultat
+
+Exécution :
+
+```bash
+java ro.academyplus.avaj.simulator.Simulator scenario.txt
+```
+
+---
+
+### IV.2 — Fichier de scénario
+
+* **Ligne 1** : nombre de cycles de simulation (changements météo)
+* Chaque ligne suivante :
+
+```
+TYPE NOM LONGITUDE LATITUDE HAUTEUR
+```
+
+Exemples de TYPE :
+
+* JetPlane
+* Helicopter
+* Baloon
+
+---
+
+### IV.3 — Génération de la météo
+
+4 types de météo :
+
+* RAIN
+* FOG
+* SUN
+* SNOW
+
+👉 La météo dépend des **coordonnées 3D**
+👉 L’algorithme est libre (mais doit dépendre de la position)
+
+---
+
+### IV.4 — Comportement des aéronefs
+
+#### ✈️ JetPlane
+
+| Météo | Effet                    |
+| ----- | ------------------------ |
+| SUN   | latitude +10, hauteur +2 |
+| RAIN  | latitude +5              |
+| FOG   | latitude +1              |
+| SNOW  | hauteur -7               |
+
+#### 🚁 Helicopter
+
+| Météo | Effet                     |
+| ----- | ------------------------- |
+| SUN   | longitude +10, hauteur +2 |
+| RAIN  | longitude +5              |
+| FOG   | longitude +1              |
+| SNOW  | hauteur -12               |
+
+#### 🎈 Baloon
+
+| Météo | Effet                    |
+| ----- | ------------------------ |
+| SUN   | longitude +2, hauteur +4 |
+| RAIN  | hauteur -5               |
+| FOG   | hauteur -3               |
+| SNOW  | hauteur -15              |
+
+---
+
+### IV.5 — Simulation
+
+Règles importantes :
+
+* Coordonnées **positives uniquement**
+* Hauteur entre **0 et 100**
+* Si >100 → reste à 100
+* Chaque aéronef a un **ID unique**
+* Si hauteur ≤ 0 :
+
+  * l’aéronef **atterrit**
+  * se désinscrit de la tour météo
+  * affiche un message
+* À chaque changement météo :
+
+  * chaque aéronef affiche un message
+  * format :
+
+```
+TYPE#NAME(ID): message
+```
+
+---
+
+### IV.6 — Validation
+
+* Le fichier d’entrée doit être **strictement valide**
+* En cas d’erreur :
+
+  * le programme s’arrête
+  * message d’erreur sur la sortie standard
+
+---
+
+## ⭐ Chapitre V — Bonus
+
+Bonus possibles :
+
+* Créer **tes propres exceptions**
+* Gérer proprement les erreurs
+
+⚠️ Les bonus sont évalués **uniquement si la partie obligatoire est parfaite**
+
+---
+
+## 📦 Chapitre VI — Rendu
+
+* Dépôt Git classique
+* Vérifie bien les noms de fichiers et dossiers
+* Tout sera évalué lors de la soutenance
+
+---
+
+## 🧭 En résumé (très important)
+
+Ce projet sert à évaluer :
+
+* ta **compréhension de l’architecture OO**
+* ta capacité à **suivre un UML**
+* ta rigueur
+* ta logique plus que la syntaxe
+
+👉 C’est **exactement le genre de projet qui prépare aux concours, stages et alternances**.
+
+---
+
+Si tu veux, je peux :
+
+* t’expliquer **le diagramme UML typique de ce projet**
+* t’aider à **structurer les classes**
+* t’expliquer **Observer / Factory / Singleton avec ce sujet**
+* te faire un **plan de code étape par étape**
+
+Dis-moi 👍
