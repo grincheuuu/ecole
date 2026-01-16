@@ -1,0 +1,209 @@
+Très bonne question 👍
+Ce petit script est **simple**, mais il concentre **beaucoup de notions importantes** (shell + Java).
+Je vais te l’expliquer **ligne par ligne**, puis te dire **pourquoi c’est la bonne pratique à 42**.
+
+---
+
+## 🧾 Le script complet
+
+```bash
+#!/bin/bash
+rm -rf *.class
+find fr -name "*.java" | xargs javac
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+---
+
+## 1️⃣ `#!/bin/bash`
+
+### 👉 Shebang
+
+```bash
+#!/bin/bash
+```
+
+Ça dit au système :
+
+> « Ce fichier doit être exécuté avec **bash** »
+
+Sans ça :
+
+* le système ne sait pas comment interpréter le fichier
+* ou il l’exécute avec un shell incompatible
+
+📌 Obligatoire pour un script exécutable :
+
+```bash
+chmod +x run.sh
+./run.sh
+```
+
+---
+
+## 2️⃣ `rm -rf *.class`
+
+### 👉 Nettoyage
+
+```bash
+rm -rf *.class
+```
+
+Supprime tous les fichiers `.class` **dans le dossier courant**.
+
+### Pourquoi ?
+
+* Java compile en `.class`
+* Si tu modifies un `.java` mais qu’un vieux `.class` traîne
+  → **bugs fantômes**
+  → erreurs incohérentes
+
+📌 À 42, on **nettoie toujours avant de compiler**
+
+⚠️ Attention :
+Ce `rm` ne supprime que les `.class` du dossier courant
+👉 **Option mieux** (si tu veux être clean partout) :
+
+```bash
+find . -name "*.class" -delete
+```
+
+---
+
+## 3️⃣ `find fr -name "*.java"`
+
+### 👉 Recherche des fichiers Java
+
+```bash
+find fr -name "*.java"
+```
+
+Ça veut dire :
+
+* commence dans le dossier `fr`
+* cherche **récursivement**
+* tous les fichiers qui finissent par `.java`
+
+📌 Résultat :
+
+```
+fr/simulation/aircraft/Simulator.java
+fr/simulation/aircraft/Parsing.java
+fr/simulation/weather/Flyable.java
+fr/simulation/weather/Tower.java
+...
+```
+
+---
+
+## 4️⃣ `| xargs javac`
+
+### 👉 Compilation automatique
+
+```bash
+| xargs javac
+```
+
+* `|` (pipe) envoie la sortie de `find` vers `javac`
+* `xargs` transforme la liste de fichiers en arguments
+
+💡 En pratique :
+
+```bash
+javac fr/simulation/aircraft/Simulator.java fr/simulation/weather/Flyable.java ...
+```
+
+📌 **C’est LA bonne méthode** quand :
+
+* tu as plusieurs packages
+* tu veux éviter les erreurs d’ordre de compilation
+
+---
+
+## 5️⃣ `java fr.simulation.aircraft.Simulator scenario.txt`
+
+### 👉 Exécution
+
+```bash
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+Important :
+
+* `java` **n’exécute PAS un fichier**
+* il exécute une **classe**
+* avec son **nom de package complet**
+
+📌 Ici :
+
+* classe `Simulator`
+* package `fr.simulation.aircraft`
+* argument passé : `scenario.txt`
+
+➡️ Correspond à :
+
+```java
+public static void main(String[] args)
+```
+
+---
+
+## 🧠 Pourquoi ce script est PARFAIT pour Avaj-Launcher
+
+### ✔️ Avantages
+
+* pas de Maven
+* pas de Gradle
+* simple
+* reproductible
+* conforme à l’esprit 42
+
+### ✔️ Il évite :
+
+* les erreurs de classloader
+* les problèmes de packages
+* les `.class` obsolètes
+* les compilations partielles
+
+---
+
+## 🔥 Version améliorée (optionnelle mais très propre)
+
+```bash
+#!/bin/bash
+set -e
+
+echo "Cleaning..."
+find . -name "*.class" -delete
+
+echo "Compiling..."
+find fr -name "*.java" | xargs javac
+
+echo "Running..."
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+* `set -e` → stoppe le script au **premier échec**
+* messages clairs
+
+---
+
+## 🎯 À retenir absolument
+
+1️⃣ Java ≠ C
+2️⃣ Packages = dossiers
+3️⃣ Toujours compiler depuis la racine
+4️⃣ Toujours exécuter avec le nom complet de la classe
+5️⃣ Nettoyer avant compiler
+
+---
+
+👉 Tu fais **exactement ce qu’il faut** pour réussir Avaj Launcher.
+Si tu veux, je peux :
+
+* vérifier ton `AircraftFactory`
+* t’aider sur `WeatherTower`
+* valider ton parsing par rapport au sujet
+
+Dis-moi 💪
+

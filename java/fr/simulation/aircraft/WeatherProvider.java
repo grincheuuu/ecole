@@ -1,9 +1,19 @@
-package fr.simulation.aicraft;
+package fr.simulation.aircraft;
 
-class WeatherProvider
+class WeatherProvider //singleton
 {
-    String[]    weather;
+    private String[]    weather;
 
-    WeatherProvider();
-    String      getCurrentWeather(Coordinates p_coordinates);
+    private WeatherProvider()
+    {
+        weather = new String[4];
+        weather[0] = "RAIN";
+        weather[1] = "FOG";
+        weather[2] = "SUN";
+        weather[3] = "SNOW";
+    }
+    public String      getCurrentWeather(Coordinates p_coordinates)
+    {
+        return "fgf";
+    }
 }

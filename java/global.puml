@@ -79,7 +79,7 @@ Aircraft <|-- Helicopter
 Aircraft <|-- JetPlane
 Aircraft <|-- Baloon
 
-JetPlane -[hidden]- AircraftFactory
-WeatherTower -[hidden]- WeatherProvider
+JetPlane -- AircraftFactory
+WeatherTower -- WeatherProvider
 
 @enduml

@@ -1,9 +1,10 @@
 package fr.simulation.weather;
 
-class abstract Flyable
+public interface Flyable
 {
-    WeatherTower    weatherTower;
-
-    abstract void   updateCondition();
-    registerTower(WeatherTower* p_tower);
+    public abstract void    updateCondition();
+    public abstract void    registerTower(WeatherTower p_tower);
+    String          getType();
+    public long     getId();
+    public String   getName();
 }

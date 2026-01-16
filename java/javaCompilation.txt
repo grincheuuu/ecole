@@ -1,0 +1,186 @@
+Oui 👍 je vais t’aider **clairement et concrètement**, parce que **la compilation Java avec des packages est LE piège classique** à 42 (et ailleurs).
+
+Je vais partir de ce que tu décris et te donner **la méthode fiable**.
+
+---
+
+## 1️⃣ Structure CORRECTE attendue (fondamentale)
+
+En Java, **l’arborescence des dossiers DOIT correspondre aux packages**.
+
+Si tes fichiers commencent par :
+
+```java
+package fr.simulation.aircraft;
+```
+
+Alors ton projet doit ressembler à ça :
+
+```
+project_root/
+│
+├── fr/
+│   └── simulation/
+│       ├── aircraft/
+│       │   ├── Simulator.java
+│       │   ├── Parsing.java
+│       │   ├── Aircraft.java
+│       │   └── ...
+│       │
+│       ├── weather/
+│       │   ├── WeatherTower.java
+│       │   └── ...
+│       │
+│       └── tower/
+│           └── Tower.java
+│
+└── scenario.txt
+```
+
+📌 **Règle absolue**
+
+> `package fr.simulation.aircraft;`
+> ⟹ fichier dans `fr/simulation/aircraft/`
+
+Si ce n’est pas respecté → erreurs bizarres (comme celles que tu as vues).
+
+---
+
+## 2️⃣ Compilation CORRECTE (la plus simple)
+
+👉 Place-toi **à la racine du projet** (là où se trouve le dossier `fr/`)
+
+```bash
+cd project_root
+```
+
+### ✅ Compiler TOUT le projet
+
+```bash
+javac fr/simulation/**/*.java
+```
+
+Si ton shell ne supporte pas `**` :
+
+```bash
+find fr -name "*.java" | xargs javac
+```
+
+---
+
+## 3️⃣ Exécution CORRECTE
+
+Toujours depuis la racine :
+
+```bash
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+⚠️ **Jamais**
+
+```bash
+java Simulator
+```
+
+⚠️ **Jamais**
+
+```bash
+java javac ...
+```
+
+---
+
+## 4️⃣ Erreurs courantes (que tu as rencontrées)
+
+### ❌ Compiler depuis un sous-dossier
+
+```bash
+cd fr/simulation/aircraft
+javac Simulator.java   ❌
+```
+
+➡️ Ça casse la logique des packages.
+
+---
+
+### ❌ Lancer avec un mauvais classloader
+
+```bash
+java Simulator ❌
+```
+
+➡️ Java ne trouve plus le package.
+
+---
+
+## 5️⃣ Vérification rapide (important)
+
+Dans chaque fichier `.java`, vérifie :
+
+### Simulator.java
+
+```java
+package fr.simulation.aircraft;
+```
+
+### Parsing.java
+
+```java
+package fr.simulation.aircraft;
+
+public class Parsing
+```
+
+📌 **Une seule classe `public` par fichier**
+📌 **Le nom du fichier = nom de la classe publique**
+
+---
+
+## 6️⃣ Méthode recommandée pour 42 (très propre)
+
+Crée un petit script :
+
+```bash
+#!/bin/bash
+rm -rf *.class
+find fr -name "*.java" | xargs javac
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+Tu lances :
+
+```bash
+./run.sh
+```
+
+✔️ simple
+✔️ reproductible
+✔️ conforme aux attentes de correction
+
+---
+
+## 7️⃣ Pourquoi Java est aussi strict ? (important à comprendre)
+
+Java garantit :
+
+* un code **portable**
+* une **organisation claire**
+* une séparation forte des responsabilités
+
+Avaj Launcher est justement un projet pour **t’enseigner ça**.
+
+---
+
+## ✅ Conclusion
+
+👉 Ton problème **n’est PAS ton code**
+👉 C’est **la compilation + structure**
+👉 Et tu es **pile dans les erreurs normales du projet**
+
+Si tu veux, au prochain message :
+
+* tu me colles `tree -L 4` de ton projet
+* ou la liste exacte de tes packages
+
+➡️ je te dis **exactement** quoi corriger 💪
+

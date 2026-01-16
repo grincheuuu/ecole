@@ -1,0 +1,219 @@
+Parfait, là on voit **exactement** le vrai problème 👍
+Et rassure-toi : **ce n’est pas un problème de compilation Java**, c’est un **problème de langage**.
+
+👉 **Tu écris du C++ dans des fichiers Java.**
+Java **n’accepte absolument pas** la syntaxe avec `*`, ni certaines formes que tu utilises.
+
+Je t’explique **calmement, point par point**, et je te montre **la version Java correcte** attendue pour Avaj-Launcher.
+
+---
+
+# 🚨 PROBLÈME GLOBAL
+
+Les erreurs comme :
+
+```text
+<identifier> expected
+invalid method declaration
+Flyable*
+List<Flyable *>
+class abstract Flyable
+```
+
+signifient toutes la même chose :
+
+> ❌ **Syntaxe C++ utilisée en Java**
+
+Java ≠ C++
+Java n’a **PAS** :
+
+* de pointeurs `*`
+* de `class abstract`
+* de `Flyable*`
+* de `List<Flyable *>`
+
+---
+
+# ✅ RÈGLES FONDAMENTALES JAVA (À GRAVER)
+
+| C++                      | Java                     |
+| ------------------------ | ------------------------ |
+| `Flyable*`               | `Flyable`                |
+| `class abstract Flyable` | `abstract class Flyable` |
+| `List<Flyable *>`        | `List<Flyable>`          |
+| `new Flyable*()`         | `new Flyable()`          |
+
+👉 **En Java, TOUT est déjà une référence**
+👉 **Les pointeurs n’existent pas**
+
+---
+
+# 🧩 CORRECTIONS FICHIER PAR FICHIER
+
+---
+
+## ❌ `AicraftFactory.java`
+
+### TON CODE (C++ ❌)
+
+```java
+Flyable* newAicraft(String p_type, String p_name, Coordinates p_coordinates);
+```
+
+### VERSION JAVA ✅
+
+```java
+public class AircraftFactory
+{
+    public static Flyable newAircraft(
+        String type,
+        String name,
+        Coordinates coordinates)
+    {
+        // à compléter
+        return null;
+    }
+}
+```
+
+📌 En Java :
+
+* pas de `*`
+* méthode **dans une classe**
+* méthode `static` (exigée par le sujet Avaj)
+
+---
+
+## ❌ `Flyable.java`
+
+### TON CODE (C++ ❌)
+
+```java
+class abstract Flyable
+{
+    abstract void updateCondition();
+    registerTower(WeatherTower* p_tower);
+}
+```
+
+### VERSION JAVA CORRECTE ✅
+
+```java
+package fr.simulation.weather;
+
+public abstract class Flyable
+{
+    public abstract void updateCondition();
+    public abstract void registerTower(WeatherTower tower);
+}
+```
+
+📌 Ordre correct :
+
+```
+public abstract class
+```
+
+---
+
+## ❌ `Tower.java`
+
+### TON CODE (C++ ❌)
+
+```java
+protected List<Flyable *> observers = new ArrayList<Flyable *>();
+```
+
+### VERSION JAVA ✅
+
+```java
+package fr.simulation.weather;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Tower
+{
+    protected List<Flyable> observers = new ArrayList<>();
+
+    public void register(Flyable flyable)
+    {
+        observers.add(flyable);
+    }
+
+    public void unregister(Flyable flyable)
+    {
+        observers.remove(flyable);
+    }
+
+    protected void conditionsChanged()
+    {
+        for (Flyable fly : observers)
+            fly.updateCondition();
+    }
+}
+```
+
+📌 En Java :
+
+* `List<Flyable>` (PAS `*`)
+* `for (Type var : collection)` sans `*`
+
+---
+
+# 🎯 POURQUOI 42 FAIT ÇA ?
+
+Le projet **Avaj-Launcher est volontairement un piège** pour :
+
+* les étudiants venant du C
+* les étudiants venant du C++
+
+👉 Ils veulent voir si tu sais :
+
+* **changer de modèle mental**
+* comprendre qu’en Java **les références remplacent les pointeurs**
+* écrire du **Java idiomatique**
+
+Tu es **pile dans le cas normal**, donc rassure-toi 👍
+
+---
+
+# ✅ CHECKLIST AVANT DE RECOMPILER
+
+✔️ Plus aucun `*` dans le code
+✔️ Plus aucun `class abstract`
+✔️ Tous les fichiers ont `package ...`
+✔️ Une seule classe `public` par fichier
+✔️ Nom du fichier = nom de la classe publique
+
+---
+
+# 🔧 COMPILATION CORRECTE (RAPPEL)
+
+Depuis la racine du projet :
+
+```bash
+find fr -name "*.java" | xargs javac
+```
+
+Puis :
+
+```bash
+java fr.simulation.aircraft.Simulator scenario.txt
+```
+
+---
+
+# 🧠 CONSEIL IMPORTANT
+
+👉 **N’essaie pas de “traduire ligne par ligne du C++ vers Java”**
+👉 **Pense “objet”, pas “mémoire”**
+
+Si tu veux, je peux :
+
+* te faire **le squelette Java COMPLET Avaj-Launcher**
+* t’expliquer **Flyable vs Interface**
+* t’aider à convertir **un Aircraft entier (Helicopter / JetPlane)**
+
+Dis-moi 💪
+
