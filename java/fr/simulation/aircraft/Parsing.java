@@ -78,10 +78,12 @@ public class Parsing
                 catch (NumberFormatException e)
                 {
                     e.printStackTrace();
+                    return false;
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    return false;
                 }
 //                for (String str : tab)
 //                    System.out.println(str);

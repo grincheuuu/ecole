@@ -3,6 +3,12 @@ import fr.simulation.weather.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
+import java.io.BufferedWriter;
 
 public class Create
 {
@@ -12,15 +18,39 @@ public class Create
     {
         this.texte = p_texte;
     }
+
     public void createSimulation()
     {
-        AircraftFactory  AFactory = AircraftFactory.getAircraftFactory();
-        WeatherTower     Wtower = new WeatherTower();
-        List<Flyable>    flyables = new ArrayList<Flyable>(); 
+        try
+        {
+            BufferedWriter   bw = new BufferedWriter(new FileWriter("simulation.txt"));
+/**            bw.write("hello");
+            bw.newLine();
+            bw.write("word");*/
+            simulationAction(bw);
+            bw.close();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+            return;
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+            return;            
+        }
+    }
+
+    private void    simulationAction(BufferedWriter bw)
+    {
+        AircraftFactory     aFactory = AircraftFactory.getAircraftFactory();
+        WeatherTower        wtower = new WeatherTower();
         Iterator<String>    it = texte.iterator();
         int                 i = 0;
         int                 nombreIteration = 0;
 
+        wtower.setB(bw);    
         while (it.hasNext())
         {
             String      ligne = it.next();
@@ -31,38 +61,19 @@ public class Create
             }
             else
             {
-                Coordinates p_coordinates = new Coordinates(Integer.parseInt(tab[2]), Integer.parseInt(tab[3]), Integer.parseInt(tab[4]));
-
-                Flyable a = AFactory.newAircraft(tab[0], tab[1], p_coordinates);
-                flyables.add(a);
-                a.registerTower(Wtower);
-                try
-                {
-
-                }
-                catch (Exception e)
-                {
-
-                }
+                Coordinates p_coordinates = new Coordinates(Integer.parseInt(tab[2]),
+                Integer.parseInt(tab[3]), Integer.parseInt(tab[4]));
+                
+                Flyable a = aFactory.newAircraft(tab[0], tab[1], p_coordinates);
+                a.registerTower(wtower);
+                a.setB(bw);
             }
             i++;
         }
         i = 0;
         for (int h = 0; h < nombreIteration; h++)
         {
-            switch(i)
-            {
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                    i = 0;
-                default:
-                    break;
-                    
-            }
+            wtower.conditionChanged();
         }
-
-
     }
 }

@@ -24,4 +24,18 @@ public class   Coordinates
     {
         return this.height;
     }
+    public void     setLongitude(int l)
+    {
+        this.longitude += l;
+    }
+    public void     setLatitude(int l)
+    {
+        this.latitude += l;
+    }
+    public void     setHeight(int h)
+    {
+        this.height += h;
+        if (this.height > 100)
+            this.height = 100;
+    }
 }

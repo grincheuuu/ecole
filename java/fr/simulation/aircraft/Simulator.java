@@ -58,11 +58,14 @@ public class    Simulator
         try
         {
             if (parse.goodParsing() == false)
+            {
                 throw new Exception("Exception: Bad parsing");
+            }
         }
         catch (Exception e)
         {
-            System.out.println("Exception : Bad parsing!");
+            e.printStackTrace();
+            return;
         }
         Create  creation = new Create(texte);
         creation.createSimulation();

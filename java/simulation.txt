@@ -1,22 +1,277 @@
-Tower says: Baloon#B1(1) registered to weather tower.
-Tower says: JetPlane#J1(2) registered to weather tower.
-Tower says: Helicopter#H1(3) registered to weather tower.
-Tower says: Helicopter#H4(4) registered to weather tower.
-Baloon#B1(1): Let's enjoy the good weather and take some pics.
-JetPlane#J1(2): It's raining. Better watch out for lightings.
-Helicopter#H1(3): This is hot.
-Helicopter#H4(4): My rotor is going to freeze!
-Baloon#B1(1): Damn you rain! You messed up my baloon.
-JetPlane#J1(2): OMG! Winter is coming!
-Helicopter#H1(3): This is hot.
-Helicopter#H4(4): My rotor is going to freeze!
-Baloon#B1(1): It's snowing. We're gonna crash.
-JetPlane#J1(2): It's raining. Better watch out for lightings.
-Helicopter#H1(3): This is hot.
-Helicopter#H4(4): My rotor is going to freeze!
-Baloon#B1(1): Damn you rain! You messed up my baloon.
-Baloon#B1(1) landing.
-Tower says: Baloon#B1(1) unregistered from weather tower.
-JetPlane#J1(2): OMG! Winter is coming!
-Helicopter#H1(3): This is hot.
-Helicopter#H4(4): My rotor is going to freeze!
+Tower says: Baloon#B1(2) registered to weather tower.
+Tower says: Baloon#B2(3) registered to weather tower.
+Tower says: JetPlane#J1(4) registered to weather tower.
+Tower says: Helicopter#H1(5) registered to weather tower.
+Tower says: Helicopter#H2(6) registered to weather tower.
+Tower says: Helicopter#H3(7) registered to weather tower.
+Tower says: Baloon#B3(8) registered to weather tower.
+Tower says: JetPlane#J2(9) registered to weather tower.
+Tower says: Helicopter#H4(10) registered to weather tower.
+Baloon#B1(2): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): My rotor is going to freeze!
+JetPlane#J1(4): It's raining. Better watch out for lightings.
+Helicopter#H1(5): It's raining. Better watch out for lightings.
+Helicopter#H2(6): It's raining. Better watch out for lightings.
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): This is hot.
+Baloon#B1(2): It's raining. Better watch out for lightings.
+Baloon#B2(3): This is hot.
+JetPlane#J1(4): This is hot.
+Helicopter#H1(5): This is hot.
+Helicopter#H2(6): This is hot.
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): This is hot.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): My rotor is going to freeze!
+Baloon#B1(2): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): My rotor is going to freeze!
+JetPlane#J1(4): My rotor is going to freeze!
+Helicopter#H1(5): My rotor is going to freeze!
+Helicopter#H2(6): My rotor is going to freeze!
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): My rotor is going to freeze!
+Baloon#B1(2): This is hot.
+Baloon#B2(3): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H1(5): My rotor is going to freeze!
+Helicopter#H1(5) landing.
+Tower says: Helicopter#H1(5) unregistered from weather tower.
+Helicopter#H2(6): My rotor is going to freeze!
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): My rotor is going to freeze!
+Baloon#B1(2): My rotor is going to freeze!
+Baloon#B2(3): This is hot.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H2(6): My rotor is going to freeze!
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): This is hot.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): My rotor is going to freeze!
+Baloon#B1(2): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H2(6): My rotor is going to freeze!
+Helicopter#H2(6) landing.
+Tower says: Helicopter#H2(6) unregistered from weather tower.
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Helicopter#H4(10): My rotor is going to freeze!
+Helicopter#H4(10) landing.
+Tower says: Helicopter#H4(10) unregistered from weather tower.
+Baloon#B1(2): This is hot.
+Baloon#B2(3): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Baloon#B1(2): My rotor is going to freeze!
+Baloon#B1(2) landing.
+Tower says: Baloon#B1(2) unregistered from weather tower.
+Baloon#B2(3): This is hot.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H3(7): My rotor is going to freeze!
+Baloon#B3(8): This is hot.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+Helicopter#H3(7): My rotor is going to freeze!
+Helicopter#H3(7) landing.
+Tower says: Helicopter#H3(7) unregistered from weather tower.
+Baloon#B3(8): My rotor is going to freeze!
+Baloon#B3(8) landing.
+Tower says: Baloon#B3(8) unregistered from weather tower.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): This is hot.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+Baloon#B2(3): My rotor is going to freeze!
+Baloon#B2(3) landing.
+Tower says: Baloon#B2(3) unregistered from weather tower.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): This is hot.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): My rotor is going to freeze!
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): Let's enjoy the good weather and take some pics.
+JetPlane#J1(4): Let's enjoy the good weather and take some pics.
+JetPlane#J2(9): My rotor is going to freeze!

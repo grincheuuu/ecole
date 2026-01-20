@@ -1,15 +1,19 @@
 package fr.simulation.weather;
 import fr.simulation.aircraft.Coordinates;
+import fr.simulation.aircraft.*;
 
 public class WeatherTower extends Tower
 {
-    String  getWeather(Coordinates p_coordinates)
+    private static WeatherProvider     wprovider = WeatherProvider.getWeatherProvider();
+
+    public String  getWeather(Coordinates p_coordinates)
     {
-        return "fdgfdg";
+        return wprovider.getCurrentWeather(p_coordinates);
     }
 
-    void    changeWeather()
+    public void    changeWeather()
     {
-
+        wprovider.seti(2);
     }
+
 }
