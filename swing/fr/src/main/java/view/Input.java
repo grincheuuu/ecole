@@ -1,0 +1,6 @@
+package view;
+
+class Input
+{
+    
+}
