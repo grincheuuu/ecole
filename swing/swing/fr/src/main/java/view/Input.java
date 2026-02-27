@@ -2,10 +2,13 @@ package view;
 import models.*;
 import controler.*;
 import java.util.HashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Input
 {
     HashMap<Integer, String>    tuile;
+    private static final Logger logger = LoggerFactory.getLogger(Input.class);
 
     Input()
     {

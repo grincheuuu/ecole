@@ -1,4 +1,6 @@
 package models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class Hero extends Coordonnes
 {
@@ -12,6 +14,7 @@ class Hero extends Coordonnes
     private int     hitPoint;
     protected String        type_attack = null;
     private Artefact        something = null;
+    private static final Logger logger = LoggerFactory.getLogger(Hero.class);
 
 
     public Hero(String p_name, String p_type, int p_attack, int p_def, int p_hitPoint, String p_type_attack)
@@ -24,7 +27,7 @@ class Hero extends Coordonnes
         this.hitPoint = p_hitPoint;
         this.type_attack = p_type_attack;
         this.lvlExperienceUp = calculLvlExperienceUp(1);
-        System.out.println(this.lvlExperienceUp);
+        logger.debug("hero lvl xp : {}", this.lvlExperienceUp);
     }
 
     private int         calculLvlExperienceUp(int lvl)
@@ -77,10 +80,10 @@ class Hero extends Coordonnes
     }
     void     addArtefact(Artefact p_something)
     {
-        System.out.println("attack = " + this.attack + " def = " + this.defense);
+        logger.debug("attack = {}  def =  {}", this.attack, this.defense);
         something = p_something;
         something.equipArtefact(this, level);
-        System.out.println("attack = " + this.attack + " def = " + this.defense);
+        logger.debug("  attack = {}  def =  {}", this.attack, this.defense);
     }
 
     boolean    heroLvlUp(int xp)
@@ -90,8 +93,7 @@ class Hero extends Coordonnes
         {
             this.level += 1;
             this.lvlExperienceUp = calculLvlExperienceUp(this.level);
-            System.out.println(this.lvlExperienceUp);
-            System.out.println("hero lvl up");
+            logger.debug("hero lvl up :{}", this.lvlExperienceUp);
             return true;
         }
         return false;
@@ -99,10 +101,11 @@ class Hero extends Coordonnes
 
     void    vilainAttackHero(int degats)
     {
-        System.out.println("vilain attack" + " hit point = " + this.hitPoint);
+        logger.debug("vilain attack hit point = {}", this.hitPoint);
         if (this.defense <= degats)
             this.hitPoint += this.defense - degats;
-        System.out.println(" hit point = " + this.hitPoint);
+        logger.debug(" vilain attack hit point = {}", this.hitPoint);
+        logger.debug("Debug message");
     }
 
 }

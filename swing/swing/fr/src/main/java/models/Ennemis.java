@@ -1,4 +1,6 @@
 package models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public abstract class Ennemis extends Coordonnes
 {
@@ -9,6 +11,7 @@ public abstract class Ennemis extends Coordonnes
     protected int     hitPoint;
     protected int     giveExperience;
     protected String  typeAttack;
+    private static final Logger logger = LoggerFactory.getLogger(Ennemis.class);
 
     protected Ennemis (int p_x, int p_y, String p_type, int p_attack, int p_def, int p_hitpoint, int p_xp, String p_typeAttack)
     {
@@ -57,9 +60,9 @@ public abstract class Ennemis extends Coordonnes
 
     void        heroAttackVilain(int degats)
     {
-        System.out.println("hero attack" + " hit point = " + this.hitPoint);
+        logger.debug("vilain attack hit point = {}", this.hitPoint);
         if (this.def <= degats)
             this.hitPoint += this.def - degats;
-        System.out.println(" hit point = " + this.hitPoint);
+        logger.debug(" vilain attack hit point = {}", this.hitPoint);
     }
 }

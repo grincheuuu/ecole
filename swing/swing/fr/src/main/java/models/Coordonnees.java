@@ -5,7 +5,7 @@ class Coordonnes
     protected int x = 0;
     protected int y = 0;
 
-    Coordonnes(int p_x, int p_y)
+    Coordonnes(int p_y, int p_x)
     {
         this.x = p_x;
         this.y = p_y;
@@ -14,16 +14,16 @@ class Coordonnes
 
     public int[]    getCoordonnes()
     {
-        int[]   tab = {this.x, this.y};
+        int[]   tab = {this.y, this.x};
 
         return tab;
     }
-    public void     setCoordonnes(int p_x, int p_y)
+    public void     setCoordonnes(int p_y, int p_x)
     {
         this.x = p_x;
         this.y = p_y;
     }
-    public void     changeCoordonnes(int p_x, int p_y)
+    public void     changeCoordonnes(int p_y, int p_x)
     {
         this.x += p_x;
         this.y += p_y;

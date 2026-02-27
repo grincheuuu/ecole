@@ -1,9 +1,12 @@
 package models;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class MajGame
 {
     Observer    yeux = null;
     private Artefact    objet = null;
+    private static final Logger logger = LoggerFactory.getLogger(MajGame.class);
     
     public MajGame()
     {}
@@ -12,6 +15,7 @@ public class MajGame
     {
         int[]   old_coordonnes = yeux.heros.getCoordonnes();
 
+        logger.info("move");
         if (ing.equals("w"))
         {
             yeux.heros.changeCoordonnes(0, -1);
@@ -70,7 +74,7 @@ public class MajGame
 
     private int maybeFight()
     {
-//        System.out.println("Maybe fight");
+        logger.info("Maybe fight");
         MapTile.Tile monster = yeux.map.getMapTile(
             yeux.heros.getCoordonnes()[0],
             yeux.heros.getCoordonnes()[1]
@@ -86,9 +90,9 @@ public class MajGame
 
     private int    Fight(int x, int y)
     {
-        Ennemis     vilain = yeux.getVilain(x, y);
+        Ennemis     vilain = yeux.getVilain(y, x);
 
-//        System.out.println("Fight");
+        logger.info("Fight");
         System.out.println(vilain.getType());
         while (yeux.heros.getHitoint() > 0 && vilain.getHitoint() > 0)
         {
@@ -103,13 +107,15 @@ public class MajGame
                 {
                     this.objet = vilain.setArtefact();
                     artefactSelection(0);
-//                    return 2;
+                    return 2;
                 }
                 return 0;
             }
             yeux.heros.vilainAttackHero(vilain.getAttack());
             if (yeux.heros.getHitoint() <= 0)
+            {
                 return 1;
+            }
         }
         return 0;
     }
