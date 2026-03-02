@@ -1,14 +1,17 @@
 package models;
 import java.lang.Math;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class E_Hydre extends Ennemis
 {
     private Observer    yeux;
     private Artefact    something = null;
+//    private static final Logger logger = LoggerFactory.getLogger(E_Hydre.class);
 
-    E_Hydre(int p_x, int p_y)
+    E_Hydre(int p_y, int p_x)
     {
-        super(p_x, p_y, "hydre", 50, 5, 150, 1900, "devorre");
+        super(p_y, p_x, "hydre", 50, 5, 150, 1900, "devorre");
         int nb = (int) (Math.random() * 100);
         if (nb % 6 == 0)
             something = new Armor(2);
@@ -16,8 +19,8 @@ class E_Hydre extends Ennemis
             something = new Weapon(2);
         else if (nb % 9 == 0)
             something = new Helm(2);
-        if (something != null)
-            System.out.println(this.getType() + " artefact : " + something.getTypeArtefact());
+//        if (something != null)
+//            logger.info("{} artefact : {}", this.getType(), something.getTypeArtefact());
     }
 
     @Override
@@ -42,7 +45,7 @@ class E_Hydre extends Ennemis
     {
         if (something == null)
             return false;
-        System.out.println(" artefact : " + something.getTypeArtefact());
+//        logger.info("{} artefact : {}", this.getType(), something.getTypeArtefact());
         return true;
     }
 

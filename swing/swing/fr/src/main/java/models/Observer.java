@@ -1,17 +1,21 @@
 package models;
 import java.util.List;
 import java.util.ArrayList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Observer
 {
     protected List<Ennemis>     allEnnemis = new ArrayList<Ennemis>();
     protected Map               map = null;
     protected Hero              heros = null;
+    private static final Logger logger = LoggerFactory.getLogger(Observer.class);
 
     public void register_hero(Hero p_me)
     {
         heros = p_me;
-        System.out.println("Observer : new Hero register: " + heros.getName());
+        heros.addObserver(this);
+        logger.info("Observer : new Hero register: {}", heros.getName());
     }
     public void unregister(Hero p_me)
     {
@@ -21,24 +25,25 @@ public class Observer
     public void register_map(Map p_map)
     {
         map = p_map;
-        System.out.println("Observer : new Map created: width : " + map.getWidth());
+        logger.info("Observer : new Map created: width : {}", map.getWidth());
     }
 
-    public void herolLevelUp()
+    public void hero_level_up()
     {
         map.map_regenerate(heros.getHeroLevel());
+        EnnemisLvlUp();
     }
 
     public void registerEnnemis(Ennemis p_vilain)
     {
         allEnnemis.add(p_vilain);
-        System.out.println("Observer : new Ennemis register: " + p_vilain.getType());
+        logger.info("Observer : new Ennemis register: {}", p_vilain.getType());
     }
 
     public void unregister(Ennemis p_vilain)
     {
         allEnnemis.remove(p_vilain);
-        System.out.println("Observer : destroy Ennemis unregister: " + p_vilain.getType());
+        logger.info("Observer : destroy Ennemis unregister: {}", p_vilain.getType());
     }
 
     public void     EnnemisLvlUp()
@@ -49,11 +54,11 @@ public class Observer
         }
     }
 
-    public Ennemis      getVilain(int x, int y)
+    public Ennemis      getVilain(int y, int x)
     {
         for (Ennemis vilain: allEnnemis)
         {
-            if (vilain.getCoordonnes()[0] == x && vilain.getCoordonnes()[1] == y)
+            if (vilain.getCoordonnes()[0] == y && vilain.getCoordonnes()[1] == x)
                 return vilain;
         }
         return null;

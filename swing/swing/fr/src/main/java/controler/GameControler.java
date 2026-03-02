@@ -4,6 +4,8 @@ import models.Create;
 import models.MapTile;
 import view.Input;
 import java.util.Scanner;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameControler
 {
@@ -11,6 +13,7 @@ public class GameControler
     private MajGame     majGame = null;
     private Input       input;
     private MapTile.Tile[][]    map;
+    private static final Logger logger = LoggerFactory.getLogger(GameControler.class);
 
     public GameControler(Create p_begin, Input in)
     {
@@ -32,6 +35,7 @@ public class GameControler
             while (true)
             {
                 String  inp = sc.next();
+                logger.debug("1");
                 if (inp.equals("w") || inp.equals("a") || inp.equals("d") || inp.equals("s"))
                 {
                     String  state = this.majGame.move(inp);
@@ -48,12 +52,16 @@ public class GameControler
                     if(state.equals("choose artefact"))
                     {
                         input.PrintResult("choose artefact");
+                        logger.debug("a");
                         i = 1;
                     }
+                    logger.debug("2");
                     printMap();
+                    logger.debug("3");
                 }
                 if (inp.equals("q"))
                 {
+                    logger.debug("null");
                     throw new Exception("inp = null");
                 }
             }
@@ -69,6 +77,8 @@ public class GameControler
         int     w = begin.getWidth();
         int[]   tab = new int[w];
 
+        this.map = begin.getMap();
+        logger.debug("map");
         for (int y = 0; y < w; y++)
         {
             for (int x = 0; x < w; x++)
@@ -76,7 +86,8 @@ public class GameControler
                 tab[x] = map[y][x].ordinal();
             }
             input.output(tab);
-        }        
+        }    
+        logger.debug("mapfin");    
     }
 }
 

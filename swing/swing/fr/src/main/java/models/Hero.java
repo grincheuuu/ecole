@@ -11,9 +11,11 @@ class Hero extends Coordonnes
     private int     lvlExperienceUp;
     private int     attack;
     private int     defense;
+    private int     initial_hitPoint;
     private int     hitPoint;
     protected String        type_attack = null;
     private Artefact        something = null;
+    private Observer        yeux = null;
     private static final Logger logger = LoggerFactory.getLogger(Hero.class);
 
 
@@ -24,10 +26,16 @@ class Hero extends Coordonnes
         this.type = p_type;
         this.attack = p_attack;
         this.defense = p_def;
+        this.initial_hitPoint = p_hitPoint;
         this.hitPoint = p_hitPoint;
         this.type_attack = p_type_attack;
         this.lvlExperienceUp = calculLvlExperienceUp(1);
         logger.debug("hero lvl xp : {}", this.lvlExperienceUp);
+    }
+
+    public void     addObserver(Observer oeil)
+    {
+        this.yeux = oeil;
     }
 
     private int         calculLvlExperienceUp(int lvl)
@@ -92,8 +100,14 @@ class Hero extends Coordonnes
         if (this.experience >= this.lvlExperienceUp)
         {
             this.level += 1;
+            this.hitPoint = this.initial_hitPoint + this.level * 10 + this.initial_hitPoint / 2;
+            this.attack += this.level * 2;
+            this.defense += this.level;
+            this.experience += this.experience - this.lvlExperienceUp;
             this.lvlExperienceUp = calculLvlExperienceUp(this.level);
-            logger.debug("hero lvl up :{}", this.lvlExperienceUp);
+            yeux.hero_level_up();
+            logger.info("hero lvl up :{} experience {}", this.lvlExperienceUp, this.experience);
+            logger.info("lvl : {} hitpoint : {} attack : {} defense ; {}", this.level, this.hitPoint, this.attack, this.defense);
             return true;
         }
         return false;

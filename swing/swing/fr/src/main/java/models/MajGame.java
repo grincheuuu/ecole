@@ -18,19 +18,19 @@ public class MajGame
         logger.info("move");
         if (ing.equals("w"))
         {
-            yeux.heros.changeCoordonnes(0, -1);
+            yeux.heros.changeCoordonnes(-1, 0);
         }
         if (ing.equals("a"))
         {
-            yeux.heros.changeCoordonnes(-1, 0);            
+            yeux.heros.changeCoordonnes(0, -1);            
         }
         if (ing.equals("d"))
         {
-            yeux.heros.changeCoordonnes(1, 0);
+            yeux.heros.changeCoordonnes(0, 1);
         }
         if (ing.equals("s"))
         {
-            yeux.heros.changeCoordonnes(0, 1);            
+            yeux.heros.changeCoordonnes(1, 0);            
         }
         if (testCoordonnees() == 1)
             return "win";
@@ -39,6 +39,7 @@ public class MajGame
         if (maybeFight() == 2)
             return "choose artefact";
         modifMap(old_coordonnes);
+        logger.debug("game_continue");
         return "game_continue";
     }
 
@@ -88,12 +89,16 @@ public class MajGame
         return Fight(yeux.heros.getCoordonnes()[0], yeux.heros.getCoordonnes()[1]);
     }
 
-    private int    Fight(int x, int y)
+    private int    Fight(int y, int x)
     {
         Ennemis     vilain = yeux.getVilain(y, x);
 
         logger.info("Fight");
-        System.out.println(vilain.getType());
+        if (vilain != null)
+            logger.info(vilain.getType());
+        else
+            logger.debug("vilain == null");
+        logger.info("deux");
         while (yeux.heros.getHitoint() > 0 && vilain.getHitoint() > 0)
         {
             vilain.heroAttackVilain(yeux.heros.getAttack());
@@ -105,23 +110,29 @@ public class MajGame
                 }
                 if (vilain.testArtefact() == true)
                 {
+                    logger.debug("artefact");
                     this.objet = vilain.setArtefact();
                     artefactSelection(0);
+                    logger.debug("get artefact");
                     return 2;
                 }
+                yeux.map.setMap(y, x, MapTile.Tile.TERRAIN);
                 return 0;
             }
             yeux.heros.vilainAttackHero(vilain.getAttack());
             if (yeux.heros.getHitoint() <= 0)
             {
+                logger.info("Fight no");
                 return 1;
             }
         }
+        logger.info("Fight ok");
         return 0;
     }
 
     private void     modifMap(int[] old_coordonnes)
     {
+        logger.debug("modif map");
         yeux.map.setMap(old_coordonnes[0], old_coordonnes[1], MapTile.Tile.TERRAIN);
         if (yeux.heros.getType().equals("BARBAR"))
             yeux.map.setMap(yeux.heros.getCoordonnes()[0], yeux.heros.getCoordonnes()[1], MapTile.Tile.BARBAR);

@@ -1,6 +1,8 @@
 package models;
 import java.util.Arrays; // pour imprimer les strings sinon impression adresse
 import java.lang.Math;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Map
 {
@@ -8,12 +10,9 @@ public class Map
     private int         width_deux = 0;
     private int         level_hero = 1;
     private Observer    yeux = null;
-/*    public enum Tile 
-    {
-        TERRAIN, VAMPIRE, TROLL, SQUELETTE, HYDRE, ORC, BARBAR, MAGE
-    }*/
     private MapTile.Tile[][]  real_map = null;
     EnnemisFactory      EFactory = EnnemisFactory.getEnnemisFactory();
+    private static final Logger logger = LoggerFactory.getLogger(Map.class);
 
     public Map(Observer oeil)
     {
@@ -21,10 +20,7 @@ public class Map
         yeux = oeil;
         yeux.register_map(this);
         createMap();
-        System.out.println();
-//        createMapDeux(5);
 //        System.out.println();
-        ft_print_map(this.real_map);
     }
 
     private void    createMap()
@@ -36,7 +32,6 @@ public class Map
         {
             for (int x = 0; x < width; x++)
             {
-                map[x][y] = ft_random_monster(x, y);
                 if ((x == center) && (y == center))
                 {
                     String  hero = yeux.heros.getType();
@@ -47,15 +42,17 @@ public class Map
                     else
                         map[y][x] = MapTile.Tile.MAGE;
                 }
-//                System.out.print(map[i][j] + " ");
+                else
+                    map[y][x] = ft_random_monster(y, x);
+//                System.out.println(map[y][x] + " ");
             }
-//            System.out.println();
-//            System.out.println(Arrays.toString(real_map[i]));
+//            System.out.println(Arrays.toString(real_map[y]));
         }
         if (this.real_map == null)
             this.real_map = map;
         else
             this.real_map = ft_copie_map(real_map, map);
+//        ft_print_map(this.real_map);
     }
 
     private MapTile.Tile[][]  ft_copie_map(MapTile.Tile[][] real_map, MapTile.Tile[][] map)
@@ -66,7 +63,7 @@ public class Map
         int             dif_width = (width - old_width) / 2;
         int             new_width_max = width - dif_width;
 
-        System.out.println("old width " + old_width + " width " + width + " dif width " + dif_width + " new width max " + new_width_max);
+        logger.info("old width {}  width {}  dif width {}  new width max {}", old_width, width, dif_width, new_width_max);
         for (int y = 0; y < width; y++)
         {
             if (y >= dif_width && y < new_width_max)
@@ -74,15 +71,25 @@ public class Map
                 for (int x = dif_width; x < new_width_max; x++)
                 {
                     concatMap[y][x] = real_map[y - dif_width][x - dif_width];
+                    vilainCoordonnes(y, x, y - dif_width, x - dif_width);
                 }
             }
-//            System.out.println(Arrays.toString(concatMap[y]));
         }
-//        System.out.println();
+        yeux.heros.setCoordonnes(yeux.heros.getCoordonnes()[0] + dif_width, yeux.heros.getCoordonnes()[1] + dif_width);
         return concatMap;
     }
 
-    private MapTile.Tile    ft_random_monster(int p_x, int p_y)
+    private void        vilainCoordonnes(int y, int x, int old_y, int old_x)
+    {
+        if (real_map[old_y][old_x] == MapTile.Tile.HYDRE || real_map[old_y][old_x] == MapTile.Tile.TROLL
+         || real_map[old_y][old_x] == MapTile.Tile.VAMPIRE || real_map[old_y][old_x] == MapTile.Tile.SQUELETTE)
+        {
+            Ennemis vilain = yeux.getVilain(old_y, old_x);
+            vilain.setCoordonnes(y, x);
+        }
+    }
+
+    private MapTile.Tile    ft_random_monster(int p_y, int p_x)
     {
         int     n = (int) (Math.random() * 100);
 
@@ -92,22 +99,22 @@ public class Map
         {
             if (n % 3 == 0 && level_hero >= 4)
             {
-                yeux.registerEnnemis(EFactory.newEnnemis("Hydre", p_x, p_y));
+                yeux.registerEnnemis(EFactory.newEnnemis("Hydre", p_y, p_x));
                 return MapTile.Tile.HYDRE;
             }
             else if((n + 1) % 5 == 0 && level_hero >= 3)
             {
-                yeux.registerEnnemis(EFactory.newEnnemis("Troll", p_x, p_y));
+                yeux.registerEnnemis(EFactory.newEnnemis("Troll", p_y, p_x));
                 return MapTile.Tile.TROLL;
             }
             else if(n % 5 == 0 && level_hero >= 2)
             {
-                yeux.registerEnnemis(EFactory.newEnnemis("Vampire", p_x, p_y));
+                yeux.registerEnnemis(EFactory.newEnnemis("Vampire", p_y, p_x));
                 return MapTile.Tile.VAMPIRE;
             }
             else
             {
-                yeux.registerEnnemis(EFactory.newEnnemis("Squelette", p_x, p_y));
+                yeux.registerEnnemis(EFactory.newEnnemis("Squelette", p_y, p_x));
                 return MapTile.Tile.SQUELETTE;
             }
         }
@@ -142,11 +149,11 @@ public class Map
     {
         this.level_hero = level;
         this.width = (level_hero - 1) * 5 + 10 - (level_hero % 2);
-        System.out.println("map_regenerate width " + getWidth());
+//        System.out.println("map_regenerate width " + getWidth());
         createMap();
     }
 
-    public MapTile.Tile     getMapTile(int x, int y)
+    public MapTile.Tile     getMapTile(int y, int x)
     {
         return real_map[y][x];
     }
@@ -156,96 +163,8 @@ public class Map
         return real_map;
     }
 
-    void        setMap(int x, int y, MapTile.Tile someone)
+    void        setMap(int y, int x, MapTile.Tile someone)
     {
         real_map[y][x] = someone;
     }
-
-/*
-    private String[][]  ft_copie_map(String[][] real_map, String[][] map, int lvl)
-    {
-        String[][]      concatMap = map;
-        int             old_width = (level_hero - 1) * 5 + 10 - (level_hero % 2);
-        int             width = (lvl - 1) * 5 + 10 - (lvl % 2);
-        int             dif_width = (width - old_width) / 2;
-        int             new_width_max = width - dif_width;
-
-        System.out.println("old width " + old_width + " width " + width + " dif width " + dif_width + " new width max " + new_width_max);
-        for (int y = 0; y < width; y++)
-        {
-            if (y >= dif_width && y < new_width_max)
-            {
-                for (int x = dif_width; x < new_width_max; x++)
-                {
-                    concatMap[y][x] = real_map[y - dif_width][x - dif_width];
-                }
-            }
-//            System.out.println(Arrays.toString(concatMap[y]));
-        }
-//        System.out.println();
-        return concatMap;
-    }*/
-
-/*       private void    createMapDeux(int lvl)
-    {
-        int         w = (lvl - 1) * 5 + 10 - (lvl % 2);
-        int     center = (w / 2);
-        Tile[][]  map = new Tile[w][w];
-
-        this.width_deux = w;
-        for (int i = 0; i < w; i++)
-        {
-            for (int j = 0; j < w; j++)
-            {
-                map[i][j] = ft_random_monster_deux(1, 1, lvl);
-                if ((i == center) && (j == center))
-                {
-                    String  hero = yeux.heros.getType();
-                    if (hero.equals("barbar"))
-                        map[i][j] = Tile.BARBAR;
-                    else if (hero.equals("orc"))
-                        map[i][j] = Tile.ORC;
-                    else
-                        map[i][j] = Tile.MAGE;
-                }
-//                System.out.print(map[i][j] + " ");
-            }
-//            System.out.println();
-        }
-        if (this.real_map == null)
-            this.real_map = map;
-        else
-            this.real_map = ft_copie_map(real_map, map);
-    }
-
-    private Tile    ft_random_monster_deux(int p_x, int p_y, int lvl)
-    {
-        int     n = (int) (Math.random() * 100);
-
-        if (n < 50 || n % 2 == 0)
-            return Tile.TERRAIN;
-        else
-        {
-            if (n % 3 == 0 && lvl >= 4)
-            {
-                yeux.registerEnnemis(EFactory.newEnnemis("Hydre", p_x, p_y));
-                return Tile.HYDRE;
-            }
-            else if((n + 1) % 5 == 0 && lvl >= 3)
-            {
-                yeux.registerEnnemis(EFactory.newEnnemis("Troll", p_x, p_y));
-                return Tile.TROLL;
-            }
-            else if(n % 5 == 0 && lvl >= 2)
-            {
-                yeux.registerEnnemis(EFactory.newEnnemis("Vampire", p_x, p_y));
-                return Tile.VAMPIRE;
-            }
-            else
-            {
-                yeux.registerEnnemis(EFactory.newEnnemis("Squelette", p_x, p_y));
-                return Tile.SQUELETTE;
-            }
-        }
-    }*/
 }

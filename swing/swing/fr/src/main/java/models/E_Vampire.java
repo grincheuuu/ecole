@@ -1,14 +1,17 @@
 package models;
 import java.lang.Math;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class E_Vampire extends Ennemis
 {
     private Observer    yeux;
     private Artefact    something = null;
+//    private static final Logger logger = LoggerFactory.getLogger(E_Vampire.class);
 
-    E_Vampire(int p_x, int p_y)
+    E_Vampire(int p_y, int p_x)
     {
-        super(p_x, p_y, "vampire", 15, 3, 100, 1000, "drink blood");
+        super(p_y, p_x, "vampire", 15, 3, 100, 1000, "drink blood");
         int nb = (int) (Math.random() * 100);
         if (nb % 6 == 0)
             something = new Armor(2);
@@ -16,18 +19,18 @@ class E_Vampire extends Ennemis
             something = new Weapon(2);
         else if (nb % 9 == 0)
             something = new Helm(2);
-        if (something != null)
-            System.out.println(this.getType() + " artefact : " + something.getTypeArtefact());
+//        if (something != null)
+//            logger.info("{} artefact : {}", this.getType(), something.getTypeArtefact());
     }
 
     @Override
     public void      lvlUp()
     {
         this.lvl += 1;
-        this.attack += 2;
+        this.attack += 5;
         this.def += 1;
         this.hitPoint += 10;
-        this.giveExperience = 200;
+        this.giveExperience = 100 * this.lvl;
     }
 
     @Override
@@ -42,7 +45,7 @@ class E_Vampire extends Ennemis
     {
         if (something == null)
             return false;
-        System.out.println(" artefact : " + something.getTypeArtefact());
+//        logger.info("{} artefact : {}", this.getType(), something.getTypeArtefact());
         return true;
     }
 

@@ -28,6 +28,13 @@
                       <goals>
                           <goal>shade</goal>
                       </goals>
+                      <configuration>
+                        <transformers>
+                            <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                <mainClass>view.App</mainClass>
+                            </transformer>
+                        </transformers>
+                    </configuration>
                   </execution>
               </executions>
           </plugin>
@@ -44,6 +51,11 @@
         <artifactId>logback-classic</artifactId>
         <version>1.5.15</version>
     </dependency>
+        <dependency>
+        <groupId>org.fusesource.jansi</groupId>
+        <artifactId>jansi</artifactId>
+        <version>2.4.1</version>
+    </dependency>
   
     <dependency>
       <groupId>javax.validation</groupId>
@@ -53,10 +65,10 @@
     </dependency>
 
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.42</version>
-      <scope>compile</scope>
+        <groupId>com.h2database</groupId>
+        <artifactId>h2</artifactId>
+        <version>2.4.240</version>
+        <scope>test</scope>
     </dependency>
 
     <dependency>
