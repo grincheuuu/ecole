@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+ <html lang="fr">
+     <head>
+         <meta charset="UTF-8">
+         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+         <title>Webserv</title>
+     </head>
+     <body>
+         <p><strong><font size="+10"><center>Delete fichier</center></font></strong></p>
+         <form action="/cgi/delete.py" method="POST">
+             <div>
+                 <label for="file">Sélectionner le fichier a supprimer</label>
+                 <input 
+                    type="file"
+                    if="filename"
+                    name="filename" required/>
+             </div>
+             <div>
+                 <button type="submit">suppression</button>
+             </div>
+         </form>
+     </body>
+ </html>
